@@ -249,7 +249,7 @@ sub kwalitee_indicators {
     },
     {
         name=>'buildtool_not_executable',
-        error=>q{The buildtool (Build.PL/Makefile.PL) is executable. This is bad, because you should specifiy which perl you want to use while installing.},
+        error=>q{The build tool (Build.PL/Makefile.PL) is executable. This is bad because you should specify which perl you want to use while installing.},
         remedy=>q{Change the permissions of Build.PL/Makefile.PL to not-executable.},
         code=>sub {(shift->{buildfile_executable} || 0) > 0 ? 0 : 1},
     },
@@ -267,7 +267,7 @@ sub kwalitee_indicators {
     },
     {
         name=>'no_generated_files',
-        error=>q{This distribution has a file that it should generate and not be distribute.},
+        error=>q{This distribution has a file that should be generated at build time, not distributed by the author.},
         remedy=>q{Remove the offending file!},
         code=>sub {
             my $d=shift;
@@ -392,7 +392,7 @@ Returns the Kwalitee Indicators datastructure.
 
 =item * has_tests_in_t_dir
 
-=item * buildfile_not_executabel
+=item * buildfile_not_executable
 
 =item * has_example (optional)
 
