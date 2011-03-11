@@ -162,6 +162,10 @@ Get a list of core indicator names (NOT the whole indicator HASHREF).
 
 Get a list of optional indicator names (NOT the whole indicator HASHREF).
 
+=head3 experimental_indicator_names
+
+Get a list of experimental indicator names (NOT the whole indicator HASHREF).
+
 =head3 all_indicator_names
 
 Get a list of all indicator names (NOT the whole indicator HASHREF).

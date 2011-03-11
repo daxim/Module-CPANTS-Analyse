@@ -6,6 +6,7 @@
     - add info about MIN_PERL_VERSION
     - better remedy for 'metayml_declares_perl_version'
     - 'metayml_declares_perl_version' moved from experimental to extra
+    - some pod improvements (jquelin)
 
 0.85    2009-07-12, Alexandr Ciornii
     - fix fails on non-Win32
