@@ -3,7 +3,7 @@ use warnings;
 use strict;
 use File::Spec::Functions qw(catfile);
 use YAML::Syck qw(Load LoadFile);
-use Test::YAML::Meta::Version;
+use Test::CPAN::Meta::YAML::Version;
 
 sub order { 20 }
 
@@ -149,7 +149,7 @@ sub check_spec_conformance {
         }
     }
     $hash{spec} = $version;
-    my $spec = Test::YAML::Meta::Version->new(%hash);
+    my $spec = Test::CPAN::Meta::YAML::Version->new(%hash);
     if ($spec->parse()) {
         my $report_version= $version || 'known';
         my @errors;
