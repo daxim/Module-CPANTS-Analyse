@@ -21,13 +21,14 @@ sub analyse {
 	return if $ENV{CPANTS_LINT};
 
     if (not $debian) {
-        $debian = get_debian_data();
+        $debian = _get_debian_data();
     }
    
     return;
 }
 
-sub get_debian_data {
+
+sub _get_debian_data {
     my $local_file = 'Debian_CPANTS.txt';
     mirror('http://pkg-perl.alioth.debian.org/CPANTS.txt', $local_file);
 
