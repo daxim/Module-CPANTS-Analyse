@@ -3,12 +3,14 @@ use Test::Warn;
 
 use Module::CPANTS::Analyse;
 use File::Spec::Functions;
+use Cwd qw(cwd);
 
 my $a=Module::CPANTS::Analyse->new({
     dist=>'t/eg/not_extractable.gz',
     _dont_cleanup=>$ENV{DONT_CLEANUP},
 });
 
+my $dir = cwd;
 my $rv;
 warnings_are {$rv=$a->unpack} [
             'Invalid header block at offset unknown',
@@ -20,3 +22,6 @@ warnings_are {$rv=$a->unpack} [
 like($rv,qr/Can.t call method .extract./,'unpack failed');
 is($a->d->{extractable},0,'extractable');
 
+END {
+    chdir $dir; # work around RT #67509
+}
