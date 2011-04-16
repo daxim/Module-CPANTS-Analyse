@@ -27,7 +27,7 @@ my $expected = {
            'has_changelog' => 1,
            'no_pod_errors' => 1,
            'use_strict' => 1,
-           'kwalitee' => 26,
+           'kwalitee' => 27,
            'no_stdin_for_prompting' => 1,
            'has_test_pod' => 1,
            'easily_repackageable' => 0,
@@ -61,6 +61,7 @@ my $expected = {
            'has_no_bugs_reported_in_debian'=>0,
            'has_no_patches_in_debian'=>0,
            'uses_test_nowarnings'=>0,
+           'has_better_auto_install'=>1,
          };
 
 is_deeply($kw, $expected, 'kwalitee fits');
