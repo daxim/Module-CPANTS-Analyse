@@ -15,7 +15,6 @@ my $build = Module::Build->new(
         'Module::Pluggable'         => '2.96',
         'IO::Capture'               => '0.05',
         'Array::Diff'               => '0.04',
-        'Test::YAML::Meta::Version' => '0.13', #Some errors fixed
         'version'                   => '0.73',
         'List::MoreUtils'           => '0',
         'File::Find::Rule'          => '0',
@@ -25,6 +24,7 @@ my $build = Module::Build->new(
         'Text::CSV_XS'              => '0.45',
         'LWP::Simple'               => 0,
         'perl'                      => 5.006,
+        'Test::CPAN::Meta::YAML::Version' => '0',
     },
     build_requires => {
         'Test::More'                => '0',
