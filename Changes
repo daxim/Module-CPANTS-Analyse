@@ -8,6 +8,7 @@
     - 'metayml_declares_perl_version' moved from experimental to extra
     - some pod improvements (jquelin)
     - fix rt#65903 - no more Test::YAML::Meta::Version on CPAN (jquelin)
+    - replace YAML::Syck with YAML::Any (rurban)
 
 0.85    2009-07-12, Alexandr Ciornii
     - fix fails on non-Win32

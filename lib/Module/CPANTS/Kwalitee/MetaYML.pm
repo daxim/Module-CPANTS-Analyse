@@ -2,7 +2,7 @@ package Module::CPANTS::Kwalitee::MetaYML;
 use warnings;
 use strict;
 use File::Spec::Functions qw(catfile);
-use YAML::Syck qw(Load LoadFile);
+use YAML::Any qw(Load LoadFile);
 use Test::CPAN::Meta::YAML::Version;
 
 sub order { 20 }
