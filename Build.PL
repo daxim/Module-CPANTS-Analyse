@@ -25,6 +25,7 @@ my $build = Module::Build->new(
         'LWP::Simple'               => 0,
         'perl'                      => 5.006,
         'Test::CPAN::Meta::YAML::Version' => '0',
+        'ExtUtils::Manifest'        => 0,
     },
     build_requires => {
         'Test::More'                => '0',
