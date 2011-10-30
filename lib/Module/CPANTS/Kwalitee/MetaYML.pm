@@ -219,7 +219,7 @@ Returns the Kwalitee Indicators datastructure.
 
     check_spec_conformance($d,$version);
 
-Validates META.yml using Test::YAML::Meta.
+Validates META.yml using Test::CPAN::Meta.
 
 =head1 SEE ALSO
 
