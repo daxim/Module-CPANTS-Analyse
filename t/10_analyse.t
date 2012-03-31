@@ -5,6 +5,7 @@ use Test::Deep;
 use Module::CPANTS::Analyse;
 #use File::Spec::Functions;
 use Data::Dumper    qw(Dumper);
+$Data::Dumper::Sortkeys = 1;
 use File::Copy      qw(copy);
 use Module::CPANTS::Kwalitee::Distros;
 {
