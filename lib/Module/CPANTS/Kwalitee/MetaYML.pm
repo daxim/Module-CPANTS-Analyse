@@ -126,7 +126,7 @@ sub kwalitee_indicators{
             code=>sub { 
                 my $d=shift;
                 my $yaml=$d->{meta_yml};
-                return $yaml->{requires}{perl} ? 1 : 0;
+                return ref $yaml->{requires} eq ref {} && $yaml->{requires}{perl} ? 1 : 0;
             },
         },
     ];
