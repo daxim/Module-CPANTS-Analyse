@@ -87,11 +87,29 @@ sub kwalitee_indicators {
                 return 0 unless $modules && $uses;
 
                 # There are lots of acceptable strict alternatives
-                my $strict_equivalents = Set::Scalar->new->insert(qw(strict
-                    Moose MooseX::Declare Moose::Role
-                    perl5i::latest perl5i::1 perl5i::2
-                    Modern::Perl common::sense strictures
-                    Mouse Dancer Mojo::Base Coat
+                my $strict_equivalents = Set::Scalar->new->insert(qw(
+                    strict
+                    Any::Moose
+                    Class::Spiffy
+                    Coat
+                    common::sense
+                    Dancer
+                    Mo
+                    Modern::Perl
+                    Mojo::Base
+                    Moo
+                    Moose
+                    Moose::Role
+                    MooseX::Declare
+                    MooseX::Types
+                    Mouse
+                    Mouse::Role
+                    perl5
+                    perl5i::1
+                    perl5i::2
+                    perl5i::latest
+                    Spiffy
+                    strictures
                 ));
 
                 for my $module (@{ $modules }) {
@@ -113,11 +131,29 @@ sub kwalitee_indicators {
                 my $uses    = $d->{uses};
                 return 0 unless $modules && $uses;
 
-                my $warnings_equivalents = Set::Scalar->new->insert(qw(warnings
-                    Moose MooseX::Declare Moose::Role
-                    perl5i::latest perl5i::1 perl5i::2
-                    Modern::Perl common::sense strictures
-                    Mouse Dancer Mojo::Base Coat
+                my $warnings_equivalents = Set::Scalar->new->insert(qw(
+                    warnings
+                    Any::Moose
+                    Class::Spiffy
+                    Coat
+                    common::sense
+                    Dancer
+                    Mo
+                    Modern::Perl
+                    Mojo::Base
+                    Moo
+                    Moose
+                    Moose::Role
+                    MooseX::Declare
+                    MooseX::Types
+                    Mouse
+                    Mouse::Role
+                    perl5
+                    perl5i::1
+                    perl5i::2
+                    perl5i::latest
+                    Spiffy
+                    strictures
                 ));
 
                 for my $module (@{ $modules }) {
