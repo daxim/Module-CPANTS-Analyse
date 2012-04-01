@@ -469,7 +469,7 @@ foreach my $t (@tests) {
     $t->{kwalitee}{kwalitee} = ignore; # another Test::Deep import
     cmp_deeply($kw, superhashof($t->{kwalitee}), "kwalitee of $t->{dist}")
         or diag(Dumper $kw);
-    cmp_deeply($d->{error}, $t->{error}, "error of $t->{dist}")
+    cmp_deeply($d->{error}, superhashof($t->{error}), "error of $t->{dist}")
         or diag(Dumper $d->{error});
     #diag(Dumper $d);
 }

@@ -2,6 +2,7 @@ use Test::More tests => 2;
 
 use Module::CPANTS::Analyse;
 use File::Spec::Functions;
+use Test::Deep;
 my $a=Module::CPANTS::Analyse->new({
     dist=>'t/eg/Acme-DonMartinOther-0.06.tar.gz',
     _dont_cleanup=>$ENV{DONT_CLEANUP},
@@ -64,7 +65,8 @@ my $expected = {
            'has_better_auto_install'=>1,
          };
 
-is_deeply($kw, $expected, 'kwalitee fits');
+$expected->{kwalitee} = ignore;
+cmp_deeply($kw, superhashof($expected), 'kwalitee fits');
 
 #use Data::Dumper;
 #diag(Dumper $kw);

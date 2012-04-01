@@ -84,7 +84,8 @@ my $expected_kwalitee =  {
            'has_better_auto_install'=>1,
          };
 
-is_deeply($kw, $expected_kwalitee, 'metrics are as expected');
+$expected_kwalitee->{kwalitee} = ignore;
+cmp_deeply($kw, superhashof($expected_kwalitee), 'metrics are as expected');
 
 is $a->d->{size_packed}, 7736, 'size_packed';
 is $a->d->{size_unpacked}, 14805, 'size_unpacked';

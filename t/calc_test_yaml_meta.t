@@ -4,6 +4,7 @@ use Module::CPANTS::Analyse;
 use Module::CPANTS::Kwalitee::Distros;
 use File::Spec::Functions;
 use File::Copy qw(copy);
+use Test::Deep;
 {
     no warnings;
     unlink 'Debian_CPANTS.txt';
@@ -80,7 +81,8 @@ my $expected_kwalitee = {
            'has_better_auto_install'=>1,
          };
 
-is_deeply($kw, $expected_kwalitee, 'metrics are as expected');
+$expected_kwalitee->{kwalitee} = ignore;
+cmp_deeply($kw, superhashof($expected_kwalitee), 'metrics are as expected');
 
 #use Data::Dumper;
 #diag(Dumper $kw);
