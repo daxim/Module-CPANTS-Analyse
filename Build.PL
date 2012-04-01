@@ -37,8 +37,10 @@ my $build = Module::Build->new(
     },
     meta_merge => {
         resources => {
-            repository => 'http://github.com/domm/CPANTS/tree',
-        },
+            homepage => 'http://cpants.perl.org',
+            repository => 'https://github.com/daxim/Module-CPANTS-Analyse',
+            bugtracker => 'https://rt.cpan.org/Dist/Display.html?Name=Module-CPANTS-Analyse',
+            },
         keywords => [
             'CPANTS','kwalitee',
         ],
