@@ -27,6 +27,8 @@ my $build = Module::Build->new(
         'Test::CPAN::Meta::YAML::Version' => '0',
         'ExtUtils::Manifest'        => 0,
         'Set::Scalar'               => 0,
+        'File::chdir'               => 0,
+        'Module::Signature'         => 0,
     },
     build_requires => {
         'Test::More'                => '0',
