@@ -53,3 +53,5 @@
 
 # Avoid MYMETA files
 ^MYMETA\.
+
+^Module-CPANTS-Analyse
