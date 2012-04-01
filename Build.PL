@@ -26,6 +26,7 @@ my $build = Module::Build->new(
         'perl'                      => 5.006,
         'Test::CPAN::Meta::YAML::Version' => '0',
         'ExtUtils::Manifest'        => 0,
+        'Set::Scalar'               => 0,
     },
     build_requires => {
         'Test::More'                => '0',

@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use File::Spec::Functions qw(catfile);
 use Module::ExtractUse;
+use Set::Scalar qw();
 use Data::Dumper;
 
 sub order { 100 }
@@ -23,7 +24,13 @@ sub analyse {
 
     my %skip=map {$_->{module}=>1 } @$modules;
     my %uses;
-    
+
+    foreach (@$modules) {
+        my $p = Module::ExtractUse->new;
+        $p->extract_use(catfile($distdir,$_->{file}));
+        $_->{uses} = $p->used;
+    }
+
     # used in modules
     my $p=Module::ExtractUse->new;
     foreach (@$modules) {
@@ -80,20 +87,19 @@ sub kwalitee_indicators {
                 return 0 unless $modules && $uses;
 
                 # There are lots of acceptable strict alternatives
-                my @strict_equivalents = qw(strict
+                my $strict_equivalents = Set::Scalar->new->insert(qw(strict
                     Moose MooseX::Declare Moose::Role
                     perl5i::latest perl5i::1 perl5i::2
-                    Modern::Perl common::sense
-                );
-                my $total = 0;
-                # Count up the strict equivalents
-                foreach my $mod (@strict_equivalents) {
-                    $total += $uses->{$mod}->{in_code}
-                        if $uses->{$mod};
-                }
+                    Modern::Perl common::sense strictures
+                    Mouse Dancer Mojo::Base Coat
+                ));
 
-                return 1 if $total >= @$modules; # At least one strict-equivalent per module
-                return 0; # Needs moar cowbell
+                for my $module (@{ $modules }) {
+                    return 0 if $strict_equivalents
+                        ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
+                        ->is_empty;
+                }
+                return 1;
             },
         },
         {
@@ -107,18 +113,19 @@ sub kwalitee_indicators {
                 my $uses    = $d->{uses};
                 return 0 unless $modules && $uses;
 
-                my @warnings_equivalents = qw(warnings
-                    Modern::Perl common::sense
+                my $warnings_equivalents = Set::Scalar->new->insert(qw(warnings
+                    Moose MooseX::Declare Moose::Role
                     perl5i::latest perl5i::1 perl5i::2
-                );
-                my $total = 0;
-                foreach my $mod (@warnings_equivalents) {
-                    $total += $uses->{$mod}->{in_code}
-                        if $uses->{$mod};
-                }
+                    Modern::Perl common::sense strictures
+                    Mouse Dancer Mojo::Base Coat
+                ));
 
-                return 1 if $total >= @$modules; # Minimum 1 warnings equivalent per module
-                return 0; # Needs moar triangle
+                for my $module (@{ $modules }) {
+                    return 0 if $strict_equivalents
+                        ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
+                        ->is_empty;
+                }
+                return 1;
             },
         },
         
