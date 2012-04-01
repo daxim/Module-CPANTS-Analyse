@@ -121,7 +121,7 @@ sub kwalitee_indicators {
                 ));
 
                 for my $module (@{ $modules }) {
-                    return 0 if $strict_equivalents
+                    return 0 if $warnings_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
