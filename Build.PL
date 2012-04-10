@@ -35,6 +35,9 @@ my $build = Module::Build->new(
         'Test::NoWarnings'          => '0',
         'Cwd'                       => '0',
     },
+    configure_requires => {
+        'Module::Build'             => '0.4',
+    },
     meta_merge => {
         resources => {
             homepage => 'http://cpants.perl.org',
