@@ -50,6 +50,3 @@ foreach my $mod (@{$k->generators}) {
         # $kwalitee+=$rv;
     }
 }
-
-=cut
-

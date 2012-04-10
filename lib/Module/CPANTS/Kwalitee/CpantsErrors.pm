@@ -46,7 +46,7 @@ q{Listeing to: FM4 the early years};
 
 __END__
 
-=pod
+=encoding UTF-8
 
 =head1 NAME
 
@@ -86,13 +86,11 @@ L<Module::CPANTS::Analyse>
 
 =head1 AUTHOR
 
-Thomas Klausner, <domm@cpan.org>, http://domm.zsi.at
+L<Thomas Klausner|https://metacpan.org/author/domm>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003-2006, 2009  Thomas Klausner
+Copyright © 2003–2006, 2009 L<Thomas Klausner|https://metacpan.org/author/domm>
 
 You may use and distribute this module according to the same terms
 that Perl is distributed under.
-
-=cut

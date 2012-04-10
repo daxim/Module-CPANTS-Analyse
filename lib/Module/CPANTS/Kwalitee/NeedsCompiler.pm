@@ -47,7 +47,7 @@ q{Favourite compiler:
 
 __END__
 
-=pod
+=encoding UTF-8
 
 =head1 NAME
 
@@ -94,13 +94,11 @@ L<Module::CPANTS::Analyse>
 
 =head1 AUTHOR
 
-Gabor Szabo <gabor@pti.co.il> http://www.pti.co.il
+L<Gábor Szabó|https://metacpan.org/author/szabgab>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2006-2008  Gabor Szabo
+Copyright © 2006–2008 L<Gábor Szabó|https://metacpan.org/author/szabgab>
 
 You may use and distribute this module according to the same terms
 that Perl is distributed under.
-
-=cut

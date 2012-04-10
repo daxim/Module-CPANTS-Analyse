@@ -157,7 +157,7 @@ q{Favourite record of the moment:
 
 __END__
 
-=pod
+=encoding UTF-8
 
 =head1 NAME
 
@@ -219,33 +219,32 @@ Reads the META.yml file and returns its content.
 
 =head1 WEBSITE
 
-http://cpants.perl.org/
+L<http://cpants.perl.org/>
 
 =head1 BUGS
 
 Please report any bugs or feature requests, or send any patches, to
 bug-module-cpants-analyse at rt.cpan.org, or through the web interface at
-http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Module-CPANTS-Analyse.
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Module-CPANTS-Analyse>.
 I will be notified, and then you'll automatically be notified of progress
 on your bug as I make changes.
 
 =head1 AUTHOR
 
-Thomas Klausner, <domm@cpan.org>, http://domm.zsi.at
+L<Thomas Klausner|https://metacpan.org/author/domm>
 
-Please use the perl-qa mailing list for discussing all things CPANTS:
-http://lists.perl.org/showlist.cgi?name=perl-qa
+Please use the C<perl-qa> mailing list for discussing all things CPANTS:
+L<http://lists.perl.org/list/perl-qa.html>
 
-Based on work by Leon Brocard <acme@astray.com> and the original idea
-proposed by Michael G. Schwern <schwern@pobox.com>
+Based on work by L<Léon Brocard|https://metacpan.org/author/lbrocard> and the
+original idea proposed by
+L<Michael G. Schwern|https://metacpan.org/author/schwern>.
 
 =head1 LICENSE
 
-This code is Copyright (c) 2003-2006 Thomas Klausner.
+This code is Copyright © 2003–2006
+L<Thomas Klausner|https://metacpan.org/author/domm>.
 All rights reserved.
 
 You may use and distribute this module according to the same terms
 that Perl is distributed under.
-
-=cut
-

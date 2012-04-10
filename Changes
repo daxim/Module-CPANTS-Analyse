@@ -1,275 +1,591 @@
-#-----------------------------------------------------------------
-# Changes for Module::CPANTS::Analyse
-#-----------------------------------------------------------------
+=encoding UTF-8
 
-    - add several strict and warnings equivalents & make it easy to add more
-    - fix when Moose is used and strict is not used
-    - add info about MIN_PERL_VERSION
-    - better remedy for 'metayml_declares_perl_version'
-    - 'metayml_declares_perl_version' moved from experimental to extra
-    - some pod improvements (jquelin)
-    - fix rt#65903 - no more Test::YAML::Meta::Version on CPAN (jquelin)
-    - replace YAML::Syck with YAML::Any (rurban)
-    - no_symlinks checks only files in MANIFEST, use ExtUtils::Manifest::maniread (rurban)
-    - add more equivalents for use_strict and use_warnings tests (doherty)
-    - implement valid_signature metric (daxim)
+=head1 NAME
 
-0.85    2009-07-12, Alexandr Ciornii
-    - fix fails on non-Win32
+Changes - Revision history for Module-CPANTS-Analyse
 
-0.84    2009-07-08, Alexandr Ciornii
-    - require Test::Warn 0.11
-    - add Test::More to deps
-    - add LWP::Simple to deps
-    - fix calc_test_yaml_meta.t
-    - better META.yml
-    - list of changes for 0.83 (domm)
+=head2 0.86 2012-04-01
 
+=over
 
-0.83    2009-06-10
-    - ignore no_index when searching for examples (xdaveg)
-    - skip the debian metrics and downloading the debian file when in LINT
-      (szabgab)
-    - has_test_pod and has_test_pod_coverage are now optional metrics (domm)
+=item add several strict and warnings equivalents & make it easy to add more
 
+=item fix when L<Moose> is used and strict is not used
 
-0.82	2008-07-08 10:23:30
-    - update META.yml spec to 1.4
-    - fixed experimental metrics
-    - use Moose now counts for using strict
-    - lots of commits from Gabor
-    - honor META.yml key 'no_index'. Fixes RT#32777 and an IRC
-      complaint by BinGOs
+=item add info about C<MIN_PERL_VERSION>
 
+=item better remedy for
+L<metayml_declares_perl_version|Module::CPANTS::Kwalitee::MetaYML>
 
-0.81   Sun Apr 13 16:45:29 CEST 2008
-    - fixed doc bug in SYNOPSIS (reported by ADAMOWSKI as RT#34773)
-    - made FindModules smarter (domm):
-      If available, use META.yml 'provides'. If not, look for 'package'
-      statements in files.
-      It now also finds stuff like Tk::Widget and App::Ack
-    - upgrade to Software::License 0.003 (Gabor)
+=item L<metayml_declares_perl_version|Module::CPANTS::Kwalitee::MetaYML> moved
+from experimental to extra
 
+=item some pod improvements (L<jquelin|https://metacpan.org/author/jquelin>)
 
-0.80   Sat Apr 12 10:53:40 CEST 2008
-    domm:
-    - add metayml_has_provides metric
-    Gabor Szabo:
-    - simplify the way the VERSION number is looked up, keep the full version line
-    - increase the no_large_files limit to 200_000
-    - some unit test fixes thanks to Tux
-    - some of {error} fields are now ARRAY refs instead of strings
-    - more detailed unit tests
-    - add LICENCE to the list of special files (not only LICENSE)
-    - collect the license information of each file using Software::LicenseUtils
-    - add has_separate_license_file metric
-    - add has_license_in_source_file metric
+=item fix L<rt#65903|https://rt.cpan.org/Ticket/Display.html?id=65903> - no more
+C<Test::YAML::Meta::Version> on CPAN
+(L<jquelin|https://metacpan.org/author/jquelin>)
 
+=item replace L<YAML::Syck> with L<YAML::Any>
+(L<jquelin|https://metacpan.org/author/jquelin>)
 
-0.79  Tue Apr  8 01:25:12 CEST 2008
-    * released at the Oslo QA Hackathon 2008
-    Gabor Szabo:
-    - replace File::Find by File::Find::Rule
-    - add no_large_files metrics
-    - add fits_fedora_license metric that was inside the easily_repackageable_by_fedora metric
-    - add is_experimental flag to some of the metrics
-    - add aggregating key to metric to list the other metrics being aggregated
-    - unhide some errors during testing
-    - renamed some error fields
-    - add metayml_declares_perl_version metric
+=item L<no_symlinks|Module::CPANTS::Kwalitee::Files> checks only files in
+F<MANIFEST>, use L<ExtUtils::Manifest/maniread>
+(L<rurban|https://metacpan.org/author/rurban>)
 
+=item add more equivalents for L<use_strict|Module::CPANTS::Kwalitee::Uses> and
+L<use_warnings|Module::CPANTS::Kwalitee::Uses> tests
+(L<doherty|https://metacpan.org/author/doherty>)
 
-0.78    2008-04-06
-    * released at the Oslo QA Hackathon 2008
-    - very hacky workaround for problems with Meta.YML, version 
-      objects, etc
-    - moved has_version_in_each_file into MCK::Version & fixed a bug
-      in it 
-    Gabor Szabo:
-    - add fits_fedora_license metric that was inside the easily_repackageable_by_fedora metric
-    - add is_experimental and is_aggregate flags to some of the metrics
-    - unhide some errors during testing
-    - add no_generated_files metric
-    - add easily_repackageagble_by_fedora, easily_repackagable_by_debian
-      and easily_repackageagble metric
-    - add has_version_in_each_file metric
-    - add has_tests_in_t_dir metric
-    - add no_stdin_for_prompting metric checking for STDIN in Makefile.PL and Build.PL
+=item implement L<valid_signature|Module::CPANTS::Kwalitee::Signature> metric
+(L<daxim|https://metacpan.org/author/daxim>)
 
+=back
 
-0.77	2008-01-29
-    - made 'prereq_matches_use' and 'build_prereq_matches_use' optional metrics
-    - changed data structure: all errors are now in a hashref called 'error'
+=head2 0.85 2009-07-12, L<Alexandr Ciornii|https://metacpan.org/author/chorny>
 
+=over
 
-0.76    2007-11-14
-    - added new metrics 'prereq_matches_use' and
-      'build_prereq_matches_use'
-    - added 'needs_db' to metrics and removed hardcoded workaround for
-      is_prereq
-    - removed workaround in MCK::MetaYML (Barbie fixed it the problem
-      in Test::YAML::Meta)
-    - reworded metayml_is_parsable remedy
+=item fix fails on non-Win32
 
+=back
 
-0.75    2007-10-29
-    - added optional metric use_warnings
-    - added directory 'xt' as a potential location for test files:w
-    - finally applied patch provided by Adriano Ferreira to fix some
-      issues in MCK::Manifest. See RT #28982
+=head2 0.84 2009-07-08, L<Alexandr Ciornii|https://metacpan.org/author/chorny>
 
+=over
 
-0.74    2007-10-24
-    - removed metric metayml_conforms_spec_1_0
-    - fixed bug in MCK::MetaYML::check_spec_conformance, which caused 
-      wrong results in metayml_conforms_spec*
-    - switched to YAML::Syck
-    - work around Pod::Simple::Checker returning strange data
+=item require L<Test::Warn> 0.11
 
+=item add L<Test::More> to deps
 
-0.73    2007-09-12
-    - added version of dist to dump file name
-    - fixed bug in MCK::NeedsCompiler (RT #28134 plus all reported merged
-      into that one)
+=item add L<LWP::Simple> to deps
 
+=item fix F<calc_test_yaml_meta.t>
 
-0.72    2007-06-30
-    - added docs to cpants_lint.pl 
-    - cpants_lint.pl can now dump metadata to a file
-    - added YAML output to cpants_lint.pl 
-    Gabor Szabo:
-    - added MCK::NeedsCompiler
-      MCK::NeedsCompiler does not contain any kwalitee_indicator, but
-      adds much needed metadata.
-    Barbie:
-    - MCA assumes Unix paths after munging with File::Spec, thus breaking 
-      portability at every turn in a non-Unix-like environment
-      ... bad Thomas no biscuit!
-    Barbie:
-    - Refined META.yml metrics using Test::YAML::Meta and brought 'current
-      spec' up to date with version 1.3 :)
+=item better F<META.yml>
 
+=item list of changes for L<0.83|/"0.83 2009-06-10">
+(L<domm|https://metacpan.org/author/domm>)
 
-0.71    2007-04-23
-    - moved svn repo to http://code.google.com/p/cpants/
-    - has_license now also checks for LICENCE (as suggested by David
-      Cantrell)
-    - fixed RT #26535 reported by MTHURN
-    - has_examples now also checks for p(m|od) file (as suggested by
-      JUERD)
-    - fixed RT #24228 reported by THALJEF - t/99_critic.t now only runs
-      if $ENV{AUTHOR_TEST} is set
-    - resolved RT #25198 reported by bdfoy using his patch
-    - FindModules: do not check META.yml for provides because META.yml
-      might list semi-garbage (eg according to META.yml, Siesta provides
-      Apache::Constants, which it does not.)
-    - skip very large test-files and only check *.t files (not everything
-      in t/) as suggested by CASIANO
-    - cpants_lint.pl:
-        switched from Getopt::Std to Getopt::Long
-        added --no_capture option for easier debugging
-        added --verbose options
-    - hopefully fixed RT #25207 (test failures on Win32) reported (and
-      patched..) by HEMINGWAY. This should also solve RT #26535 reported
-      by Martin Thurn
-    - applied doc patch submitted by MSTEVENS as RT #26379
+=back
 
+=head2 0.83 2009-06-10
 
-0.69    2006-11-04
-    - splited up metayml_conforms_spec to metayml_conforms_spec_1_0
-      and metayml_conforms_spec_1_2 (which is optional)
-    - added metayml_error and docu pointers to it.
+=over
 
+=item ignore C<no_index> when searching for examples
+(L<xdaveg|https://metacpan.org/author/dagolden>)
 
-0.68    2006-10-28
-    - fixed bug in MCK::FindModules reported by JDHEDDEN in RT #22081
-      (the module name of modules living in the top-level namespace (eg
-      'threads/pm') was not guessed correctly
-    - use META.yml 'provides' (if it exists) instead of guessing module names in
-      MCK::FindModules
-    - modifed changelog-regex in MCK::Files as suggested by CDOLAN in 
-      RT #21999
-    - added MCK::License
-    - moved license checking to MCK::License
-    - added checks for LICENSE file and LICENSE POD section
-    - moved meta_yml parsing to MCK::MetaYML
-    - changed has_license error text after Schwern (and Andreas Koenig) suggested
-      that MakeMaker now suppor ts a license field
+=item skip the debian metrics and downloading the debian file when in LINT
+(L<szabgab|https://metacpan.org/author/szabgab>)
 
+=item L<has_test_pod|Module::CPANTS::Kwalitee::Uses> and
+L<has_test_pod_coverage|Module::CPANTS::Kwalitee::Uses> are now optional metrics
+(L<domm|https://metacpan.org/author/domm>)
 
-0.67    2006-09-13
-    - cpants_lint.pl now handles reporting of optional metrics
-      better.
-    - added t/99_critic.t (Gabor Szabo)
-    - some code cleanups as reported by Test::Perl::Critic
-      (Gabor Szabo)
-    - new metric: has_license; MCK::MetaYML (Gabor Szabo)
-    - MCK::Pod now reports the error messages returned by
-      Pod::Simple::Checker (suggested by Gabor Szabo)
+=back
 
+=head2 0.82 2008-07-08 10:23:30
 
-0.66    2006-09-06
-    - added optional_indicator_names utility method
+=over
 
+=item update F<META.yml>
+L<spec to 1.4|http://module-build.sourceforge.net/META-spec-v1.4.html>
 
-0.65    2006-09-05   (YAPC::Europe hackathon release)
-    - updated test suite
-    - added has_example to MCK::Files
-    - added buildtool_not_executable to MCK::Files
-    - added MCK::Manifest (manifest_matches_dist)
+=item fixed experimental metrics
 
+=item use L<Moose> now counts for using L<strict>
 
-0.64	2006-08-29
-    - updated MCK::BrokenInstaller
-      submitted by Steffen Müller smueller@cpan.org
+=item lots of commits from L<Gábor|https://metacpan.org/author/szabgab>
 
+=item honor F<META.yml> key C<no_index>. Fixes
+L<RT#32777|https://rt.cpan.org/Ticket/Display.html?id=32777> and an IRC
+complaint by L<BinGOs|https://metacpan.org/author/bingos>
 
-0.63    2006-07-31
-    - we now also find README.txt
-      resolves RT #20633 reported by MBARBON (thanks for the patch!)
+=back
 
+=head2 0.81 Sun Apr 13 16:45:29 CEST 2008
 
-0.62    2006-07-20
-   - added MCK::BrokenInstaller,
-     submitted by Steffen Müller smueller@cpan.org
+=over
 
+=item fixed doc bug in SYNOPSIS (reported by
+L<ADAMOWSKI|https://metacpan.org/author/adamowski> as
+L<RT#34773|https://rt.cpan.org/Ticket/Display.html?id=34773>)
 
-0.61    2006-07-17
-  - Kwalitee metrics can now be marked as 'is_extra'
-    Such metrics do not count for available kwalitee
-  - marked is_prereq as 'is_extra'
-  - cpants_lint now reports percentages additional to absolut
-    values
-  - cpants_lint won't list failed is_extra metrics
-  - added some method caching to M:C:Kwalitee
-  - added total_kwalitee to M:C:Kwalitee.
+=item made L<Module::CPANTS::Kwalitee::FindModules> smarter
+(L<domm|https://metacpan.org/author/domm>): If available, use F<META.yml>
+C<provides>. If not, look for C<package> statements in files. It now also finds
+stuff like L<Tk::Widget> and L<App::Ack>
 
+=item upgrade to L<Software::License> 0.003
+(L<Gábor|https://metacpan.org/author/szabgab>)
 
-0.60    2006-05-18
-  - activated is_prereq metric
-  - added helper method (available_kwalitee)
-  - MCK::FindModules: skip stuff in inc (Module::Install)
+=back
 
-    
-0.52    2006-03-12
-  - added some dependencies to Build.PL/META.yml (thanks to Achim Grolms 
-    and BLBLACK (RT #17977))
-  - enhanced output of cpants_lint.pl (list failed tests)
-  - MCK::FindModules: die if we cannot find a namespace
-  - MCK::FindModules: remove stuff that doesn't seems to be namespace (eg lowercase) from module names
-  - changed the name of some fields to work with the (upcoming) DB
-  - added some tests
+=head2 0.80 Sat Apr 12 10:53:40 CEST 2008
 
-  
-0.51   2006-02-16
-  - adapted Module::CPANTS::Kwalitee::Prereq to work with newer versions
-    of YAML (reported by Andreas Koenig as RT #17670)
+L<domm|https://metacpan.org/author/domm>:
 
+=over
 
-0.50   2006-01-26
-  - first release to CPAN
+=item add L<metayml_has_provides|Module::CPANTS::Kwalitee::MetaYML> metric
 
+=back
 
-0.01    
-  - started rewrite
+L<Gábor Szabó|https://metacpan.org/author/szabgab>:
 
+=over
+
+=item simplify the way the VERSION number is looked up, keep the full version
+line
+
+=item increase the L<no_large_files|Module::CPANTS::Kwalitee::Files> limit to
+200_000
+
+=item some unit test fixes thanks to L<Tux|https://metacpan.org/author/hmbrand>
+
+=item some of {error} fields are now ARRAY refs instead of strings
+
+=item more detailed unit tests
+
+=item add C<LICENCE> to the list of special files (not only LICENSE)
+
+=item collect the license information of each file using
+L<Software::LicenseUtils>
+
+=item add L<has_separate_license_file|Module::CPANTS::Kwalitee::License> metric
+
+=item add L<has_license_in_source_file|Module::CPANTS::Kwalitee::License> metric
+
+=back
+
+=head2 0.79 Tue Apr  8 01:25:12 CEST 2008
+
+released at the Oslo QA Hackathon 2008
+
+L<Gábor Szabó|https://metacpan.org/author/szabgab>:
+
+=over
+
+=item replace L<File::Find> by L<File::Find::Rule>
+
+=item add L<no_large_files|Module::CPANTS::Kwalitee::Files> metrics
+
+=item add L<fits_fedora_license|Module::CPANTS::Kwalitee::License> metric that
+was inside the
+L<easily_repackageable_by_fedora|Module::CPANTS::Kwalitee::Repackageable> metric
+
+=item add C<is_experimental> flag to some of the metrics
+
+=item add aggregating key to metric to list the other metrics being aggregated
+
+=item unhide some errors during testing
+
+=item renamed some error fields
+
+=item add L<metayml_declares_perl_version|Module::CPANTS::Kwalitee::MetaYML>
+metric
+
+=back
+
+=head2 0.78 2008-04-06
+
+released at the Oslo QA Hackathon 2008
+
+=over
+
+=item very hacky workaround for problems with F<Meta.YML>, version objects, etc
+
+=item moved C<has_version_in_each_file> into
+L<Module::CPANTS::Kwalitee::Version> & fixed a bug in it
+
+=back
+
+L<Gábor Szabó|https://metacpan.org/author/szabgab>:
+
+=over
+
+=item add L<fits_fedora_license|Module::CPANTS::Kwalitee::License> metric that
+was inside the
+L<easily_repackageable_by_fedora|Module::CPANTS::Kwalitee::Repackageable> metric
+
+=item add C<is_experimental> and C<is_aggregate> flags to some of the metrics
+
+=item unhide some errors during testing
+
+=item add L<no_generated_files|Module::CPANTS::Kwalitee::Files> metric
+
+=item add
+L<easily_repackageable_by_fedora|Module::CPANTS::Kwalitee::Repackageable>,
+L<easily_repackagable_by_debian|Module::CPANTS::Kwalitee::Repackageable>
+and L<easily_repackageable|Module::CPANTS::Kwalitee::Repackageable> metric
+
+=item add L<has_version_in_each_file|Module::CPANTS::Kwalitee::Files> metric
+
+=item add L<has_tests_in_t_dir|Module::CPANTS::Kwalitee::Files> metric
+
+=item add L<no_stdin_for_prompting|Module::CPANTS::Kwalitee::Files> metric
+checking for STDIN in F<Makefile.PL> and F<Build.PL>
+
+=back
+
+=head2 0.77 2008-01-29
+
+=over
+
+=item made L<prereq_matches_use|Module::CPANTS::Kwalitee::Prereq> and
+L<build_prereq_matches_use|Module::CPANTS::Kwalitee::Prereq> optional metrics
+
+=item changed data structure: all errors are now in a hashref called C<error>
+
+=back
+
+=head2 0.76 2007-11-14
+
+=over
+
+=item added new metrics L<prereq_matches_use|Module::CPANTS::Kwalitee::Prereq>
+and L<build_prereq_matches_use|Module::CPANTS::Kwalitee::Prereq>
+
+=item added C<needs_db> to metrics and removed hardcoded workaround for
+L<is_prereq|Module::CPANTS::Kwalitee::Prereq>
+
+=item removed workaround in L<Module::CPANTS::Kwalitee::MetaYML>
+(L<Barbie|https://metacpan.org/author/barbie> fixed it the problem in
+L<Test::YAML::Meta>)
+
+=item reworded L<metayml_is_parsable|Module::CPANTS::Kwalitee::MetaYML> remedy
+
+=back
+
+=head2 0.75 2007-10-29
+
+=over
+
+=item added optional metric L<use_warnings|Module::CPANTS::Kwalitee::Uses>
+
+=item added directory F<xt> as a potential location for test files
+
+=item finally applied patch provided by
+L<Adriano Ferreira|https://metacpan.org/author/ferreira> to fix some issues in
+L<Module::CPANTS::Kwalitee::Manifest>. See
+L<RT #28982|https://rt.cpan.org/Ticket/Display.html?id=28982>
+
+=back
+
+=head2 0.74 2007-10-24
+
+=over
+
+=item removed metric C<metayml_conforms_spec_1_0>
+
+=item fixed bug in L<Module::CPANTS::Kwalitee::MetaYML/check_spec_conformance>,
+which caused wrong results in
+L<metayml_conforms_spec*|Module::CPANTS::Kwalitee::MetaYML>
+
+=item switched to L<YAML::Syck>
+
+=item work around L<Pod::Simple::Checker> returning strange data
+
+=back
+
+=head2 0.73 2007-09-12
+
+=over
+
+=item added version of dist to dump file name
+
+=item fixed bug in L<Module::CPANTS::Kwalitee::NeedsCompiler>
+(L<RT #28134|https://rt.cpan.org/Ticket/Display.html?id=28134> plus all reported
+merged into that one)
+
+=back
+
+=head2 0.72 2007-06-30
+
+=over
+
+=item added docs to F<cpants_lint.pl>
+
+=item F<cpants_lint.pl> can now dump metadata to a file
+
+=item added L<YAML> output to F<cpants_lint.pl>
+
+=back
+
+L<Gábor Szabó|https://metacpan.org/author/szabgab>:
+
+=over
+
+=item added L<Module::CPANTS::Kwalitee::NeedsCompiler>
+
+MCK::NeedsCompiler does not contain any C<kwalitee_indicator>, but adds much
+needed metadata.
+
+=back
+
+L<Barbie|https://metacpan.org/author/barbie>:
+
+=over
+
+=item L<Module::CPANTS::Analyse> assumes Unix paths after munging with
+L<File::Spec>, thus breaking portability at every turn in a non-Unix-like
+environment… bad Thomas no biscuit!
+
+=item Refined F<META.yml> metrics using L<Test::YAML::Meta> and brought
+I<current spec> up to date with
+L<version 1.3|http://module-build.sourceforge.net/META-spec-v1.3.html> :)
+
+=back
+
+=head2 0.71 2007-04-23
+
+=over
+
+=item moved svn repo to L<http://code.google.com/p/cpants/>
+
+=item L<has_license|Module::CPANTS::Kwalitee::License> now also checks for
+F<LICENCE> (as suggested by
+L<David Cantrell|https://metacpan.org/author/dcantrell>)
+
+=item fixed L<RT #26535|https://rt.cpan.org/Ticket/Display.html?id=26535>
+reported by L<MTHURN|https://metacpan.org/author/mthurn>
+
+=item L<has_example|Module::CPANTS::Kwalitee::Files> now also checks for
+C<p(m|od)> files (as suggested by L<JUERD|https://metacpan.org/author/juerd>)
+
+=item fixed L<RT #24228|https://rt.cpan.org/Ticket/Display.html?id=24228>
+reported by L<THALJEF|https://metacpan.org/author/thaljef> - F<t/99_critic.t>
+now only runs if C<$ENV{AUTHOR_TEST}> is set
+
+=item resolved L<RT #25198|https://rt.cpan.org/Ticket/Display.html?id=25198>
+reported by L<bdfoy|https://metacpan.org/author/bdfoy> using his patch
+
+=item L<Module::CPANTS::Kwalitee::FindModules>: do not check F<META.yml> for
+C<provides> because F<META.yml> might list semi-garbage (eg according to
+F<META.yml>, L<Siesta> provides L<Apache::Constants>, which it does not.)
+
+=item skip very large test-files and only check F<*.t> files (not everything in
+F<t/>) as suggested by L<CASIANO|https://metacpan.org/author/casiano>
+
+=item F<cpants_lint.pl>:
+
+switched from L<Getopt::Std> to L<Getopt::Long>
+
+added C<--no_capture> option for easier debugging
+
+added C<--verbose> options
+
+=item hopefully fixed
+L<RT #25207|https://rt.cpan.org/Ticket/Display.html?id=25207> (test failures on
+Win32) reported (and patched…) by
+L<HEMINGWAY|https://metacpan.org/author/hemingway>. This should also solve
+L<RT #26535|https://rt.cpan.org/Ticket/Display.html?id=26535> reported by
+L<Martin Thurn|https://metacpan.org/author/mthurn>
+
+=item applied doc patch submitted by
+L<MSTEVENS|https://metacpan.org/author/mstevens> as
+L<RT #26379|https://rt.cpan.org/Ticket/Display.html?id=26379>
+
+=back
+
+=head2 0.69 2006-11-04
+
+=over
+
+=item split up C<metayml_conforms_spec> to
+L<metayml_conforms_spec_1_0|Module::CPANTS::Kwalitee::MetaYML> and
+C<metayml_conforms_spec_1_2> (which is optional)
+
+=item added C<metayml_error> and docu pointers to it.
+
+=back
+
+=head2 0.68 2006-10-28
+
+=over
+
+=item fixed bug in L<Module::CPANTS::Kwalitee::FindModules> reported by
+L<JDHEDDEN|https://metacpan.org/author/jdhedden> in
+L<RT #22081|https://rt.cpan.org/Ticket/Display.html?id=22081> (the module name
+of modules living in the top-level namespace (eg 'threads.pm') was not guessed
+correctly
+
+=item use F<META.yml> C<provides> (if it exists) instead of guessing module
+names in L<Module::CPANTS::Kwalitee::FindModules>
+
+=item modifed changelog-regex in L<Module::CPANTS::Kwalitee::Files> as suggested
+by L<CDOLAN|https://metacpan.org/author/cdolan> in
+L<RT #21999|https://rt.cpan.org/Ticket/Display.html?id=21999>
+
+=item added L<Module::CPANTS::Kwalitee::License>
+
+=item moved license checking to L<Module::CPANTS::Kwalitee::License>
+
+=item added checks for F<LICENSE> file and C<LICENSE> POD section
+
+=item moved C<meta_yml> parsing to L<Module::CPANTS::Kwalitee::MetaYML>
+
+=item changed C<has_license|Module::CPANTS::Kwalitee::License> error text after
+L<Schwern|https://metacpan.org/author/schwern> (and
+L<Andreas Koenig|https://metacpan.org/author/andk>) suggested that
+L<ExtUtils::MakeMaker> now supports a C<license> field
+
+=back
+
+=head2 0.67 2006-09-13
+
+=over
+
+=item F<cpants_lint.pl> now handles reporting of optional metrics better.
+
+=item added F<t/99_critic.t>
+(L<Gábor Szabó|https://metacpan.org/author/szabgab>)
+
+=item some code cleanups as reported by L<Test::Perl::Critic>
+(L<Gábor Szabó|https://metacpan.org/author/szabgab>)
+
+=item new metric: C<has_license|Module::CPANTS::Kwalitee::License>;
+L<Module::CPANTS::Kwalitee::MetaYML>
+(L<Gábor Szabó|https://metacpan.org/author/szabgab>)
+
+=item L<Module::CPANTS::Kwalitee::Pod> now reports the error messages returned
+by L<Pod::Simple::Checker>
+(suggested by L<Gábor Szabó|https://metacpan.org/author/szabgab>)
+
+=back
+
+=head2 0.66 2006-09-06
+
+=over
+
+=item added L<Module::CPANTS::Kwalitee/optional_indicator_names utility> method
+
+=back
+
+=head2 0.65 2006-09-05 (YAPC::Europe hackathon release)
+
+=over
+
+=item updated test suite
+
+=item added C<has_example> to L<Module::CPANTS::Kwalitee::Files>
+
+=item added C<buildtool_not_executable> to L<Module::CPANTS::Kwalitee::Files>
+
+=item added L<Module::CPANTS::Kwalitee::Manifest> (C<manifest_matches_dist>)
+
+=back
+
+=head2 0.64 2006-08-29
+
+=over
+
+=item updated L<Module::CPANTS::Kwalitee::BrokenInstaller>
+
+submitted by L<Steffen Müller|https://metacpan.org/author/smueller>
+
+=back
+
+=head2 0.63 2006-07-31
+
+=over
+
+=item we now also find F<README.txt>
+
+resolves L<RT #20633|https://rt.cpan.org/Ticket/Display.html?id=20633> reported
+by L<MBARBON|https://metacpan.org/author/mbarbon> (thanks for the patch!)
+
+=back
+
+=head2 0.62 2006-07-20
+
+=over
+
+=item added L<Module::CPANTS::Kwalitee::BrokenInstaller>
+
+submitted by L<Steffen Müller|https://metacpan.org/author/smueller>
+
+=back
+
+=head2 0.61 2006-07-17
+
+=over
+
+=item Kwalitee metrics can now be marked as C<is_extra>
+
+Such metrics do not count for available kwalitee
+
+=item marked L<is_prereq|Module::CPANTS::Kwalitee::Prereq> as C<is_extra>
+
+=item F<cpants_lint> now reports percentages additional to absolute values
+
+=item F<cpants_lint> won't list failed C<is_extra> metrics
+
+=item added some method caching to L<Module::CPANTS::Kwalitee>
+
+=item added Ctotal_kwalitee> to L<Module::CPANTS::Kwalitee>.
+
+=back
+
+=head2 0.60 2006-05-18
+
+=over
+
+=item activated L<is_prereq|Module::CPANTS::Kwalitee::Prereq> metric
+
+=item added helper method (C<available_kwalitee>)
+
+=item L<Module::CPANTS::Kwalitee::FindModules>: skip stuff in F<inc>
+(L<Module::Install>)
+
+=back
+
+=head2 0.52 2006-03-12
+
+=over
+
+=item added some dependencies to F<Build.PL>/F<META.yml> (thanks to
+L<Achim Grolms|https://metacpan.org/author/agrolms> and
+L<BLBLACK|https://metacpan.org/author/blblack>
+(L<RT #17977|https://rt.cpan.org/Ticket/Display.html?id=17977>))
+
+=item enhanced output of F<cpants_lint.pl> (list failed tests)
+
+=item L<Module::CPANTS::Kwalitee::FindModules>: die if we cannot find a
+namespace
+
+=item L<Module::CPANTS::Kwalitee::FindModules>: remove stuff that doesn't seem
+to be namespace (eg lowercase) from module names
+
+=item changed the name of some fields to work with the (upcoming) DB
+
+=item added some tests
+
+=back
+
+=head2 0.51 2006-02-16
+
+=over
+
+=item adapted L<Module::CPANTS::Kwalitee::Prereq> to work with newer versions
+of L<YAML> (reported by L<Andreas Koenig|https://metacpan.org/author/andk> as
+L<RT #17670|https://rt.cpan.org/Ticket/Display.html?id=17670>)
+
+=back
+
+=head2 0.50 2006-01-26
+
+=over
+
+=item first release to CPAN
+
+=back
+
+=head2 0.01
+
+=over
+
+=item started rewrite
+
+=back

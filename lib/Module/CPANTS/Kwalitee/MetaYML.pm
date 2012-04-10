@@ -171,7 +171,7 @@ q{Barbies Favourite record of the moment:
 
 __END__
 
-=pod
+=encoding UTF-8
 
 =head1 NAME
 
@@ -227,15 +227,14 @@ L<Module::CPANTS::Analyse>
 
 =head1 AUTHOR
 
-Thomas Klausner, <domm@cpan.org>, http://domm.zsi.at
-and Gabor Szabo, <gabor@pti.co.il>, http://www.szabgab.com
+L<Thomas Klausner|https://metacpan.org/author/domm>
+and L<Gábor Szabó|https://metacpan.org/author/szabgab>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003-2009  Thomas Klausner
-Copyright (C) 2006-2008  Gabor Szabo
+Copyright © 2003–2009 L<Thomas Klausner|https://metacpan.org/author/domm>
+
+Copyright © 2006–2008 L<Gábor Szabó|https://metacpan.org/author/szabgab>
 
 You may use and distribute this module according to the same terms
 that Perl is distributed under.
-
-=cut

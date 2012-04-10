@@ -77,7 +77,7 @@ q{Listening to: YAPC::Europe 2007};
 
 __END__
 
-=pod
+=encoding UTF-8
 
 =head1 NAME
 
@@ -121,9 +121,7 @@ Thomas Klausner, <domm@cpan.org>, http://domm.plix.at
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003-2006, 2009  Thomas Klausner
+Copyright © 2003–2006, 2009 L<Thomas Klausner|https://metacpan.org/author/domm>
 
 You may use and distribute this module according to the same terms
 that Perl is distributed under.
-
-=cut

@@ -100,7 +100,7 @@ sub kwalitee_indicators {
 
 __END__
 
-=pod
+=encoding UTF-8
 
 =head1 NAME
 
@@ -145,17 +145,15 @@ L<Module::CPANTS::Analyse>
 
 =head1 AUTHOR
 
-Steffen Müller, <smueller@cpan.org>, http://steffen-mueller.net
+L<Steffen Müller|https://metacpan.org/author/smueller>
 
-Thomas Klausner, <domm@cpan.org>, http://domm.zsi.at
+L<Thomas Klausner|https://metacpan.org/author/domm>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003-2009  Thomas Klausner
-Copyright (C) 2006  Steffen Müller
+Copyright © 2003–2009 L<Thomas Klausner|https://metacpan.org/author/domm>
+
+Copyright © 2006 L<Steffen Müller|https://metacpan.org/author/smueller>
 
 You may use and distribute this module according to the same terms
 that Perl is distributed under.
-
-=cut
-
