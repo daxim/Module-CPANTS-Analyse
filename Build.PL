@@ -1,7 +1,9 @@
+use utf8;
 use strict;
 use Module::Build;
 
 my $build = Module::Build->new(
+    dist_author => 'Lars Dɪᴇᴄᴋᴏᴡ <daxim@cpan.org>',
     module_name => 'Module::CPANTS::Analyse',
     license     => 'perl',
     requires    => {
