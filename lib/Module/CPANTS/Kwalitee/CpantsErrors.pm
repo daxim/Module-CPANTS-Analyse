@@ -50,11 +50,11 @@ __END__
 
 =head1 NAME
 
-Module::CPANTS::Kwalitee::CpantsErrors
+Module::CPANTS::Kwalitee::CpantsErrors - Check for CPANTS testing errors
 
 =head1 SYNOPSIS
 
-Checks if something strange happend during testing
+Checks if something strange happened during testing
 
 =head1 DESCRIPTION
 
