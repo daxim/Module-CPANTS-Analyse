@@ -4,6 +4,16 @@
 
 Changes - Revision history for Module-CPANTS-Analyse
 
+=head2 0.87
+
+=over
+
+=item fix L<rt#80225|https://rt.cpan.org/Ticket/Display.html?id=80225> - Test
+failures due to Test::CPAN::Meta::YAML::Version interface change
+(L<wyant|https://metacpan.org/author/wyant>)
+
+=back
+
 =head2 0.86 2012-04-11
 
 =over
