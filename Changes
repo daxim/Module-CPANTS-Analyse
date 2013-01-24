@@ -12,6 +12,11 @@ Changes - Revision history for Module-CPANTS-Analyse
 failures due to Test::CPAN::Meta::YAML::Version interface change
 (L<wyant|https://metacpan.org/author/wyant>)
 
+=item fix L<rt#82939|https://rt.cpan.org/Ticket/Display.html?id=82939> -
+Hash-Randomization causes 10_analyse.t to fail
+(L<kentnl|https://metacpan.org/author/kentnl>,
+L<chorny|https://metacpan.org/author/chorny>)
+
 =back
 
 =head2 0.86 2012-04-11

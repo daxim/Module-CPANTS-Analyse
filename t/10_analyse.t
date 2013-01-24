@@ -146,7 +146,7 @@ my @tests = (
                                   ),
             'easily_repackageable' => 'easily_repackageable_by_fedora',
             'easily_repackageable_by_fedora' => 'fits_fedora_license',
-            'metayml_conforms_spec_current'  => ['1.4', 
+            'metayml_conforms_spec_current'  => ['1.4', sort
                 'Missing mandatory field, \'author\' (author) [Validation: 1.4]',
                 'Missing mandatory field, \'generated_by\' (generated_by) [Validation: 1.4]',
                 'Missing mandatory field, \'version\' (version) [Validation: 1.4]',
@@ -156,7 +156,7 @@ my @tests = (
                                             'Missing mandatory field, \'version\' (meta-spec -> version) [Validation: 1.4]',
                                             'Missing mandatory field, \'url\' (meta-spec -> url) [Validation: 1.4]'
             ],
-            'metayml_conforms_to_known_spec' => ['1.0', 
+            'metayml_conforms_to_known_spec' => ['1.0', sort
             'Missing mandatory field, \'generated_by\' (generated_by) [Validation: 1.0]',
                                                  'Missing mandatory field, \'version\' (version) [Validation: 1.0]',
                                                  'Missing mandatory field, \'name\' (name) [Validation: 1.0]',
@@ -225,6 +225,7 @@ my @tests = (
         error => {
            'metayml_conforms_spec_current' => [
                                                 '1.4',
+                                                sort
                                                 'Missing mandatory field, \'version\' (meta-spec -> version) [Validation: 1.4]',
                                                 'Missing mandatory field, \'url\' (meta-spec -> url) [Validation: 1.4]',
                                                 'Expected a list structure (author) [Validation: 1.4]'
