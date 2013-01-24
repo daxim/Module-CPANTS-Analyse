@@ -159,7 +159,7 @@ sub check_spec_conformance {
         }
         if (@errors) {
             my $errorname='metayml_conforms_'.($check_current?'spec_current':'to_known_spec');
-            $d->{error}{$errorname} = [$report_version, @errors];
+            $d->{error}{$errorname} = [$report_version, sort @errors];
             return 0;
         }
     }
