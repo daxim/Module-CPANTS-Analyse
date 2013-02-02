@@ -137,7 +137,7 @@ sub check_spec_conformance {
     
     my $yaml=$d->{meta_yml};
     my %hash=(
-        yaml=>$yaml,
+        data=>$yaml,	# Interface change in v0.21. Was 'yaml'.
     );
 
     if (!$version) {
