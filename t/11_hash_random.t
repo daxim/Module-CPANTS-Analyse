@@ -8,11 +8,8 @@ for my $seed ( qw( 0xd8792d91 0x5be01872 )){
     for my $inc ( @INC ){
         push @libs, '-I' . $inc;
     }
-    my $content = do {
-        open my $fh, '-|', $^X, @libs, 't/11_hash_random.tscript' or die;
-        local $/ = undef;
-        <$fh>
-    };
+    my $cmd=join(' ',$^X, @libs, 't/11_hash_random.pl');
+    my $content = qx/$cmd/;
     is( $content, "4,0\n", "Slave forked script passed 4/4 checks with seed $seed" );
     
 }
