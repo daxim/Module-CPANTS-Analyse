@@ -13,7 +13,7 @@ my $build = Module::Build->new(
         'CPAN::DistnameInfo'        => '0.06',
         'Pod::Simple::Checker'      => '2.02',
         'YAML::Any'                 => 0,
-        'Module::ExtractUse'        => '0.18',
+        'Module::ExtractUse'        => '0.24', #works with new Parse::RecDescent
         'Module::Pluggable'         => '2.96',
         'IO::Capture'               => '0.05',
         'Array::Diff'               => '0.04',
@@ -26,7 +26,7 @@ my $build = Module::Build->new(
         'Text::CSV_XS'              => '0.45',
         'LWP::Simple'               => 0,
         'perl'                      => 5.006,
-        'Test::CPAN::Meta::YAML::Version' => '0',
+        'Test::CPAN::Meta::YAML::Version' => '0.21',	# Interface change
         'ExtUtils::Manifest'        => 0,
         'Set::Scalar'               => 0,
         'File::chdir'               => 0,
@@ -46,7 +46,7 @@ my $build = Module::Build->new(
         resources => {
             homepage => 'http://cpants.perl.org',
             repository => 'https://github.com/daxim/Module-CPANTS-Analyse',
-            bugtracker => 'https://rt.cpan.org/Dist/Display.html?Name=Module-CPANTS-Analyse',
+            bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Module-CPANTS-Analyse',
             },
         keywords => [
             'CPANTS','kwalitee',

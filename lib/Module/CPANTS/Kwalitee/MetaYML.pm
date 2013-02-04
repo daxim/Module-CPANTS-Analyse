@@ -137,7 +137,7 @@ sub check_spec_conformance {
     
     my $yaml=$d->{meta_yml};
     my %hash=(
-        yaml=>$yaml,
+        data=>$yaml,	# Interface change in v0.21. Was 'yaml'.
     );
 
     if (!$version) {
@@ -159,7 +159,7 @@ sub check_spec_conformance {
         }
         if (@errors) {
             my $errorname='metayml_conforms_'.($check_current?'spec_current':'to_known_spec');
-            $d->{error}{$errorname} = [$report_version, @errors];
+            $d->{error}{$errorname} = [$report_version, sort @errors];
             return 0;
         }
     }
