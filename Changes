@@ -446,7 +446,7 @@ L<RT #21999|https://rt.cpan.org/Ticket/Display.html?id=21999>
 =item moved C<meta_yml> parsing to L<Module::CPANTS::Kwalitee::MetaYML>
 
 =item changed C<has_license|Module::CPANTS::Kwalitee::License> error text after
-L<Schwern|https://metacpan.org/author/schwern> (and
+L<Schwern|https://metacpan.org/author/mschwern> (and
 L<Andreas Koenig|https://metacpan.org/author/andk>) suggested that
 L<ExtUtils::MakeMaker> now supports a C<license> field
 
