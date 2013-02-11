@@ -5,6 +5,7 @@ use File::Spec::Functions qw(catfile);
 use List::MoreUtils qw(all any);
 #use  Pod::Simple::TextContent;
 
+our $VERSION = '0.87';
 
 sub order { 900 }
 

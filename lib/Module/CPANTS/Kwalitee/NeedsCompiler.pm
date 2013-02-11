@@ -2,6 +2,8 @@ package Module::CPANTS::Kwalitee::NeedsCompiler;
 use warnings;
 use strict;
 
+our $VERSION = '0.87';
+
 sub order { 200 }
 
 ##################################################################

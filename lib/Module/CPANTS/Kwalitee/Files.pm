@@ -11,6 +11,8 @@ use Software::LicenseUtils;
 use File::Slurp            qw(slurp);
 use ExtUtils::Manifest;
 
+our $VERSION = '0.87';
+
 sub order { 10 }
 
 ##################################################################

@@ -5,6 +5,8 @@ use File::Spec::Functions qw(catfile);
 use YAML::Any qw(Load LoadFile);
 use Test::CPAN::Meta::YAML::Version;
 
+our $VERSION = '0.87';
+
 sub order { 20 }
 
 my $CURRENT_SPEC = '1.4';

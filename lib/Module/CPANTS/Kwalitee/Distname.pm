@@ -3,6 +3,8 @@ use warnings;
 use strict;
 use CPAN::DistnameInfo;
 
+our $VERSION = '0.87';
+
 sub order { 15 }
 
 ##################################################################

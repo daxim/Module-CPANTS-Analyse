@@ -4,6 +4,8 @@ use warnings FATAL => 'all';
 use File::chdir;
 use Module::Signature qw(verify SIGNATURE_OK SIGNATURE_MISSING);
 
+our $VERSION = '0.87';
+
 sub order { 100 }
 
 sub analyse {

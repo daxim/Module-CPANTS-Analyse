@@ -7,6 +7,8 @@ use LWP::Simple qw(mirror);
 use Data::Dumper qw(Dumper);
 use Text::CSV_XS 0.45;
 
+our $VERSION = '0.87';
+
 sub order { 800 }
 
 ##################################################################

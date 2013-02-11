@@ -3,6 +3,9 @@ use warnings;
 use strict;
 use Data::Dumper;
 use File::Spec::Functions;
+
+our $VERSION = '0.87';
+
 sub order { 30 }
 
 ##################################################################

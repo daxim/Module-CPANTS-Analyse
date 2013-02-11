@@ -4,6 +4,7 @@ use strict;
 use Pod::Simple::Checker;
 use File::Spec::Functions qw(catfile);
 
+our $VERSION = '0.87';
 
 sub order { 100 }
 

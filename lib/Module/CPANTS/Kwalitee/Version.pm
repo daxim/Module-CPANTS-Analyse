@@ -6,6 +6,8 @@ use File::Spec::Functions qw(catdir catfile abs2rel splitdir);
 use File::stat;
 use File::Basename;
 
+our $VERSION = '0.87';
+
 sub order { 100 }
 
 ##################################################################

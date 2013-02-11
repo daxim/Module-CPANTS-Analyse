@@ -3,6 +3,8 @@ use warnings;
 use strict;
 use File::Spec::Functions qw(catfile);
 
+our $VERSION = '0.87';
+
 sub order { 100 }
 
 ##################################################################

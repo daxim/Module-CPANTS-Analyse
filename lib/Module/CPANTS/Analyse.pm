@@ -13,7 +13,7 @@ use IO::Capture::Stdout;
 use IO::Capture::Stderr;
 use YAML::Any qw(LoadFile);
 
-our $VERSION = '0.86';
+our $VERSION = '0.87';
 
 # setup logger
 if (! main->can('logger')) {
