@@ -15,7 +15,7 @@ sub order { 30 }
 sub analyse {
     my $class=shift;
     my $me=shift;
-    my $files=$me->d->{files_array};
+    my $files=$me->d->{files_array} || [];
   
     if ($me->d->{meta_yml} && $me->d->{meta_yml}{provides}) {
         my $provides = $me->d->{meta_yml}{provides};
