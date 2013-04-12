@@ -281,13 +281,12 @@ sub kwalitee_indicators {
     },
     {
         name=>'no_stdin_for_prompting',
-        error=>q{This distribution is using direct call from STDIN instead of prompt())},
+        error=>q{This distribution is using direct call from STDIN instead of prompt(). Make sure STDIN is not used in Makefile.PL or Build.PL. See http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging},
         is_extra=>1,
         remedy=>q{Use the prompt() method},
         code=>sub {
             my $d=shift;
             if ($d->{stdin_in_makefile_pl}||$d->{stdin_in_build_pl}) {
-                $d->{error}{no_stdin_for_prompting} = "Make sure STDIN is not used in Makefile.PL or Build.PL see http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging";
                 return 0;
             }
             return 1;
