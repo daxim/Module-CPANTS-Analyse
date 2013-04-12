@@ -41,6 +41,7 @@ sub analyse {
         $size += $files{$name}{size};
 
         if ($name =~ /\.(pl|pm|pod)$/) {
+            next unless -r $path; # skip if not readable
             my $text = slurp($path);
             my (@possible_licenses) = Software::LicenseUtils->guess_license_from_pod($text);
             foreach my $license (@possible_licenses) {
