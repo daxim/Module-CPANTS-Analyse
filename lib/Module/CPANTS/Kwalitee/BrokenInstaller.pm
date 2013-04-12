@@ -29,7 +29,7 @@ sub analyse {
     read $ih, $buf, 100000 or die $!;
     close $ih;
     if ($buf =~ /VERSION\s*=\s*("|'|)(\d+|\d*\.\d+(?:_\d+)?)\1/m) {
-        my $version = $2;
+        $me->d->{module_install_version} = my $version = $2;
         my $non_devel = $version;
         $non_devel =~ s/_\d+$//;
         if ($non_devel < 0.61) {
