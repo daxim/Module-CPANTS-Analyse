@@ -88,7 +88,7 @@ sub analyse {
 
     # find special files
     my %reqfiles;
-    my @special_files=(qw(Makefile.PL Build.PL META.yml SIGNATURE MANIFEST NINJA test.pl LICENSE LICENCE));
+    my @special_files=(qw(Makefile.PL Build.PL META.yml META.json MYMETA.yml MYMETA.json dist.ini cpanfile SIGNATURE MANIFEST NINJA test.pl LICENSE LICENCE));
     map_filenames($me, \@special_files, \@files);
     my @generated_files=qw(Build Makefile _build blib pm_to_blib); # files that should not...
     %generated_db_files=map_filenames($me, \@generated_files, \@files);
