@@ -96,7 +96,7 @@ sub analyse {
     # find more complex files
     my %regexs=(
         file_changelog=>qr{^chang|history}i,
-        file_readme=>qr{^readme(?:\.txt)?}i,
+        file_readme=>qr{^readme(?:\.(?:txt|md))?}i,
     );
     while (my ($name,$regex)=each %regexs) {
         $me->d->{$name}=join(',',grep {$_=~/$regex/} @files);
