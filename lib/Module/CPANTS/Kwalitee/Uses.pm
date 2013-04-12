@@ -29,14 +29,16 @@ sub analyse {
 
     foreach (@$modules) {
         my $p = Module::ExtractUse->new;
-        $p->extract_use(catfile($distdir,$_->{file}));
+        my $file = catfile($distdir,$_->{file});
+        $p->extract_use($file) if -f $file;
         $_->{uses} = $p->used;
     }
 
     # used in modules
     my $p=Module::ExtractUse->new;
     foreach (@$modules) {
-        $p->extract_use(catfile($distdir,$_->{file}));
+        my $file = catfile($distdir,$_->{file});
+        $p->extract_use($file) if -f $file;
     }
 
     while (my ($mod,$cnt)=each%{$p->used}) {
@@ -52,8 +54,8 @@ sub analyse {
     # used in tests
     my $pt=Module::ExtractUse->new;
     foreach my $tf (@tests) {
-        next if -s catfile($distdir,$tf) > 1_000_000; # skip very large test files
-        $pt->extract_use(catfile($distdir,$tf));
+        my $file = catfile($distdir,$tf);
+        $pt->extract_use($file) if -f $file && -s $file < 1_000_000; # skip very large test files
     }
     while (my ($mod,$cnt)=each%{$pt->used}) {
         next if $skip{$mod};
