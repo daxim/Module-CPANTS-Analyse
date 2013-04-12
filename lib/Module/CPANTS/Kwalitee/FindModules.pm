@@ -21,10 +21,10 @@ sub analyse {
         my $provides = $me->d->{meta_yml}{provides};
         while (my ($module,$data)=each %$provides) {
             next unless ref $data eq ref {}; # ignore wrong format
-            my $file=$data->{file};
+            my $file=$data->{file} || '';
             my $found={
                 module=>$module,
-                file=>$data->{file},
+                file=>$file,
                 in_basedir=>0,
                 in_lib=>0,
             };
