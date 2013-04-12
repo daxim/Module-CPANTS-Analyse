@@ -20,6 +20,7 @@ sub analyse {
     if ($me->d->{meta_yml} && $me->d->{meta_yml}{provides}) {
         my $provides = $me->d->{meta_yml}{provides};
         while (my ($module,$data)=each %$provides) {
+            next unless ref $data eq ref {}; # ignore wrong format
             my $file=$data->{file};
             my $found={
                 module=>$module,
