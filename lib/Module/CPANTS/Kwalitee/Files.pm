@@ -55,7 +55,7 @@ sub analyse {
         # Filenames that are not allowed under *nix can't be trapped
         # here now as they are not extracted at all.
         if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
-            push @{$me->d->{bad_filenames} ||= []}, $name;
+            push @{$me->d->{non_portable_filenames} ||= []}, $name;
         }
     }
 
@@ -314,6 +314,17 @@ sub kwalitee_indicators {
                 $d->{error}{no_large_files} = join "; ", @errors;
                 return 0;
             }
+            return 1;
+        },
+    },
+    {
+        name=>'non_portable_filenames',
+        error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environment},
+        remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
+        is_extra=>1,
+        code=>sub {
+            my $d=shift;
+            return 0 if $d->{non_portable_filenames};
             return 1;
         },
     },
