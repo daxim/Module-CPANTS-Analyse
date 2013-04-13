@@ -406,6 +406,10 @@ Returns the Kwalitee Indicators datastructure.
 
 =item * no_stdin_for_prompting
 
+=item * no_large_files
+
+=item * non_portable_filenames
+
 =back
 
 =head1 SEE ALSO
