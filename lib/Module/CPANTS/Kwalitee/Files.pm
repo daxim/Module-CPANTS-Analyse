@@ -49,6 +49,14 @@ sub analyse {
                 $files{$name}{license} = $license;
             }
         }
+
+        # Some characters are not allowed or have special meanings
+        # under some environment thus should be avoided.
+        # Filenames that are not allowed under *nix can't be trapped
+        # here now as they are not extracted at all.
+        if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
+            push @{$me->d->{bad_filenames} ||= []}, $name;
+        }
     }
 
     if (%licenses) {
