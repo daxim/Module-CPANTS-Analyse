@@ -1,11 +1,6 @@
 package Module::CPANTS::Kwalitee::Distros;
 use warnings;
 use strict;
-#use File::Spec::Functions qw(catfile);
-#use List::MoreUtils qw(all any);
-use LWP::Simple qw(mirror);
-use Data::Dumper qw(Dumper);
-use Text::CSV_XS 0.45;
 
 our $VERSION = '0.87';
 
@@ -20,145 +15,26 @@ sub analyse {
     my $class=shift;
     my $me=shift;
 
-	return if $ENV{CPANTS_LINT};
+    # NOTE: The data source of these debian metrics has not been
+    # updated for more than a year, and mirroring stuff from
+    # external source every time you test is very nasty.
 
-    if (not $debian) {
-        $debian = _get_debian_data();
-    }
-   
+    # These metrics are deprecated and actually removed to
+    # reduce unwanted dependencies for Test::Kwalitee users.
+
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Distro module, and the old
+    # metrics will not be loaded while loading plugins.
+
     return;
 }
-
-
-sub _get_debian_data {
-    my $local_file = 'Debian_CPANTS.txt';
-    mirror('http://pkg-perl.alioth.debian.org/CPANTS.txt', $local_file);
-
-    my %debian;
-
-    return {} if not open my $fh ,'<', $local_file;
-    # TODO other error reporting in this case?
-
-    my $csv = Text::CSV_XS->new({ allow_whitespace => 1 });
-    # header looks like the following though we don't rely on this order
-    # TODO: maybe we should check if the file really contains the expected columns and if
-    # all the rows are well formatted so we have some alert if the Debian people 
-    # break this format.
-    # We should also alert if the file is not new enough...
-
-    # debian_pkg, CPAN_dist, CPAN_vers, N_bugs, N_patches
-    my $header = <$fh>;
-    $header=~s/\s+$//s;
-    #chomp $header;
-    $csv->parse($header) or die "Could not parse header:\n$header\n";
-
-    my @header = $csv->fields;
-    #die Dumper \@header;
-    while (my $row = <$fh>) {
-        $row=~s/\s+$//s;
-        #chomp $row;
-        if ($csv->parse($row)) {
-            my @values = $csv->fields;
-            my %h;
-            #die Dumper \@values;
-            @h{@header} = @values;
-            #(my $dist = $h{CPAN_dist}) =~ s/-/::/g;
-            #$debian{$dist} = \%h;
-            $debian{ $h{CPAN_dist} } = \%h;
-        #} else {
-        #    warn "Invalid row in Debian file:\n$row\n";
-        }
-    }
-    return \%debian;
-}
-
-
 
 ##################################################################
 # Kwalitee Indicators
 ##################################################################
 
 sub kwalitee_indicators{
-	return [] if $ENV{CPANTS_LINT};
-
-    return [
-         {
-            name=>'distributed_by_debian',
-            error=>qq{The module is not distributed by Debian},
-            remedy=>q{Make your package easily repackagable by Debian and convince the Debian-Perl team to package your module},
-            is_experimental=>1,
-            code=> sub {
-                    my $d = shift;
-                    my $metric=shift;
-                    return $debian->{ $d->{dist} } ? 1 : 0;
-                },
-         },
-         {
-            name=>'latest_version_distributed_by_debian',
-            error=>qq{The version distributed by Debian is NOT the latest from CPAN},
-            remedy=>q{Give the Debian-Perl people some time to repackage your module. After that talk to the to see if
-there is a problem with the latest version?},
-            is_experimental=>1,
-            code=> sub {
-                    my $d = shift;
-                    my $metric=shift;
-                    my $deb = $debian->{ $d->{dist} };
-                    return 1 if $deb && $deb->{CPAN_vers} eq $d->{version};
-                    if ($deb) {
-                        my $error = "Seen on CPAN: '$d->{version}'. Reported by Debian: '$deb->{CPAN_vers}'";
-                        $error .= " See: <a href=http://packages.debian.org/src:$deb->{debian_pkg}>Basic homepage</a>";
-                        $d->{error}{ $metric->{name} } = $error;
-                    } else {
-                        #$d->{error}{ $metric->{name} } = 'First get your module in Debian';
-                    }
-                    return 0;
-                },
-         },
-         {
-            name=>'has_no_bugs_reported_in_debian',
-            error=>qq{There is a bug reported in Debian},
-            remedy=>q{Give the Debian-Perl people some time to repackage your module. After that talk to the to see if
-there is a problem with the latest version?},
-            is_experimental=>1,
-            code=> sub {
-                    my $d = shift;
-                    my $metric=shift;
-                    my $deb = $debian->{ $d->{dist} };
-                    return 1 if $deb && !$deb->{N_bugs};
-                    if ($deb) {
-                        my $error = "Number of bugs reported: $deb->{N_bugs}.";
-                        $error .= " See: <a href=http://packages.debian.org/src:$deb->{debian_pkg}>Basic homepage</a>";
-                        $d->{error}{ $metric->{name} } = $error;
-                    } else {
-                        #$d->{error}{ $metric->{name} } = 'First get your module in Debian';
-                    }
-                    return 0;
-                },
-         },
-         {
-            name=>'has_no_patches_in_debian',
-            error=>qq{There is a patch in Debian},
-            remedy=>q{Go to the Debian repository apply their patch to the version maintained on CPAN and ask the Debian
-team to upgrde.},
-            is_experimental=>1,
-            code=> sub {
-                    my $d = shift;
-                    my $metric=shift;
-                    my $deb = $debian->{ $d->{dist} };
-                    return 1 if $deb && !$deb->{N_patches};
-                    if ($deb) {
-                        my $error = qq(Number of patches reported: $deb->{N_patches}.);
-                        $error .= qq( See: <a href="http://packages.debian.org/src:$deb->{debian_pkg}">Basic homepage</a>);
-                        $error .= sprintf(' <a href="http://svn.debian.org/wsvn/pkg-perl/trunk/%s/debian/patches/">svn</a>',
-                                $deb->{debian_pkg});
-                        $d->{error}{ $metric->{name} } = $error;
-                    } else {
-                        #$d->{error}{ $metric->{name} } = 'First get your module in Debian';
-                    }
-                    return 0;
-                },
-         },
-    ];
+    return [];
 }
 
 q{Favourite record of the moment:
@@ -174,7 +50,7 @@ Module::CPANTS::Kwalitee::Distros - Information retrieved from the various Linux
 
 =head1 SYNOPSIS
 
-The metrics here are based on data provided by the various downstream packaging systems.
+The metrics here were based on data provided by the various downstream packaging systems, but are deprecated now. The list is only preserved for historical reasons.
 
 =head1 DESCRIPTION
 
