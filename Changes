@@ -4,6 +4,15 @@
 
 Changes - Revision history for Module-CPANTS-Analyse
 
+=head2 0.88 (QA Hackathon 2013)
+
+=over
+
+=item numerous fixes for a smoother operation of www-cpants
+(L<charsbar|https://metacpan.org/author/ishigaki>)
+
+=back
+
 =head2 0.87 2013-02-12
 
 =over

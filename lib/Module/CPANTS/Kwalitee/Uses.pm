@@ -21,7 +21,11 @@ sub analyse {
     my $distdir=$me->distdir;
     my $modules=$me->d->{modules};
     my $files=$me->d->{files_array};
-    my @tests=grep {m|^x?t\b.*\.t|} @$files;
+
+    # NOTE: all files in xt/ should be ignored because they are
+    # for authors only and their dependencies may not be (and
+    # often are not) listed in meta files.
+    my @tests=grep {m|^t\b.*\.t|} @$files;
     $me->d->{test_files} = \@tests;
 
     my %skip=map {$_->{module}=>1 } @$modules;
