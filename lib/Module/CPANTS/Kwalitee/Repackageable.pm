@@ -60,7 +60,7 @@ sub _aggregator {
 
     my @errors = grep { !$d->{kwalitee}{$_} } @{ $metric->{aggregating} };
     if (@errors) {
-        $d->{error}{ $metric->{name} } = join ", ", @errors;
+        $d->{ $metric->{name} } = join ", ", @errors;
         return 0;
     }
     return 1;
