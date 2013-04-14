@@ -8,7 +8,6 @@ use File::Basename;
 use Data::Dumper;
 use Readonly;
 use Software::LicenseUtils;
-use File::Slurp            qw(slurp);
 use ExtUtils::Manifest;
 
 our $VERSION = '0.87';
@@ -42,7 +41,7 @@ sub analyse {
 
         if ($name =~ /\.(pl|pm|pod)$/) {
             next unless -r $path; # skip if not readable
-            my $text = slurp($path);
+            my $text = do { open my $fh, '<', $path; local $/; <$fh> };
             my (@possible_licenses) = Software::LicenseUtils->guess_license_from_pod($text);
             foreach my $license (@possible_licenses) {
                 $licenses{$license} = $name;
