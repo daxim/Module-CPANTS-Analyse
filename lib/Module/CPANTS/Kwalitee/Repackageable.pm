@@ -1,9 +1,6 @@
 package Module::CPANTS::Kwalitee::Repackageable;
 use warnings;
 use strict;
-use File::Spec::Functions qw(catfile);
-use List::MoreUtils qw(all any);
-#use  Pod::Simple::TextContent;
 
 our $VERSION = '0.87';
 
