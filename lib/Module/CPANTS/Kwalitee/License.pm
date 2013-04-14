@@ -115,7 +115,7 @@ sub kwalitee_indicators{
             code=>sub { 
                 my $d=shift;
                 my $license = $d->{meta_yml}{license};
-                return ((defined $license and any {$license eq $_} @fedora_licenses) ? 1 : 0);
+                return ((defined $license and grep {$license eq $_} @fedora_licenses) ? 1 : 0);
 
             }
         },
