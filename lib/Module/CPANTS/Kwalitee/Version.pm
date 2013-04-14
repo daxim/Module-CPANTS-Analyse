@@ -33,7 +33,7 @@ sub analyse {
                 }
             }
         }
-        $version_of{$module->{file}} = $version;
+        $version_of{$module->{file}} = $version if $module->{file};
     }
 
     $me->d->{versions} = \%version_of;
@@ -58,7 +58,7 @@ sub kwalitee_indicators {
             my $d=shift;
             #use Data::Dumper;
             #die Dumper $d->{versions};
-            my $number_modules = scalar @{$d->{modules}};
+            my $number_modules = scalar @{$d->{modules} || []};
             my $number_pm_with_version = scalar grep { defined $d->{versions}{$_} } keys %{ $d->{versions} };
             
             if ($number_modules == $number_pm_with_version) {
