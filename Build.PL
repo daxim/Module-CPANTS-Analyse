@@ -18,7 +18,6 @@ my $build = Module::Build->new(
         'IO::Capture'               => '0.05',
         'Array::Diff'               => '0.04',
         'version'                   => '0.73',
-        'List::MoreUtils'           => '0',
         'File::Find::Rule'          => '0',
         'Readonly'                  => '0',
         'Software::License'         => '0.003',
