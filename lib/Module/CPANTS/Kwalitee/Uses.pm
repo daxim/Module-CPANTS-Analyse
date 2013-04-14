@@ -172,29 +172,6 @@ sub kwalitee_indicators {
                 return 1;
             },
         },
-        
-        {
-            name=>'has_test_pod',
-            error=>q{Doesn't include a test for pod correctness (Test::Pod)},
-            remedy=>q{Add a test using Test::Pod to check for pod correctness.},
-            is_extra=>1,
-            code=>sub {
-                my $d=shift;
-                return 1 if $d->{uses}->{'Test::Pod'};
-                return 0;
-            },
-        },
-        {
-            name=>'has_test_pod_coverage',
-            error=>q{Doesn't include a test for pod coverage (Test::Pod::Coverage)},
-            remedy=>q{Add a test using Test::Pod::Coverage to check for POD coverage.},
-            is_extra=>1,
-            code=>sub {
-                my $d=shift;
-                return 1 if $d->{uses}->{'Test::Pod::Coverage'};
-                return 0;
-            },
-        },
     ];
 }
 
@@ -235,10 +212,6 @@ Returns the Kwalitee Indicators datastructure.
 =over
 
 =item * use_strict
-
-=item * has_test_pod
-
-=item * has_test_pod_coverage
 
 =back
 
