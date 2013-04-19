@@ -23,7 +23,7 @@ sub analyse {
     if ($yaml) {
         if ($yaml->{license} and $yaml->{license} ne 'unknown') {
             $me->d->{license_from_yaml} = $yaml->{license};
-            $me->d->{license} = $yaml->{license}.' defined in META.yaml';
+            $me->d->{license} = $yaml->{license}.' defined in META.yml';
         }
     }
     my $files=$me->d->{files_array};
