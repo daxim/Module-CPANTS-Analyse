@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 my $td = {
     dist  => 't/eg/PPI-HTML-1.07.tar.gz',
     error => {
