@@ -45,7 +45,7 @@ sub analyse {
         $me->d->{got_prereq_from}='Build.PL';
 
         ## no critic (ProhibitStringyEval)
-        eval "{ no strict; \$prereq = { $requires \n} }";
+        eval "{ no strict; \$prereq = { $requires \n} }" if $requires;
         ## no critic (ProhibitStringyEval)
         eval "{ no strict; \$build = { $build_requires \n} }" if $build_requires;
         ## no critic (ProhibitStringyEval)
