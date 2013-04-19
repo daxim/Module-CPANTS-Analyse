@@ -78,6 +78,9 @@ sub analyse {
             my $p={$data=>0};
             $data=$p;
         }
+        elsif (ref $data ne ref {}) {
+            next;  # ignore wrong format
+        }
 
         # sanitize version
         while (my($requires,$version)=each %$data) {
