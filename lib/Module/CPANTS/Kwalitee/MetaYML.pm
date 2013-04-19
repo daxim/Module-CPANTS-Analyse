@@ -35,10 +35,15 @@ sub analyse {
         }
     }
 
-    if (my $no_index = $me->d->{meta_yml}->{no_index}) {
+    my $no_index = $me->d->{meta_yml}->{no_index};
+    if ($no_index and ref $no_index eq ref {}) {
         my @ignore;
         foreach my $type (qw(file directory)) {
             next unless $no_index->{$type};
+            unless (ref $no_index->{$type} eq ref []) {
+              # no_index should be a list, though...
+              $no_index->{$type} = [$no_index->{$type}];
+            }
             foreach (@{$no_index->{$type}}) {
                 next if /^x?t/; # won't ignore t, xt
                 next if /^lib/; # and lib
@@ -143,8 +148,9 @@ sub check_spec_conformance {
     );
 
     if (!$version) {
-        if (my $from_yaml=$yaml->{'meta-spec'}{version}) {
-            $version = $from_yaml;
+        my $spec = $yaml->{'meta-spec'};
+        if (ref $spec eq ref {} && $spec->{version}) {
+            $version = $spec->{version};
         }
         else {
             $version='1.0';
