@@ -84,11 +84,9 @@ sub analyse {
 
     # store stuff
     $me->d->{files}=scalar @files;
-    $me->d->{files_list}=join(';',@files);
     $me->d->{files_array}=\@files;
     $me->d->{files_hash}=\%files;
     $me->d->{dirs}=scalar @dirs;
-    $me->d->{dirs_list}=join(';',@dirs);
     $me->d->{dirs_array}=\@dirs;
     $me->d->{symlinks}=scalar @symlinks;
     $me->d->{symlinks_list}=join(';',@symlinks);

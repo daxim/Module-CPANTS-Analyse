@@ -67,9 +67,7 @@ sub analyse {
             }
         }
         $me->d->{files_array}=\@new;
-        $me->d->{files_list}=join(';',@new);
         $me->d->{ignored_files_array}=\@ignored;
-        $me->d->{ignored_files_list}=join(';',@ignored);
     }
 
 }
