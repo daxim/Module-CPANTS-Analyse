@@ -2,7 +2,7 @@ package Module::CPANTS::Kwalitee::MetaYML;
 use warnings;
 use strict;
 use File::Spec::Functions qw(catfile);
-use YAML::Any qw(Load LoadFile);
+use CPAN::Meta::YAML;
 use Test::CPAN::Meta::YAML::Version;
 
 our $VERSION = '0.87';
@@ -20,19 +20,19 @@ sub analyse {
     my $me=shift;
     my $files=$me->d->{files_array};
     my $distdir=$me->distdir;
-    if (grep {/^META\.yml$/} @$files) {
-        eval {
-            open(my $FH,'<',catfile($distdir,'META.yml')) || die "Cannot read META.yml: $!";
-            my $yml=join('',<$FH>);
-            close $FH;
-            die "I do not want to handle stuff like version: !!perl/hash:version" if $yml=~/ !perl/;
-            $me->d->{meta_yml}=Load($yml);
-            $me->d->{metayml_is_parsable}=1;
-        };
-        if ($@) {
-            $me->d->{error}{metayml_is_parsable}=$@;
-            return;
-        }
+    my $meta_yml=catfile($distdir,'META.yml');
+    return unless -f $meta_yml;
+
+    eval {
+        open my $fh, '<:utf8', $meta_yml or die $!;
+        my $yaml = do { local $/; <$fh> };
+        my $meta = CPAN::Meta::YAML->read_string($yaml) or die CPAN::Meta::YAML->errstr;
+        $me->d->{meta_yml}=$meta->[0];
+        $me->d->{metayml_is_parsable}=1;
+    };
+    if ($@) {
+        $me->d->{error}{metayml_is_parsable}=$@;
+        return;
     }
 
     my $no_index = $me->d->{meta_yml}->{no_index};
