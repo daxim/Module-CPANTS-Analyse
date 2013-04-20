@@ -8,6 +8,10 @@ Changes - Revision history for Module-CPANTS-Analyse
 
 =over
 
+=item add metric C<no_dot_underscore_files>
+(L<daxim|https://metacpan.org/author/daxim>,
+L<charsbar|https://metacpan.org/author/ishigaki>)
+
 =item remove metrics C<distributed_by_debian>,
 C<latest_version_distributed_by_debian>, C<has_no_bugs_reported_in_debian>,
 C<has_no_patches_in_debian>, C<no_cpants_errors>, C<uses_test_nowarnings>,
