@@ -324,7 +324,6 @@ sub kwalitee_indicators {
         name=>'non_portable_filenames',
         error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environment},
         remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
-        is_extra=>1,
         code=>sub {
             my $d=shift;
             return 0 if $d->{non_portable_filenames};
