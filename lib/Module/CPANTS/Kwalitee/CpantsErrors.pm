@@ -24,7 +24,9 @@ sub analyse {
     my @eout=$sout->read;
     my @eerr=$serr->read;
     
-    $me->d->{error}{cpants}= (@eerr || @eout) ? join("\n",'STDERR:',@eerr,'STDOUT:',@eout) : '';
+    if (@eerr || @eout) {
+        $me->d->{error}{cpants}=join("\n",'STDERR:',@eerr,'STDOUT:',@eout);
+    }
 }
 
 
