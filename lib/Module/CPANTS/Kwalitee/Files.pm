@@ -34,6 +34,7 @@ sub analyse {
     my $size = 0;
     my %files;
     my %licenses;
+    my @dot_underscore_files;
     foreach my $name (@files) { 
         my $path = catfile($distdir, $name);
         $files{$name}{size} += -s $path || 0;
@@ -55,6 +56,10 @@ sub analyse {
         # here now as they are not extracted at all.
         if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
             push @{$me->d->{non_portable_filenames} ||= []}, $name;
+        }
+
+        if ($name =~ m!(^|/)\._!) {
+            push @dot_underscore_files, $name;
         }
     }
 
@@ -90,6 +95,7 @@ sub analyse {
     $me->d->{dirs_array}=\@dirs;
     $me->d->{symlinks}=scalar @symlinks;
     $me->d->{symlinks_list}=join(';',@symlinks);
+    $me->d->{error}{no_dot_underscore_files} = \@dot_underscore_files if @dot_underscore_files;
 
     # find special files
     my %reqfiles;
@@ -325,6 +331,16 @@ sub kwalitee_indicators {
             return 1;
         },
     },
+    {
+        name=>'no_dot_underscore_files',
+        error=>qq{This distribution has dot underscore files which may cause various problems.},
+        remedy=>q{If you use Mac OS X, set COPYFILE_DISABLE (for OS 10.5 and better) or COPY_EXTENDED_ATTRIBUTES_DISABLE (for OS 10.4) environmental variable to true to exclude dot underscore files from a distribution.},
+        code=>sub {
+            my $d=shift;
+            return 0 if $d->{error}{no_dot_underscore_files};
+            return 1;
+        },
+    },
 ];
 }
 
@@ -406,6 +422,8 @@ Returns the Kwalitee Indicators datastructure.
 =item * no_large_files
 
 =item * non_portable_filenames
+
+=item * no_dot_underscore_files
 
 =back
 
