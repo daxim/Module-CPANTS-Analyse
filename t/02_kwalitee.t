@@ -7,16 +7,16 @@ use Test::NoWarnings;
 use Module::CPANTS::Kwalitee;
 
 my $CORE = 26;
-my $OPTIONAL = 8; #is_extra set
-my $EXTRA = 10; #experimental?
-my $METRICS = $CORE + $OPTIONAL + $EXTRA;
+my $EXTRA = 8; #is_extra set
+my $EXPERIMENTAL = 10; #experimental?
+my $METRICS = $CORE + $EXTRA + $EXPERIMENTAL;
 
 plan tests => 8 + 2 * $METRICS;
 
 my $k=Module::CPANTS::Kwalitee->new({});
 
 is($k->available_kwalitee, $CORE, 'available kwalitee');
-is($k->total_kwalitee, $CORE + $OPTIONAL, 'total kwalitee');
+is($k->total_kwalitee, $CORE + $EXTRA, 'total kwalitee');
 
 
 my $ind=$k->get_indicators_hash;
@@ -35,7 +35,7 @@ is(ref($ind->{use_strict}),'HASH','hash element');
 
 {
     my @all=$k->optional_indicator_names;
-    is(@all, $OPTIONAL,'number of optional indicators');
+    is(@all, $EXTRA,'number of optional indicators');
 }
 
 
