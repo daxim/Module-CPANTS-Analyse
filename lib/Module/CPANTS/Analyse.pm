@@ -78,7 +78,15 @@ sub unpack {
         $me->d->{dist}=$name;
         return $error;
     }
-    
+    if ('Archive::Any::Lite::Tar' eq $archive->{handler}) {
+        my $fh = $archive->{handler}->decompress($archive->{file});
+        my $buf;
+        read $fh, $buf, 1024;
+        if ($buf =~ /PaxHeaders/) {
+            $me->d->{extractable}=0;
+            return 'Archive is in pax format.';
+        }
+    }
     $me->d->{extractable}=1;
     unlink($me->testfile);
    
