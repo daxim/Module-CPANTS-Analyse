@@ -4,6 +4,28 @@
 
 Changes - Revision history for Module-CPANTS-Analyse
 
+=head2 0.88 (QA Hackathon 2013)
+
+=over
+
+=item add metric C<no_dot_underscore_files>
+(L<daxim|https://metacpan.org/author/daxim>,
+L<charsbar|https://metacpan.org/author/ishigaki>)
+
+=item remove metrics C<distributed_by_debian>,
+C<latest_version_distributed_by_debian>, C<has_no_bugs_reported_in_debian>,
+C<has_no_patches_in_debian>, C<no_cpants_errors>, C<uses_test_nowarnings>,
+C<has_test_pod>, C<has_test_pod_coverage>
+(L<charsbar|https://metacpan.org/author/ishigaki>)
+
+=item add metric C<non_portable_filenames>
+(L<charsbar|https://metacpan.org/author/ishigaki>)
+
+=item numerous fixes for a smoother operation of www-cpants
+(L<charsbar|https://metacpan.org/author/ishigaki>)
+
+=back
+
 =head2 0.87 2013-02-12
 
 =over
