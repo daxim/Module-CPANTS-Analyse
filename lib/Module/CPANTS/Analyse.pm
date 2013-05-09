@@ -6,7 +6,7 @@ use base qw(Class::Accessor);
 use File::Temp qw(tempdir);
 use File::Spec::Functions qw(catfile catdir splitpath);
 use File::Copy;
-use Archive::Any;
+use Archive::Any::Lite;
 use Carp;
 use Module::CPANTS::Kwalitee;
 use IO::Capture::Stdout;
@@ -60,7 +60,7 @@ sub unpack {
     
     my $archive;
     eval {
-        $archive=Archive::Any->new($me->testfile);
+        $archive=Archive::Any::Lite->new($me->testfile);
         $archive->extract($me->testdir);
     };
 

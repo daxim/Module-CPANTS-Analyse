@@ -10,6 +10,6 @@ for my $seed (qw(0xd8792d91 0x5be01872)) {
     }
     my $cmd = join(' ', $^X, @libs, 't/11_hash_random.pl');
     my $content = qx/$cmd/;
-    is($content, "4,0\n", "Slave forked script passed 4/4 checks with seed $seed");
+    is($content, "3,0\n", "Slave forked script passed 3/3 checks with seed $seed");
 }
 done_testing;

@@ -8,7 +8,6 @@ use File::Basename;
 use Data::Dumper;
 use Readonly;
 use Software::LicenseUtils;
-use File::Slurp            qw(slurp);
 use ExtUtils::Manifest;
 
 our $VERSION = '0.87';
@@ -35,18 +34,32 @@ sub analyse {
     my $size = 0;
     my %files;
     my %licenses;
+    my @dot_underscore_files;
     foreach my $name (@files) { 
         my $path = catfile($distdir, $name);
         $files{$name}{size} += -s $path || 0;
         $size += $files{$name}{size};
 
         if ($name =~ /\.(pl|pm|pod)$/) {
-            my $text = slurp($path);
+            next unless -r $path; # skip if not readable
+            my $text = do { open my $fh, '<', $path; local $/; <$fh> };
             my (@possible_licenses) = Software::LicenseUtils->guess_license_from_pod($text);
             foreach my $license (@possible_licenses) {
                 $licenses{$license} = $name;
                 $files{$name}{license} = $license;
             }
+        }
+
+        # Some characters are not allowed or have special meanings
+        # under some environment thus should be avoided.
+        # Filenames that are not allowed under *nix can't be trapped
+        # here now as they are not extracted at all.
+        if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
+            push @{$me->d->{non_portable_filenames} ||= []}, $name;
+        }
+
+        if ($name =~ m!(^|/)\._!) {
+            push @dot_underscore_files, $name;
         }
     }
 
@@ -69,25 +82,24 @@ sub analyse {
     my @symlinks;
     foreach my $f (@dirs, @files) {
         my $p = catfile($distdir,$f);
-        if (-l $f) {
-            push(@symlinks,$f) if $manifest and exists $manifest->{$f};
+        if (-l $p) {
+            push(@symlinks,$f);# if $manifest and exists $manifest->{$f};
         }
     }
 
     # store stuff
     $me->d->{files}=scalar @files;
-    $me->d->{files_list}=join(';',@files);
     $me->d->{files_array}=\@files;
     $me->d->{files_hash}=\%files;
     $me->d->{dirs}=scalar @dirs;
-    $me->d->{dirs_list}=join(';',@dirs);
     $me->d->{dirs_array}=\@dirs;
     $me->d->{symlinks}=scalar @symlinks;
     $me->d->{symlinks_list}=join(';',@symlinks);
+    $me->d->{error}{no_dot_underscore_files} = \@dot_underscore_files if @dot_underscore_files;
 
     # find special files
     my %reqfiles;
-    my @special_files=(qw(Makefile.PL Build.PL META.yml SIGNATURE MANIFEST NINJA test.pl LICENSE LICENCE));
+    my @special_files=(qw(Makefile.PL Build.PL META.yml META.json MYMETA.yml MYMETA.json dist.ini cpanfile SIGNATURE MANIFEST NINJA test.pl LICENSE LICENCE));
     map_filenames($me, \@special_files, \@files);
     my @generated_files=qw(Build Makefile _build blib pm_to_blib); # files that should not...
     %generated_db_files=map_filenames($me, \@generated_files, \@files);
@@ -95,7 +107,7 @@ sub analyse {
     # find more complex files
     my %regexs=(
         file_changelog=>qr{^chang|history}i,
-        file_readme=>qr{^readme(?:\.txt)?}i,
+        file_readme=>qr{^readme(?:\.(?:txt|md))?}i,
     );
     while (my ($name,$regex)=each %regexs) {
         $me->d->{$name}=join(',',grep {$_=~/$regex/} @files);
@@ -127,7 +139,7 @@ sub analyse {
 
         $build_exe=1 if ($me->d->{file_makefile_pl} && -x catfile($me->distdir,'Makefile.PL'));
         $build_exe=2 if ($me->d->{file_build_pl} && -x catfile($me->distdir,'Build.PL'));
-        $build_exe=3 unless ($me->d->{file_makefile_pl} || $me->d->{file_build_pl});
+        $build_exe=-1 unless ($me->d->{file_makefile_pl} || $me->d->{file_build_pl});
         $me->d->{buildfile_executable}=$build_exe;
     }
 
@@ -243,9 +255,9 @@ sub kwalitee_indicators {
     },
     {
         name=>'buildtool_not_executable',
-        error=>q{The buildtool (Build.PL/Makefile.PL) is executable. This is bad, because you should specifiy which perl you want to use while installing.},
+        error=>q{The build tool (Build.PL/Makefile.PL) is executable. This is bad because you should specify which perl you want to use while installing.},
         remedy=>q{Change the permissions of Build.PL/Makefile.PL to not-executable.},
-        code=>sub {shift->{buildfile_executable} ? 0 : 1},
+        code=>sub {(shift->{buildfile_executable} || 0) > 0 ? 0 : 1},
     },
     {
         name=>'has_example',
@@ -261,7 +273,7 @@ sub kwalitee_indicators {
     },
     {
         name=>'no_generated_files',
-        error=>q{This distribution has a file that it should generate and not be distribute.},
+        error=>q{This distribution has a file that should be generated at build time, not distributed by the author.},
         remedy=>q{Remove the offending file!},
         code=>sub {
             my $d=shift;
@@ -280,13 +292,12 @@ sub kwalitee_indicators {
     },
     {
         name=>'no_stdin_for_prompting',
-        error=>q{This distribution is using direct call from STDIN instead of prompt())},
+        error=>q{This distribution is using direct call from STDIN instead of prompt(). Make sure STDIN is not used in Makefile.PL or Build.PL. See http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging},
         is_extra=>1,
         remedy=>q{Use the prompt() method},
         code=>sub {
             my $d=shift;
             if ($d->{stdin_in_makefile_pl}||$d->{stdin_in_build_pl}) {
-                $d->{error}{no_stdin_for_prompting} = "Make sure STDIN is not used in Makefile.PL or Build.PL see http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging";
                 return 0;
             }
             return 1;
@@ -306,6 +317,26 @@ sub kwalitee_indicators {
                 $d->{error}{no_large_files} = join "; ", @errors;
                 return 0;
             }
+            return 1;
+        },
+    },
+    {
+        name=>'non_portable_filenames',
+        error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environment},
+        remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
+        code=>sub {
+            my $d=shift;
+            return 0 if $d->{non_portable_filenames};
+            return 1;
+        },
+    },
+    {
+        name=>'no_dot_underscore_files',
+        error=>qq{This distribution has dot underscore files which may cause various problems.},
+        remedy=>q{If you use Mac OS X, set COPYFILE_DISABLE (for OS 10.5 and better) or COPY_EXTENDED_ATTRIBUTES_DISABLE (for OS 10.4) environmental variable to true to exclude dot underscore files from a distribution.},
+        code=>sub {
+            my $d=shift;
+            return 0 if $d->{error}{no_dot_underscore_files};
             return 1;
         },
     },
@@ -377,7 +408,7 @@ Returns the Kwalitee Indicators datastructure.
 
 =item * has_tests_in_t_dir
 
-=item * buildfile_not_executabel
+=item * buildfile_not_executable
 
 =item * has_example (optional)
 
@@ -386,6 +417,12 @@ Returns the Kwalitee Indicators datastructure.
 =item * has_version_in_each_file
 
 =item * no_stdin_for_prompting
+
+=item * no_large_files
+
+=item * non_portable_filenames
+
+=item * no_dot_underscore_files
 
 =back
 

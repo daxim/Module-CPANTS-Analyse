@@ -1,9 +1,6 @@
 package Module::CPANTS::Kwalitee::Repackageable;
 use warnings;
 use strict;
-use File::Spec::Functions qw(catfile);
-use List::MoreUtils qw(all any);
-#use  Pod::Simple::TextContent;
 
 our $VERSION = '0.87';
 
@@ -60,7 +57,7 @@ sub _aggregator {
 
     my @errors = grep { !$d->{kwalitee}{$_} } @{ $metric->{aggregating} };
     if (@errors) {
-        $d->{error}{ $metric->{name} } = join ", ", @errors;
+        $d->{ $metric->{name} } = join ", ", @errors;
         return 0;
     }
     return 1;

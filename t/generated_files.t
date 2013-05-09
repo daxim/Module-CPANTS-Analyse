@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 use Test::More tests => 2;
 
 use Module::CPANTS::Analyse;
@@ -22,7 +24,6 @@ my $expected = {
            'manifest_matches_dist' => 1,
            'metayml_declares_perl_version' => 0,
            'has_example' => 1,
-           'has_test_pod_coverage' => 1,
            'metayml_is_parsable' => 1,
            'proper_libs' => 1,
            'has_changelog' => 1,
@@ -30,7 +31,6 @@ my $expected = {
            'use_strict' => 1,
            'kwalitee' => 27,
            'no_stdin_for_prompting' => 1,
-           'has_test_pod' => 1,
            'easily_repackageable' => 0,
            'easily_repackageable_by_fedora' => 0,
            'has_tests' => 1,
@@ -48,7 +48,6 @@ my $expected = {
            'metayml_conforms_spec_current' => 0,
            'use_warnings' => 0,
            'no_large_files' => 1,
-           'no_cpants_errors' => 1,
            'has_tests_in_t_dir' => 1,
            'has_version_in_each_file' => 1,
            'fits_fedora_license' => 0,
@@ -57,11 +56,6 @@ my $expected = {
            'has_separate_license_file' => 0,
            'has_license_in_source_file' => 0,
            'metayml_has_provides'=>0,
-           'distributed_by_debian'=>0,
-           'latest_version_distributed_by_debian'=>0,
-           'has_no_bugs_reported_in_debian'=>0,
-           'has_no_patches_in_debian'=>0,
-           'uses_test_nowarnings'=>0,
            'has_better_auto_install'=>1,
          };
 

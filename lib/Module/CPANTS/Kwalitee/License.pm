@@ -3,7 +3,6 @@ use warnings;
 use strict;
 use File::Spec::Functions qw(catfile);
 use Pod::Simple::TextContent;
-use List::MoreUtils qw(all any);
 
 our $VERSION = '0.87';
 
@@ -24,7 +23,7 @@ sub analyse {
     if ($yaml) {
         if ($yaml->{license} and $yaml->{license} ne 'unknown') {
             $me->d->{license_from_yaml} = $yaml->{license};
-            $me->d->{license} = $yaml->{license}.' defined in META.yaml';
+            $me->d->{license} = $yaml->{license}.' defined in META.yml';
         }
     }
     my $files=$me->d->{files_array};
@@ -116,7 +115,7 @@ sub kwalitee_indicators{
             code=>sub { 
                 my $d=shift;
                 my $license = $d->{meta_yml}{license};
-                return ((defined $license and any {$license eq $_} @fedora_licenses) ? 1 : 0);
+                return ((defined $license and grep {$license eq $_} @fedora_licenses) ? 1 : 0);
 
             }
         },

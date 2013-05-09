@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 use Test::More tests => 3;
 use Test::Warn;
 
@@ -12,10 +14,8 @@ my $a=Module::CPANTS::Analyse->new({
 
 my $dir = cwd;
 my $rv;
-warnings_are {$rv=$a->unpack} [
-            'Invalid header block at offset unknown',
-            'Invalid header block at offset unknown',
-            'No data could be read from file',
+warnings_like {$rv=$a->unpack} [
+            qr/^No handler available for/,
             ]
             , 'unpack warns';
 

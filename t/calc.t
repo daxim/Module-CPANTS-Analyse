@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 use Test::More tests => 18;
 
 use Module::CPANTS::Analyse;
@@ -40,7 +42,6 @@ my $expected_kwalitee =  {
            'has_readme' => 1,
            'manifest_matches_dist' => 1,
            'has_example' => 1,
-           'has_test_pod_coverage' => 1,
            'metayml_is_parsable' => 1,
            'easily_repackageable' => 0,
            'proper_libs' => 1,
@@ -48,7 +49,6 @@ my $expected_kwalitee =  {
            'no_pod_errors' => 1,
            'use_strict' => 1,
            'kwalitee' => 29,
-           'has_test_pod' => 1,
            'has_tests' => 1,
            'easily_repackageable_by_debian' => 1,
            'fits_fedora_license' => 0,
@@ -65,7 +65,6 @@ my $expected_kwalitee =  {
            'easily_repackageable_by_fedora' => 0,
            'metayml_conforms_spec_current' => 0,
            'use_warnings' => 0,
-           'no_cpants_errors' => 1,
            'has_version_in_each_file' => 1,
            'has_tests_in_t_dir' => 1,
            'has_proper_version' => 1,
@@ -76,11 +75,6 @@ my $expected_kwalitee =  {
            'has_separate_license_file' => 0,
            'has_license_in_source_file' => 0,
            'metayml_has_provides'=>0,
-           'distributed_by_debian'=>0,
-           'latest_version_distributed_by_debian'=>0,
-           'has_no_bugs_reported_in_debian'=>0,
-           'has_no_patches_in_debian'=>0,
-           'uses_test_nowarnings'=>0,
            'has_better_auto_install'=>1,
          };
 

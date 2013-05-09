@@ -24,7 +24,9 @@ sub analyse {
     my @eout=$sout->read;
     my @eerr=$serr->read;
     
-    $me->d->{error}{cpants}= (@eerr || @eout) ? join("\n",'STDERR:',@eerr,'STDOUT:',@eout) : '';
+    if (@eerr || @eout) {
+        $me->d->{error}{cpants}=join("\n",'STDERR:',@eerr,'STDOUT:',@eout);
+    }
 }
 
 
@@ -33,14 +35,12 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators {
-    return [
-        {
-            name=>'no_cpants_errors',
-            error=>q{Some errors occured during CPANTS testing. They might be caused by bugs in CPANTS or some strange features of this distribution. See 'cpants' in the dist error view for more info.},
-            remedy=>q{Please report the error(s) to bug-module-cpants-analyse@rt.cpan.org},
-            code=>sub { shift->{error}{cpants} ? 0 : 1 },
-        },
-    ];
+    # NOTE: CPANTS error should be logged somewhere, but it
+    # should not annoy people. If anything wrong or interesting
+    # is found in the log, add some metrics (if it's worth),
+    # or just fix our problems.
+
+    return [];
 }
 
 
@@ -52,11 +52,11 @@ __END__
 
 =head1 NAME
 
-Module::CPANTS::Kwalitee::CpantsErrors
+Module::CPANTS::Kwalitee::CpantsErrors - Check for CPANTS testing errors
 
 =head1 SYNOPSIS
 
-Checks if something strange happend during testing
+Checks if something strange happened during testing
 
 =head1 DESCRIPTION
 

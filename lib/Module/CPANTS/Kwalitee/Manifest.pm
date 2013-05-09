@@ -16,7 +16,7 @@ sub analyse {
     my $class=shift;
     my $me=shift;
     
-    my @files=@{$me->d->{files_array}};
+    my @files=@{$me->d->{files_array} || []};
     if (my $ignore = $me->d->{ignored_files_array}) {
         push @files, @$ignore;
     }

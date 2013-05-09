@@ -185,7 +185,7 @@ Print some informative messages during testing of dists.
 
 =head3 --no_capture
 
-Turn off capturing of STDOUT and STDERR. Mostly usefull during debugging / development of new features. 
+Turn off capturing of STDOUT and STDERR. Mostly useful during debugging / development of new features.
 
 If C<--no_capture> is used, the value of C<cpants_error> might be wrong.
 

@@ -21,7 +21,11 @@ sub analyse {
     my $distdir=$me->distdir;
     my $modules=$me->d->{modules};
     my $files=$me->d->{files_array};
-    my @tests=grep {m|^x?t\b.*\.t|} @$files;
+
+    # NOTE: all files in xt/ should be ignored because they are
+    # for authors only and their dependencies may not be (and
+    # often are not) listed in meta files.
+    my @tests=grep {m|^t\b.*\.t|} @$files;
     $me->d->{test_files} = \@tests;
 
     my %skip=map {$_->{module}=>1 } @$modules;
@@ -29,14 +33,16 @@ sub analyse {
 
     foreach (@$modules) {
         my $p = Module::ExtractUse->new;
-        $p->extract_use(catfile($distdir,$_->{file}));
+        my $file = catfile($distdir,$_->{file});
+        $p->extract_use($file) if -f $file;
         $_->{uses} = $p->used;
     }
 
     # used in modules
     my $p=Module::ExtractUse->new;
     foreach (@$modules) {
-        $p->extract_use(catfile($distdir,$_->{file}));
+        my $file = catfile($distdir,$_->{file});
+        $p->extract_use($file) if -f $file;
     }
 
     while (my ($mod,$cnt)=each%{$p->used}) {
@@ -52,8 +58,8 @@ sub analyse {
     # used in tests
     my $pt=Module::ExtractUse->new;
     foreach my $tf (@tests) {
-        next if -s catfile($distdir,$tf) > 1_000_000; # skip very large test files
-        $pt->extract_use(catfile($distdir,$tf));
+        my $file = catfile($distdir,$tf);
+        $pt->extract_use($file) if -f $file && -s $file < 1_000_000; # skip very large test files
     }
     while (my ($mod,$cnt)=each%{$pt->used}) {
         next if $skip{$mod};
@@ -166,47 +172,6 @@ sub kwalitee_indicators {
                 return 1;
             },
         },
-        
-        {
-            name=>'has_test_pod',
-            error=>q{Doesn't include a test for pod correctness (Test::Pod)},
-            remedy=>q{Add a test using Test::Pod to check for pod correctness.},
-            is_extra=>1,
-            code=>sub {
-                my $d=shift;
-                return 1 if $d->{uses}->{'Test::Pod'};
-                return 0;
-            },
-        },
-        {
-            name=>'has_test_pod_coverage',
-            error=>q{Doesn't include a test for pod coverage (Test::Pod::Coverage)},
-            remedy=>q{Add a test using Test::Pod::Coverage to check for POD coverage.},
-            is_extra=>1,
-            code=>sub {
-                my $d=shift;
-                return 1 if $d->{uses}->{'Test::Pod::Coverage'};
-                return 0;
-            },
-        },
-        {
-            name=>'uses_test_nowarnings',
-            error=>q{Doesn't use Test::NoWarnings in all the test files},
-            remedy=>q{Add Test::NoWarnings to each one of the .t files and increment the test count by 1.},
-            is_experimental=>1,
-            code=>sub {
-                my $d=shift;
-                my $tests=$d->{test_files};
-                my @public_test_files = grep {/^t/} @$tests;
-                my $uses=$d->{uses};
-                return 0 unless $tests && $uses;
-                
-                my ($test_no_warnings)=$uses->{'Test::NoWarnings'};
-                return 0 unless $test_no_warnings;
-                return 1 if $test_no_warnings->{in_tests} >= @public_test_files;
-                return 0;
-            },
-        },
     ];
 }
 
@@ -247,12 +212,6 @@ Returns the Kwalitee Indicators datastructure.
 =over
 
 =item * use_strict
-
-=item * has_test_pod
-
-=item * has_test_pod_coverage
-
-=item * uses_test_nowarnings
 
 =back
 
