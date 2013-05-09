@@ -18,8 +18,8 @@ sub analyse {
 sub kwalitee_indicators {
     return [{
         name    => 'valid_signature',
-        error   => q{This dist failed its Module::Signature verification and does not to install automatically through the CPAN client if Module::Signature is installed. Note: unsigned dists will automatically pass this kwalitee check.},
-        remedy  => q{Sign the dist as the last step before creating the archive. Take care not to modify/regenerate dist meta files or the manifest.},
+        error   => q{This distribution failed its Module::Signature verification and does not to install automatically through the CPAN client if Module::Signature is installed. Note: unsigned distributions will automatically pass this kwalitee check.},
+        remedy  => q{Sign the distribution as the last step before creating the archive. Take care not to modify/regenerate distribution meta files or the manifest.},
         code    => sub {
             my $v = shift->{error}{valid_signature};
             return (SIGNATURE_OK == $v or SIGNATURE_MISSING == $v) ? 1 : 0;

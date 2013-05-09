@@ -67,7 +67,7 @@ sub kwalitee_indicators{
          {
             name=>'has_humanreadable_license',
             error=>q{This distribution does not have a license defined in the documentation or in a file called LICENSE},
-            remedy=>q{Add a section called 'LICENSE' to the documentation, or add a file named LICENSE to the distribution.},
+            remedy=>q{Add a section called "LICENSE" to the documentation, or add a file named LICENSE to the distribution.},
             code=>sub {
                 my $d = shift;
                 return $d->{external_license_file} || $d->{license_in_pod} ? 1 : 0;

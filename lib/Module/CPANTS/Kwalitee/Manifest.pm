@@ -70,8 +70,8 @@ sub kwalitee_indicators {
     return [
         {
             name=>'manifest_matches_dist',
-            error=>q{MANIFEST does not match the contents of this distribution. See 'error_manifest_matches_dist' in the dist view for more info.},
-            remedy=>q{Use a buildtool to generate the MANIFEST. Or update MANIFEST manually.},
+            error=>q{MANIFEST does not match the contents of this distribution.},
+            remedy=>q{Run a proper command ("make manifest" or "./Build manifest", maybe with a force option), or use a distribution builder to generate the MANIFEST. Or update MANIFEST manually.},
             code=>sub { shift->{manifest_matches_dist} ? 1 : 0 },
         }
     ];

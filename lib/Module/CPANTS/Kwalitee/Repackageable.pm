@@ -27,7 +27,7 @@ sub kwalitee_indicators{
          {
             name=>'easily_repackageable_by_debian',
             error=>qq{It is easy to repackage this module by Debian.},
-            remedy=>q{Fix each one of the metrics this depends on},
+            remedy=>q{Fix each one of the metrics this depends on.},
             aggregating => [qw(no_generated_files has_tests_in_t_dir no_stdin_for_prompting)],
             is_experimental=>1,
             code=>\&_aggregator,
@@ -35,15 +35,15 @@ sub kwalitee_indicators{
          {
             name=>'easily_repackageable_by_fedora',
             error=>qq{It is easy to repackage this module by Fedora.},
-            remedy=>q{Fix each one of the metrics this depends on},
+            remedy=>q{Fix each one of the metrics this depends on.},
             aggregating=> [qw(no_generated_files fits_fedora_license)],
             is_experimental=>1,
             code=>\&_aggregator,
         },
          {
             name=>'easily_repackageable',
-            error=>qq{It is easy to repackage this module. See <a href="http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging">cpan_packaging</a> },
-            remedy=>q{Fix each one of the metrics this depends on},
+            error=>qq{It is easy to repackage this module. See http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging},
+            remedy=>q{Fix each one of the metrics this depends on.},
             aggregating=>[qw(easily_repackageable_by_debian easily_repackageable_by_fedora)],
             is_experimental=>1,
             code=>\&_aggregator,

@@ -182,38 +182,38 @@ sub kwalitee_indicators {
   return [
     {
         name=>'extractable',
-        error=>q{This package uses an unknown packaging format. CPANTS can handle tar.gz, tgz and zip archives. No kwalitee metrics have been calculated.},
-        remedy=>q{Pack the distribution with tar & gzip or zip.},
+        error=>q{This distribution doesn't extract well due to several reasons such as unsupported archive type (CPANTS only supports tar.gz, tgz and zip archives), file permissions, invalid filenames, and so on. Most of other kwalitee metrics should be ignored.},
+        remedy=>q{Pack the distribution with a proper command such as "make dist" and "./Build dist", or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla. You might also need to set some options or environmental variables to ensure your archiver work portably.},
         code=>sub { shift->{extractable} ? 1 : -100 },
     },
     {
         name=>'extracts_nicely',
-        error=>q{This package doesn't create a directory and extracts its content into this directory. Instead, it spews its content into the current directory, making it really hard/annoying to remove the unpacked package.},
-        remedy=>q{Issue the command to pack the distribution in the directory above it. Or use a buildtool ('make dist' or 'Build dist')},
+        error=>q{This distribution doesn't create a directory and extracts its content into this directory. Instead, it spews its content into the current directory, making it really hard/annoying to remove the unpacked package.},
+        remedy=>q{Pack the distribution with a proper command such as "make dist" and "./Build dist", or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla.},
         code=>sub { shift->{extracts_nicely} ? 1 : 0},
     },
     {
         name=>'has_readme',
-        error=>q{The file 'README' is missing from this distribution. The README provide some basic information to users prior to downloading and unpacking the distribution.},
+        error=>q{The file "README" is missing from this distribution. The README provides some basic information to users prior to downloading and unpacking the distribution.},
         remedy=>q{Add a README to the distribution. It should contain a quick description of your module and how to install it.},
         code=>sub { shift->{file_readme} ? 1 : 0 },
     },
     {
         name=>'has_manifest',
-        error=>q{The file 'MANIFEST' is missing from this distribution. The MANIFEST lists all files included in the distribution.},
-        remedy=>q{Add a MANIFEST to the distribution. Your buildtool should be able to autogenerate it (eg 'make manifest' or './Build manifest')},
+        error=>q{The file "MANIFEST" is missing from this distribution. The MANIFEST lists all files included in the distribution.},
+        remedy=>q{Add a MANIFEST to the distribution. Your buildtool should be able to autogenerate it (eg "make manifest" or "./Build manifest")},
         code=>sub { shift->{file_manifest} ? 1 : 0 },
     },
     {
         name=>'has_meta_yml',
-        error=>q{The file 'META.yml' is missing from this distribution. META.yml is needed by people maintaining module collections (like CPAN), for people writing installation tools, or just people who want to know some stuff about a distribution before downloading it.},
+        error=>q{The file "META.yml" is missing from this distribution. META.yml is needed by people maintaining module collections (like CPAN), for people writing installation tools, or just people who want to know some stuff about a distribution before downloading it.},
         remedy=>q{Add a META.yml to the distribution. Your buildtool should be able to autogenerate it.},
         code=>sub { shift->{file_meta_yml} ? 1 : 0 },
     },
     {
         name=>'has_buildtool',
-        error=>q{Makefile.PL and/or Build.PL are missing. This makes installing this distribution hard for humans and impossible for automated tools like CPAN/CPANPLUS},
-        remedy=>q{Use a buildtool like Module::Build (recomended) or ExtUtils::MakeMaker to manage your distribution},
+        error=>q{Makefile.PL and/or Build.PL are missing. This makes installing this distribution hard for humans and impossible for automated tools like CPAN/CPANPLUS/cpanminus.},
+        remedy=>q{Add a Makefile.PL (for ExtUtils::MakeMaker/Module::Install) or a Build.PL (for Module::Build and its friends), or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla.},
         code=>sub {
             my $d=shift;
             return 1 if $d->{file_makefile_pl} || $d->{file_build_pl};
@@ -229,7 +229,7 @@ sub kwalitee_indicators {
     {
         name=>'no_symlinks',
         error=>q{This distribution includes symbolic links (symlinks). This is bad, because there are operating systems that do not handle symlinks.},
-        remedy=>q{Remove the symlinkes from the distribution.},
+        remedy=>q{Remove the symlinks from the distribution.},
         code=>sub {shift->{symlinks} ? 0 : 1},
     },
     {
@@ -273,8 +273,8 @@ sub kwalitee_indicators {
     },
     {
         name=>'no_generated_files',
-        error=>q{This distribution has a file that should be generated at build time, not distributed by the author.},
-        remedy=>q{Remove the offending file!},
+        error=>q{This distribution has files/directories that should be generated at build time, not distributed by the author.},
+        remedy=>q{Remove the offending files/directories!},
         code=>sub {
             my $d=shift;
             #die Dumper \%generated_db_files;
@@ -294,7 +294,7 @@ sub kwalitee_indicators {
         name=>'no_stdin_for_prompting',
         error=>q{This distribution is using direct call from STDIN instead of prompt(). Make sure STDIN is not used in Makefile.PL or Build.PL. See http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging},
         is_extra=>1,
-        remedy=>q{Use the prompt() method},
+        remedy=>q{Use the prompt() method from ExtUtils::MakeMaker/Module::Build.},
         code=>sub {
             my $d=shift;
             if ($d->{stdin_in_makefile_pl}||$d->{stdin_in_build_pl}) {
@@ -322,7 +322,7 @@ sub kwalitee_indicators {
     },
     {
         name=>'non_portable_filenames',
-        error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environment},
+        error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environments.},
         remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
         code=>sub {
             my $d=shift;

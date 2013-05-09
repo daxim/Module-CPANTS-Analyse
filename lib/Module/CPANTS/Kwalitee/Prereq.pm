@@ -118,7 +118,7 @@ sub kwalitee_indicators{
         {
             name=>'prereq_matches_use',
             error=>q{This distribution uses a module or a dist that's not listed as a prerequisite.},
-            remedy=>q{List all used modules in META.yml requires},
+            remedy=>q{List all used modules in META.yml requires.},
             code=>sub {
                 # this metric can only be run from within 
                 # Module::CPANTS::ProcessCPAN
@@ -130,7 +130,7 @@ sub kwalitee_indicators{
         {
             name=>'build_prereq_matches_use',
             error=>q{This distribution uses a module or a dist in it's test suite that's not listed as a build prerequisite.},
-            remedy=>q{List all modules used in the test suite in META.yml build_requires},
+            remedy=>q{List all modules used in the test suite in META.yml build_requires.},
             code=>sub {
                 # this metric can only be run from within 
                 # Module::CPANTS::ProcessCPAN

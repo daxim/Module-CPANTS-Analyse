@@ -54,7 +54,7 @@ sub kwalitee_indicators {
     return [
         {
             name=>'has_version',
-            error=>"The package filename (eg. Foo-Bar-1.42.tar.gz) does not include a version number (or something that looks like a reasonable version number to CPAN::DistnameInfo)",
+            error=>"The distribution filename (eg. Foo-Bar-1.42.tar.gz) does not include a version number (or something that looks like a reasonable version number to CPAN::DistnameInfo)",
             remedy=>q{Add a version number to the packed distribution. Or use a buildtool ('make dist' or 'Build dist')},
             code=>sub { shift->{version} ? 1 : 0 }
         },

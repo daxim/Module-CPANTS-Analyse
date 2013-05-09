@@ -82,14 +82,14 @@ sub kwalitee_indicators {
   return [
     {
         name=>'has_working_buildtool',
-        error=>q{This package uses an obsolete version of Module::Install. Versions of Module::Install prior to 0.61 might not work on some systems at all. Additionally if your Makefile.PL uses the 'auto_install()' feature, you need at least version 0.64.},
+        error=>q{This distribution uses an obsolete version of Module::Install. Versions of Module::Install prior to 0.61 might not work on some systems at all. Additionally if your Makefile.PL uses the 'auto_install()' feature, you need at least version 0.64.},
         remedy=>q{Upgrade the bundled version of Module::Install to at least 0.61, but preferably to the most current release. Alternatively, you can switch to another build system / installer that does not suffer from this problem. (ExtUtils::MakeMaker, Module::Build both of which have their own set of problems.)},
         code=>sub {
             shift->{broken_module_install} ? 0 : 1 },
     },
     {
         name=>'has_better_auto_install',
-        error=>q{This package uses an old version of Module::Install. Versions of Module::Install prior to 0.89 Does not detect correcty that CPAN/CPANPLUS shell is used.},
+        error=>q{This distribution uses an old version of Module::Install. Versions of Module::Install prior to 0.89 does not detect correcty that CPAN/CPANPLUS shell is used.},
         remedy=>q{Upgrade the bundled version of Module::Install to at least 0.89, but preferably to the most current release. Alternatively, you can switch to another build system / installer that does not suffer from this problem. (ExtUtils::MakeMaker, Module::Build both of which have their own set of problems.)},
         code=>sub {
             shift->{mi_auto_install_used} ? 0 : 1 },

@@ -80,7 +80,7 @@ sub kwalitee_indicators{
     return [
         {
             name=>'metayml_is_parsable',
-            error=>q{The META.yml file of this distributioncould not be parsed by the version of YAML.pm CPANTS is using.},
+            error=>q{The META.yml file of this distribution could not be parsed by the version of CPAN::Meta::YAML.pm CPANTS is using.},
             remedy=>q{If you don't have one, add a META.yml file. Else, upgrade your YAML generator so it produces valid YAML.},
             code=>sub { shift->{metayml_is_parsable} ? 1 : 0 }
         },
@@ -106,8 +106,8 @@ sub kwalitee_indicators{
         },
         {
             name=>'metayml_conforms_to_known_spec',
-            error=>q{META.yml does not conform to any recognised META.yml Spec. See 'metayml' in the dist error view for more info.},
-            remedy=>q{Take a look at the META.yml Spec at http://module-build.sourceforge.net/META-spec-current.html and change your META.yml accordingly},
+            error=>q{META.yml does not conform to any recognised META.yml Spec.},
+            remedy=>q{Take a look at the META.yml Spec at http://module-build.sourceforge.net/META-spec-current.html and change your META.yml accordingly.},
             code=>sub {
                 my $d=shift;
                 return check_spec_conformance($d);
@@ -116,8 +116,8 @@ sub kwalitee_indicators{
     {
             name=>'metayml_conforms_spec_current',
             is_extra=>1,
-            error=>qq{META.yml does not conform to the Current META.yml Spec ($CURRENT_SPEC). See 'metayml' in the dist error view for more info.},
-            remedy=>q{Take a look at the META.yml Spec at http://module-build.sourceforge.net/META-spec-current.html and change your META.yml accordingly},
+            error=>qq{META.yml does not conform to the Current META.yml Spec ($CURRENT_SPEC).},
+            remedy=>q{Take a look at the META.yml Spec at http://module-build.sourceforge.net/META-spec-current.html and change your META.yml accordingly.},
             code=>sub {
                 my $d=shift;
                 return check_spec_conformance($d,$CURRENT_SPEC,1);
