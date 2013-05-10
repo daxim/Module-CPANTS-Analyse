@@ -47,7 +47,7 @@ Module::CPANTS::Kwalitee::Prereq - Checks listed prerequistes
 
 =head1 SYNOPSIS
 
-Checks which other dists a dist declares as requirements.
+The metrics in this module have moved to L<Module::CPANTS::SiteKwalitee::Prereq>.
 
 =head1 DESCRIPTION
 
@@ -61,17 +61,11 @@ Returns C<100>.
 
 =head3 analyse
 
-C<MCK::Prereq> checks C<META.yml>, C<Build.PL> or C<Makefile.PL> for prereq-listings. 
+Does nothing now.
 
 =head3 kwalitee_indicators
 
 Returns the Kwalitee Indicators datastructure.
-
-=over
-
-=item * is_prereq (currently deactived)
-
-=back
 
 =head1 SEE ALSO
 
