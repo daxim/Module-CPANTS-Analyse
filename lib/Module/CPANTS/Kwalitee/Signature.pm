@@ -1,8 +1,6 @@
 package Module::CPANTS::Kwalitee::Signature;
 use strict;
-use warnings FATAL => 'all';
-use File::chdir;
-use Module::Signature qw(verify SIGNATURE_OK SIGNATURE_MISSING);
+use warnings;
 
 our $VERSION = '0.87';
 
@@ -10,25 +8,19 @@ sub order { 100 }
 
 sub analyse {
     my ($class, $self) = @_;
-    local $CWD = $self->distdir;
-    local $SIG{__WARN__} = sub {};  # shut up M::S diagnostics
-    $self->d->{error}{valid_signature} = verify;
+
+    # NOTE: The analysis/metric in this module has moved to
+    # Module::CPANTS::SiteKwalitee because this requires an external
+    # tool (though optional) and decent network connection to
+    # validate a signature.
+
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Signature module, and the old
+    # metrics will not be loaded while loading plugins.
 }
 
 sub kwalitee_indicators {
-    return [{
-        name    => 'valid_signature',
-        error   => q{This distribution failed its Module::Signature verification and does not to install automatically through the CPAN client if Module::Signature is installed. Note: unsigned distributions will automatically pass this kwalitee check.},
-        remedy  => q{Sign the distribution as the last step before creating the archive. Take care not to modify/regenerate distribution meta files or the manifest.},
-        code    => sub {
-            my $v = shift->{error}{valid_signature};
-            return (SIGNATURE_OK == $v or SIGNATURE_MISSING == $v) ? 1 : 0;
-        },
-        details=>sub {
-            my $d = shift;
-            return shift->{error}{valid_signature};
-        },
-    }];
+    return [];
 }
 
 1;
@@ -43,7 +35,7 @@ Module::CPANTS::Kwalitee::Signature - dist has a valid signature
 
 =head1 SYNOPSIS
 
-Check if the cryptographic signature of a dist is valid.
+The metrics in this module have moved to L<Module::CPANTS::SiteKwalitee::Signature>.
 
 =head1 DESCRIPTION
 
@@ -57,19 +49,11 @@ Returns C<100>.
 
 =head3 analyse
 
-Uses C<Module::Signature> to verify the validity of the dist signature.
-
-Dists without signature pass automatically.
+Does nothing now.
 
 =head3 kwalitee_indicators
 
 Returns the Kwalitee Indicators datastructure.
-
-=over
-
-=item * valid_signature
-
-=back
 
 =head1 SEE ALSO
 
