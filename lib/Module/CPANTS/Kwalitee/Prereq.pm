@@ -12,89 +12,17 @@ sub order { 100 }
 ##################################################################
 
 sub analyse {
-    my $class=shift;
-    my $me=shift;
-    
-    my $files=$me->d->{files_array};
-    my $distdir=$me->distdir;
+    # NOTE: The analysis/metrics in this module have moved to
+    # Module::CPANTS::SiteKwalitee because these requires databases
+    # or decent network connection to resolve module names,
+    # as well as a finalized META.yml to avoid parsing dist.ini
+    # or cpanfile (or whatever private metafiles) by ourselves.
+    # That said, it may be nice to move some of the previous
+    # analysis back here.
 
-    my $prereq;
-    my $build;
-    my $optional;
-    my $yaml=$me->d->{meta_yml};
-    if ($yaml) {
-        if ($yaml->{requires}) {
-            $prereq=$yaml->{requires};
-        }
-        if ($yaml->{build_requires}) {
-            $build=$yaml->{build_requires};
-        }
-        if ($yaml->{recommends}) {
-            $optional=$yaml->{recommends};
-        }
-        $me->d->{got_prereq_from}='META.yml';
-    }
-    elsif (grep {/^Build\.PL$/} @$files) {
-        open(my $in, '<', catfile($distdir,'Build.PL')) || return 1;
-        my $m=join '', <$in>;
-        close $in;
-        my($requires) = $m =~ /(?<!_)requires.*?=>.*?\{(.*?)\}/s;
-        my($build_requires) = $m =~ /build_requires.*?=>.*?\{(.*?)\}/s;
-        my($optional_requires) = $m =~ /recommends.*?=>.*?\{(.*?)\}/s;
-        
-        $me->d->{got_prereq_from}='Build.PL';
-
-        ## no critic (ProhibitStringyEval)
-        eval "{ no strict; \$prereq = { $requires \n} }" if $requires;
-        ## no critic (ProhibitStringyEval)
-        eval "{ no strict; \$build = { $build_requires \n} }" if $build_requires;
-        ## no critic (ProhibitStringyEval)
-        eval "{ no strict; \$optional = { $optional_requires \n} }" if $optional_requires;
-    }
-    else {
-        open(my $in, '<', catfile($distdir,'Makefile.PL')) || return 1;
-        my $m=join '', <$in>;
-        close $in;
-        
-        $me->d->{got_prereq_from}='Makefile.PL';
-
-        my($requires) = $m =~ /PREREQ_PM.*?=>.*?\{(.*?)\}/s;
-        $requires||='';
-        ## no critic (ProhibitStringyEval)
-        eval "{ no strict; \$prereq = { $requires \n} }";
-    }
-    return unless $prereq || $build || $optional;
-    
-    my %all=(
-        prereq              => $prereq,
-        build_prereq        => $build,
-        optional_prereq     => $optional
-    );
-
-    my @clean;
-    while (my ($type,$data)=each %all) {
-        next unless $data;
-        if (!ref $data) {
-            my $p={$data=>0};
-            $data=$p;
-        }
-        elsif (ref $data ne ref {}) {
-            next;  # ignore wrong format
-        }
-
-        # sanitize version
-        while (my($requires,$version)=each %$data) {
-            $version||=0;
-            $version=0 unless $version=~/[\d\._]+/;
-            push(@clean,{
-                requires=>$requires,
-                version=>$version,
-                'is_'.$type=>1,
-            });
-        }
-    }
-    $me->d->{prereq}=\@clean;
-    return;
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Prereq module, and the old
+    # metrics will not be loaded while loading plugins.
 }
 
 ##################################################################
@@ -102,57 +30,7 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators{
-    return [
-        {
-            name=>'is_prereq',
-            error=>q{This distribution is not required by another distribution by another author.},
-            remedy=>q{Convince / force / bribe another CPAN author to use this distribution.},
-            code=>sub {
-                # this metric can only be run from within 
-                # Module::CPANTS::ProcessCPAN
-                return 0;               
-            },
-            details=>sub {
-                my $d = shift;
-                return "This distribution is not required by another distribution by another author.";
-            },
-            needs_db=>1,
-            is_extra=>1,
-        },
-        {
-            name=>'prereq_matches_use',
-            error=>q{This distribution uses a module or a dist that's not listed as a prerequisite.},
-            remedy=>q{List all used modules in META.yml requires.},
-            code=>sub {
-                # this metric can only be run from within 
-                # Module::CPANTS::ProcessCPAN
-                return 0;               
-            },
-            details=>sub {
-                my $d = shift;
-                return "This distribution uses a module or a dist that's not listed as a prerequisite.";
-            },
-            needs_db=>1,
-            is_extra=>1,
-        },
-        {
-            name=>'build_prereq_matches_use',
-            error=>q{This distribution uses a module or a dist in it's test suite that's not listed as a build prerequisite.},
-            remedy=>q{List all modules used in the test suite in META.yml build_requires.},
-            code=>sub {
-                # this metric can only be run from within 
-                # Module::CPANTS::ProcessCPAN
-                return 0;               
-            },
-            details=>sub {
-                my $d = shift;
-                return "This distribution uses a module or a dist in it's test suite that's not listed as a build prerequisite.";
-            },
-            needs_db=>1,
-            is_experimental=>1,
-        },
-        
-    ];
+    return [];
 }
 
 
