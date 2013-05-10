@@ -28,6 +28,8 @@ sub analyse {
     my @tests=grep {m|^t\b.*\.t|} @$files;
     $me->d->{test_files} = \@tests;
 
+    my @test_modules = map { my $m = $_; $m =~ s|/|::|g; $m =~ s|\.pm$||; $m } grep {m|^t\b.*\.pm$|} @$files;
+
     my %skip=map {$_->{module}=>1 } @$modules;
     my %uses;
 
@@ -52,6 +54,7 @@ sub analyse {
             module=>$mod,
             in_code=>$cnt,
             in_tests=>0,
+            evals_in_code=>($p->used_in_eval($mod) || 0),
         };
     }
     
@@ -63,13 +66,18 @@ sub analyse {
     }
     while (my ($mod,$cnt)=each%{$pt->used}) {
         next if $skip{$mod};
+        if (@test_modules) {
+            next if grep {/(?:^|::)$mod$/} @test_modules;
+        }
         if ($uses{$mod}) {
             $uses{$mod}{'in_tests'}=$cnt;
+            $uses{$mod}{'evals_in_tests'}=($p->used_in_eval($mod) || 0);
         } else {
             $uses{$mod}={
                 module=>$mod,
                 in_code=>0,
                 in_tests=>$cnt,
+                evals_in_tests=>($p->used_in_eval($mod) || 0),
             }
         }
     }
