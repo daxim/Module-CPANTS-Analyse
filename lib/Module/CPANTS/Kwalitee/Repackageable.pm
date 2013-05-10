@@ -31,6 +31,10 @@ sub kwalitee_indicators{
             aggregating => [qw(no_generated_files has_tests_in_t_dir no_stdin_for_prompting)],
             is_experimental=>1,
             code=>\&_aggregator,
+            details=>sub {
+                my $d = shift;
+                return "Fix the following metrics: ".@{$d->{easily_repackageable_by_debian}};
+            },
          },
          {
             name=>'easily_repackageable_by_fedora',
@@ -39,6 +43,10 @@ sub kwalitee_indicators{
             aggregating=> [qw(no_generated_files fits_fedora_license)],
             is_experimental=>1,
             code=>\&_aggregator,
+            details=>sub {
+                my $d = shift;
+                return "Fix the following metrics: ".@{$d->{easily_repackageable_by_fedora}};
+            },
         },
          {
             name=>'easily_repackageable',
@@ -47,6 +55,10 @@ sub kwalitee_indicators{
             aggregating=>[qw(easily_repackageable_by_debian easily_repackageable_by_fedora)],
             is_experimental=>1,
             code=>\&_aggregator,
+            details=>sub {
+                my $d = shift;
+                return "Fix the following metrics: ".@{$d->{easily_repackageable}};
+            },
         },
     ];
 }

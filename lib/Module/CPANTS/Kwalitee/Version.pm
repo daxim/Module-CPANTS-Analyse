@@ -72,6 +72,10 @@ sub kwalitee_indicators {
                 return 0;
             }
         },
+        details=>sub {
+            my $d = shift;
+            return "The following files don't have a version: " . (join ", ", @{$d->{error}{has_version_in_each_file}});
+        },
     },
 ];
 }

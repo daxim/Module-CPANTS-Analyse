@@ -55,7 +55,7 @@ sub analyse {
         # Filenames that are not allowed under *nix can't be trapped
         # here now as they are not extracted at all.
         if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
-            push @{$me->d->{non_portable_filenames} ||= []}, $name;
+            push @{$me->d->{error}{non_portable_filenames} ||= []}, $name;
         }
 
         if ($name =~ m!(^|/)\._!) {
@@ -185,30 +185,52 @@ sub kwalitee_indicators {
         error=>q{This distribution doesn't extract well due to several reasons such as unsupported archive type (CPANTS only supports tar.gz, tgz and zip archives), file permissions, invalid filenames, and so on. Most of other kwalitee metrics should be ignored.},
         remedy=>q{Pack the distribution with a proper command such as "make dist" and "./Build dist", or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla. You might also need to set some options or environmental variables to ensure your archiver work portably.},
         code=>sub { shift->{extractable} ? 1 : -100 },
+        details=>sub {
+            my $d = shift;
+            my $error = $d->{error}{extractable} || $d->{error}{cpants};
+            return $error unless ref $error;
+            return Dumper($error);
+        }
     },
     {
         name=>'extracts_nicely',
         error=>q{This distribution doesn't create a directory and extracts its content into this directory. Instead, it spews its content into the current directory, making it really hard/annoying to remove the unpacked package.},
         remedy=>q{Pack the distribution with a proper command such as "make dist" and "./Build dist", or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla.},
         code=>sub { shift->{extracts_nicely} ? 1 : 0},
+        details=>sub {
+            my $d = shift;
+            return "More than one files and/or directories were extracted into the current directory, or the directory where distribution is extracted into did not match the distribution name.";
+        },
     },
     {
         name=>'has_readme',
         error=>q{The file "README" is missing from this distribution. The README provides some basic information to users prior to downloading and unpacking the distribution.},
         remedy=>q{Add a README to the distribution. It should contain a quick description of your module and how to install it.},
         code=>sub { shift->{file_readme} ? 1 : 0 },
+        details=>sub {
+            my $d = shift;
+            return "README was not found.";
+        },
     },
     {
         name=>'has_manifest',
         error=>q{The file "MANIFEST" is missing from this distribution. The MANIFEST lists all files included in the distribution.},
         remedy=>q{Add a MANIFEST to the distribution. Your buildtool should be able to autogenerate it (eg "make manifest" or "./Build manifest")},
         code=>sub { shift->{file_manifest} ? 1 : 0 },
+        details=>sub {
+            my $d = shift;
+            return "MANIFEST was not found.";
+        },
     },
     {
         name=>'has_meta_yml',
         error=>q{The file "META.yml" is missing from this distribution. META.yml is needed by people maintaining module collections (like CPAN), for people writing installation tools, or just people who want to know some stuff about a distribution before downloading it.},
         remedy=>q{Add a META.yml to the distribution. Your buildtool should be able to autogenerate it.},
         code=>sub { shift->{file_meta_yml} ? 1 : 0 },
+        details=>sub {
+            my $d = shift;
+            return "META.yml was not found.";
+        },
     },
     {
         name=>'has_buildtool',
@@ -219,18 +241,30 @@ sub kwalitee_indicators {
             return 1 if $d->{file_makefile_pl} || $d->{file_build_pl};
             return 0;
         },
+        details=>sub {
+            my $d = shift;
+            return "Neither Makefile.PL nor Build.PL was found.";
+        },
     },
     {
         name=>'has_changelog',
         error=>q{The distribution hasn't got a Changelog (named something like m/^chang(es?|log)|history$/i. A Changelog helps people decide if they want to upgrade to a new version.},
         remedy=>q{Add a Changelog (best named 'Changes') to the distribution. It should list at least major changes implemented in newer versions.},
         code=>sub { shift->{file_changelog} ? 1 : 0 },
+        details=>sub {
+            my $d = shift;
+            return "Any Changelog file was not found.";
+        },
     },
     {
         name=>'no_symlinks',
         error=>q{This distribution includes symbolic links (symlinks). This is bad, because there are operating systems that do not handle symlinks.},
         remedy=>q{Remove the symlinks from the distribution.},
         code=>sub {shift->{symlinks} ? 0 : 1},
+        details=>sub {
+            my $d = shift;
+            return "The following symlinks were found: ".join(';',@{$d->{symlinks}});
+        },
     },
     {
         name=>'has_tests',
@@ -238,8 +272,13 @@ sub kwalitee_indicators {
         remedy=>q{Add tests!},
         code=>sub {
             my $d=shift;
+            # TODO: make sure if .t files do exist in t/ directory.
             return 1 if $d->{file_test_pl} || $d->{dir_t};
             return 0;
+        },
+        details=>sub {
+            my $d = shift;
+            return q{Neither "test.pl" nor "t/" directory was not found.};
         },
     },
     {
@@ -249,8 +288,14 @@ sub kwalitee_indicators {
         remedy=>q{Add tests or move tests.pl to the t/ directory!},
         code=>sub {
             my $d=shift;
+            # TODO: make sure if .t files do exist in t/ directory.
             return 1 if !$d->{file_test_pl} && $d->{dir_t};
             return 0;
+        },
+        details=>sub {
+            my $d = shift;
+            return q{"test.pl" was found.} if $d->{file_test_pl};
+            return q{"t/" directory was not found.};
         },
     },
     {
@@ -258,6 +303,11 @@ sub kwalitee_indicators {
         error=>q{The build tool (Build.PL/Makefile.PL) is executable. This is bad because you should specify which perl you want to use while installing.},
         remedy=>q{Change the permissions of Build.PL/Makefile.PL to not-executable.},
         code=>sub {(shift->{buildfile_executable} || 0) > 0 ? 0 : 1},
+        details=>sub {
+            my $d = shift;
+            my %filetypes = (1 => 'Makefile.PL', 2 => 'Build.PL');
+            return ($filetypes{$d->{buildfile_executable}} || '') . " is executable.";
+        },
     },
     {
         name=>'has_example',
@@ -269,6 +319,10 @@ sub kwalitee_indicators {
             return 1 if grep {/^(bin|scripts?|ex|eg|examples?|samples?|demos?)\/\w/i} ( @{ $d->{files_array} }, @{ $d->{ignored_files_array} } );
             return 1 if grep {/\/(examples?|samples?|demos?)\.p(m|od)$/i} ( @{ $d->{files_array} }, @{ $d->{ignored_files_array} } );
             return 0;
+        },
+        details=>sub {
+            my $d = shift;
+            return "None of example files were found.";
         },
     },
     {
@@ -289,6 +343,10 @@ sub kwalitee_indicators {
             }
             return 1;
         },
+        details=>sub {
+            my $d = shift;
+            return "The following files were found: " . $d->{error}{no_generated_files};
+        },
     },
     {
         name=>'no_stdin_for_prompting',
@@ -301,6 +359,11 @@ sub kwalitee_indicators {
                 return 0;
             }
             return 1;
+        },
+        details=>sub {
+            my $d = shift;
+            return "<STDIN> was found in Makefile.PL" if $d->{stdin_in_makefile_pl};
+            return "<STDIN> was found in Build.PL" if $d->{stdin_in_build_pl};
         },
     },
     {
@@ -319,6 +382,10 @@ sub kwalitee_indicators {
             }
             return 1;
         },
+        details=>sub {
+            my $d = shift;
+            return "The following files were found: " . $d->{error}{no_large_files};
+        },
     },
     {
         name=>'non_portable_filenames',
@@ -326,8 +393,12 @@ sub kwalitee_indicators {
         remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
         code=>sub {
             my $d=shift;
-            return 0 if $d->{non_portable_filenames};
+            return 0 if $d->{error}{non_portable_filenames};
             return 1;
+        },
+        details=>sub {
+            my $d = shift;
+            return "The following files were found: " . (join ', ', @{$d->{error}{non_portable_filenames}});
         },
     },
     {
@@ -338,6 +409,10 @@ sub kwalitee_indicators {
             my $d=shift;
             return 0 if $d->{error}{no_dot_underscore_files};
             return 1;
+        },
+        details=>sub {
+            my $d = shift;
+            return "The following files were found: " . (join ', ', @{$d->{error}{no_dot_underscore_files}});
         },
     },
 ];

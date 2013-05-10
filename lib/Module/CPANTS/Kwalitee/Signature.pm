@@ -24,6 +24,10 @@ sub kwalitee_indicators {
             my $v = shift->{error}{valid_signature};
             return (SIGNATURE_OK == $v or SIGNATURE_MISSING == $v) ? 1 : 0;
         },
+        details=>sub {
+            my $d = shift;
+            return shift->{error}{valid_signature};
+        },
     }];
 }
 

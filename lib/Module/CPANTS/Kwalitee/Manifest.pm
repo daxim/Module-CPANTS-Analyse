@@ -73,6 +73,12 @@ sub kwalitee_indicators {
             error=>q{MANIFEST does not match the contents of this distribution.},
             remedy=>q{Run a proper command ("make manifest" or "./Build manifest", maybe with a force option), or use a distribution builder to generate the MANIFEST. Or update MANIFEST manually.},
             code=>sub { shift->{manifest_matches_dist} ? 1 : 0 },
+            details=>sub {
+                my $d = shift;
+                my $error = $d->{error}{manifest_matches_dist};
+                return $error unless ref $error;
+                return join "\n", @$error;
+            },
         }
     ];
 }

@@ -71,14 +71,22 @@ sub kwalitee_indicators{
             code=>sub {
                 my $d = shift;
                 return $d->{external_license_file} || $d->{license_in_pod} ? 1 : 0;
-            }
+            },
+            details=>sub {
+                my $d = shift;
+                return "Neither LICENSE file nor LICENSE section in pod was found.";
+            },
         },
         {
             name=>'has_separate_license_file',
             error=>q{This distribution does not have a LICENSE or LICENCE file in its root directory.},
             remedy=>q{This is not a critical issue. Currently mainly informative for the CPANTS authors. It might be removed later.},
             is_experimental=>1,
-            code=>sub { shift->{external_license_file} ? 1 : 0 }
+            code=>sub { shift->{external_license_file} ? 1 : 0 },
+            details=>sub {
+                my $d = shift;
+                return "LICENSE file was found.";
+            },
         },
 #        {
 #            name=>'has_known_license_in_external_license_file',
@@ -105,7 +113,11 @@ sub kwalitee_indicators{
                 $d->{error}{has_license_in_source_file} = "Seemingly conflicting licenses in files: "
                     . join ", ", map {"$_ : $d->{licenses}{$_}"} keys %{ $d->{licenses} };
                 return 0;
-            }
+            },
+            details=>sub {
+                my $d = shift;
+                return "LICENSE section was not found in the pod.";
+            },
         },
         {
             name=>'fits_fedora_license',
@@ -117,7 +129,12 @@ sub kwalitee_indicators{
                 my $license = $d->{meta_yml}{license};
                 return ((defined $license and grep {$license eq $_} @fedora_licenses) ? 1 : 0);
 
-            }
+            },
+            details=>sub {
+                my $d = shift;
+                my $license = $d->{meta_yml}{license} || 'unknown';
+                return "The license ($license) does not fit the licensing requirements of Fedora ($fedora_licenses).";
+            },
         },
  
     ];

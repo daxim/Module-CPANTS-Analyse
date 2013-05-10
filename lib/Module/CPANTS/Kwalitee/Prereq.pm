@@ -112,6 +112,10 @@ sub kwalitee_indicators{
                 # Module::CPANTS::ProcessCPAN
                 return 0;               
             },
+            details=>sub {
+                my $d = shift;
+                return "This distribution is not required by another distribution by another author.";
+            },
             needs_db=>1,
             is_extra=>1,
         },
@@ -124,6 +128,10 @@ sub kwalitee_indicators{
                 # Module::CPANTS::ProcessCPAN
                 return 0;               
             },
+            details=>sub {
+                my $d = shift;
+                return "This distribution uses a module or a dist that's not listed as a prerequisite.";
+            },
             needs_db=>1,
             is_extra=>1,
         },
@@ -135,6 +143,10 @@ sub kwalitee_indicators{
                 # this metric can only be run from within 
                 # Module::CPANTS::ProcessCPAN
                 return 0;               
+            },
+            details=>sub {
+                my $d = shift;
+                return "This distribution uses a module or a dist in it's test suite that's not listed as a build prerequisite.";
             },
             needs_db=>1,
             is_experimental=>1,

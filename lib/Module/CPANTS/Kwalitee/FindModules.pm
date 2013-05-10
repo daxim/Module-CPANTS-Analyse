@@ -119,6 +119,11 @@ sub kwalitee_indicators {
                 return 1 if @in_basedir == 1;
                 return 0;
             },
+            details=>sub {
+                my $d = shift;
+                my @in_basedir=grep { $_->{in_basedir} } @{$d->{modules}};
+                return "The following files were found: ".(join ', ', @in_basedir);
+            },
         },
     ];
 }

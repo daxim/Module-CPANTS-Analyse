@@ -82,7 +82,11 @@ sub kwalitee_indicators{
             name=>'metayml_is_parsable',
             error=>q{The META.yml file of this distribution could not be parsed by the version of CPAN::Meta::YAML.pm CPANTS is using.},
             remedy=>q{If you don't have one, add a META.yml file. Else, upgrade your YAML generator so it produces valid YAML.},
-            code=>sub { shift->{metayml_is_parsable} ? 1 : 0 }
+            code=>sub { shift->{metayml_is_parsable} ? 1 : 0 },
+            details=>sub {
+                my $d = shift;
+                $d->{error}{metayml_is_parsable};
+            },
         },
         {
             name=>'metayml_has_license',
@@ -91,7 +95,14 @@ sub kwalitee_indicators{
             code=>sub { 
                 my $d=shift;
                 my $yaml=$d->{meta_yml};
-                ($yaml->{license} and $yaml->{license} ne 'unknown') ? 1 : 0 }
+                ($yaml->{license} and $yaml->{license} ne 'unknown') ? 1 : 0 },
+            details=>sub {
+                my $d = shift;
+                my $yaml = $d->{meta_yml};
+                return "No META.yml." unless $yaml;
+                return "No license was found in META.yml." unless $yaml->{license};
+                return "Unknown license was found in META.yml.";
+            },
         },
         {
             name=>'metayml_has_provides',
@@ -103,6 +114,11 @@ sub kwalitee_indicators{
                 return 1 if $d->{meta_yml} && $d->{meta_yml}{provides};
                 return 0;
             },
+            details=>sub {
+                my $d = shift;
+                return "No META.yml." unless $d->{meta_yml};
+                return q{No "provides" was found in META.yml.};
+            },
         },
         {
             name=>'metayml_conforms_to_known_spec',
@@ -111,6 +127,11 @@ sub kwalitee_indicators{
             code=>sub {
                 my $d=shift;
                 return check_spec_conformance($d);
+            },
+            details=>sub {
+                my $d = shift;
+                return "No META.yml." unless $d->{meta_yml};
+                return join "; ", @{$d->{error}{metayml_conforms_to_known_spec}};
             },
         },
     {
@@ -122,6 +143,11 @@ sub kwalitee_indicators{
                 my $d=shift;
                 return check_spec_conformance($d,$CURRENT_SPEC,1);
             },
+            details=>sub {
+                my $d = shift;
+                return "No META.yml." unless $d->{meta_yml};
+                return join "; ", @{$d->{error}{metayml_conforms_to_spec_current}};
+            },
         },
         {
             name=>'metayml_declares_perl_version',
@@ -132,6 +158,13 @@ sub kwalitee_indicators{
                 my $d=shift;
                 my $yaml=$d->{meta_yml};
                 return ref $yaml->{requires} eq ref {} && $yaml->{requires}{perl} ? 1 : 0;
+            },
+            details=>sub {
+                my $d = shift;
+                my $yaml = $d->{meta_yml};
+                return "No META.yml." unless $yaml;
+                return q{No "requires" was found in META.yml.} unless ref $yaml->{requires} eq ref {};
+                return q{No "perl" subkey was found in META.yml.} unless $yaml->{requires}{perl};
             },
         },
     ];

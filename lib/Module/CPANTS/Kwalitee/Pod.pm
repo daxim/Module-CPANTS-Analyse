@@ -55,6 +55,9 @@ sub kwalitee_indicators {
             error=>q{The documentation for this distribution contains syntactic errors in its POD. Note that this metric tests all .pl, .pm and .pod files, even if they are in t/.},
             remedy=>q{Remove the POD errors. You can check for POD errors automatically by including Test::Pod to your test suite.},
             code=>sub { shift->{error}{no_pod_errors} ? 0 : 1 },
+            details=>sub {
+                return "The following POD errors were found: " . (shift->{error}{no_pod_errors});
+            },
         },
     ];
 }

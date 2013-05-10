@@ -120,12 +120,21 @@ sub kwalitee_indicators {
                     strictures
                 ));
 
+                my @no_strict;
                 for my $module (@{ $modules }) {
-                    return 0 if $strict_equivalents
+                    push @no_strict, $module->{name} if $strict_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
+                if (@no_strict) {
+                    $d->{error}{use_strict} = \@no_strict;
+                    return 0;
+                }
                 return 1;
+            },
+            details=>sub {
+                my $d = shift;
+                return "The following modules don't use strict (or equivalents): " . (join ", ", @{$d->{error}{use_strict}});
             },
         },
         {
@@ -164,12 +173,21 @@ sub kwalitee_indicators {
                     strictures
                 ));
 
+                my @no_warnings;
                 for my $module (@{ $modules }) {
-                    return 0 if $warnings_equivalents
+                    push @no_warnings, $module->{name} if $warnings_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
+                if (@no_warnings) {
+                    $d->{error}{no_warnings} = \@no_warnings;
+                    return 0;
+                }
                 return 1;
+            },
+            details=>sub {
+                my $d = shift;
+                return "The following modules don't use warnings (or equivalents): " . (join ", ", @{$d->{error}{use_warnings}});
             },
         },
     ];

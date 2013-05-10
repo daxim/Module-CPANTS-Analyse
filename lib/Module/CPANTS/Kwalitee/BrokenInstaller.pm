@@ -86,6 +86,9 @@ sub kwalitee_indicators {
         remedy=>q{Upgrade the bundled version of Module::Install to at least 0.61, but preferably to the most current release. Alternatively, you can switch to another build system / installer that does not suffer from this problem. (ExtUtils::MakeMaker, Module::Build both of which have their own set of problems.)},
         code=>sub {
             shift->{broken_module_install} ? 0 : 1 },
+        details=> sub {
+            q{This distribution uses obsolete Module::Install version }.(shift->{module_install_version});
+        },
     },
     {
         name=>'has_better_auto_install',
@@ -93,6 +96,9 @@ sub kwalitee_indicators {
         remedy=>q{Upgrade the bundled version of Module::Install to at least 0.89, but preferably to the most current release. Alternatively, you can switch to another build system / installer that does not suffer from this problem. (ExtUtils::MakeMaker, Module::Build both of which have their own set of problems.)},
         code=>sub {
             shift->{mi_auto_install_used} ? 0 : 1 },
+        details=> sub {
+            q{This distribution uses obsolete Module::Install version }.(shift->{module_install_version});
+        },
     },
 ];
 }
