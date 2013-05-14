@@ -114,6 +114,7 @@ sub kwalitee_indicators {
                     Modern::Perl
                     Mojo::Base
                     Moo
+                    Moo::Role
                     Moose
                     Moose::Role
                     MooseX::Declare
@@ -167,6 +168,7 @@ sub kwalitee_indicators {
                     Modern::Perl
                     Mojo::Base
                     Moo
+                    Moo::Role
                     Moose
                     Moose::Role
                     MooseX::Declare
