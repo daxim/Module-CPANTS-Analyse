@@ -47,16 +47,6 @@ sub analyse {
             chmod($perm | 0600, $path);
         }
 
-        if ($name =~ /\.(pl|pm|pod)$/) {
-            next unless -r $path; # skip if not readable
-            my $text = do { open my $fh, '<', $path; local $/; <$fh> };
-            my (@possible_licenses) = Software::LicenseUtils->guess_license_from_pod($text);
-            foreach my $license (@possible_licenses) {
-                $licenses{$license} = $name;
-                $files{$name}{license} = $license;
-            }
-        }
-
         # Some characters are not allowed or have special meanings
         # under some environment thus should be avoided.
         # Filenames that are not allowed under *nix can't be trapped
@@ -67,6 +57,16 @@ sub analyse {
 
         if ($name =~ m!(^|/)\._!) {
             push @dot_underscore_files, $name;
+        }
+
+        if ($name =~ /\.(pl|pm|pod)$/) {
+            next unless -r $path; # skip if not readable
+            my $text = do { open my $fh, '<', $path; local $/; <$fh> };
+            my (@possible_licenses) = Software::LicenseUtils->guess_license_from_pod($text);
+            foreach my $license (@possible_licenses) {
+                $licenses{$license} = $name;
+                $files{$name}{license} = $license;
+            }
         }
     }
 
