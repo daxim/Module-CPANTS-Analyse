@@ -71,13 +71,13 @@ sub analyse {
         }
         if ($uses{$mod}) {
             $uses{$mod}{'in_tests'}=$cnt;
-            $uses{$mod}{'evals_in_tests'}=($p->used_in_eval($mod) || 0);
+            $uses{$mod}{'evals_in_tests'}=($pt->used_in_eval($mod) || 0);
         } else {
             $uses{$mod}={
                 module=>$mod,
                 in_code=>0,
                 in_tests=>$cnt,
-                evals_in_tests=>($p->used_in_eval($mod) || 0),
+                evals_in_tests=>($pt->used_in_eval($mod) || 0),
             }
         }
     }
