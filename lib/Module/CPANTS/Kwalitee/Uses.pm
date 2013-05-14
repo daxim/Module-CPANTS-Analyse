@@ -130,7 +130,7 @@ sub kwalitee_indicators {
 
                 my @no_strict;
                 for my $module (@{ $modules }) {
-                    push @no_strict, $module->{name} if $strict_equivalents
+                    push @no_strict, $module->{module} if $strict_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
@@ -183,7 +183,7 @@ sub kwalitee_indicators {
 
                 my @no_warnings;
                 for my $module (@{ $modules }) {
-                    push @no_warnings, $module->{name} if $warnings_equivalents
+                    push @no_warnings, $module->{module} if $warnings_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
