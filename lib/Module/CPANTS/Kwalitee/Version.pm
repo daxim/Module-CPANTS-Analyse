@@ -68,7 +68,7 @@ sub kwalitee_indicators {
                 my @errors = map { $_ }
                     grep { ! defined $d->{versions}{$_} }
                     keys %{ $d->{versions} };
-                $d->{error}{has_version_in_each_file} = \@errors;
+                $d->{error}{has_version_in_each_file} = \@errors if @errors;
                 return 0;
             }
         },
