@@ -40,6 +40,13 @@ sub analyse {
         $files{$name}{size} += -s $path || 0;
         $size += $files{$name}{size};
 
+        # chmod if not readable
+        if (-e $path && !-r _) {
+            $files{$name}{unreadable} = 1;
+            my $perm = ((stat($path))[2] || 0) & 07777;
+            chmod($perm | 0600, $path);
+        }
+
         if ($name =~ /\.(pl|pm|pod)$/) {
             next unless -r $path; # skip if not readable
             my $text = do { open my $fh, '<', $path; local $/; <$fh> };
