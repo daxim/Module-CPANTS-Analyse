@@ -368,15 +368,6 @@ my @tests = (
         error => {
         },
     },
-    {
-        dist => 't/eg/Set-Object-1.28.tar.gz',
-        kwalitee => {
-            valid_signature => 0,
-        },
-        error => {
-            valid_signature => -4,
-        },
-    },
 );
 
 plan tests => 1 + 3 * @tests;
