@@ -21,7 +21,10 @@ sub analyse {
     my $files=$me->d->{files_array};
     my $distdir=$me->distdir;
     my $meta_yml=catfile($distdir,'META.yml');
-    return unless -f $meta_yml;
+    unless (-f $meta_yml) {
+        $me->d->{error}{metayml_is_parsable}="META.yml was not found";
+        return;
+    }
 
     eval {
         open my $fh, '<:utf8', $meta_yml or die $!;
