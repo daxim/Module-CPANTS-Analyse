@@ -270,7 +270,7 @@ sub kwalitee_indicators {
         code=>sub {shift->{symlinks} ? 0 : 1},
         details=>sub {
             my $d = shift;
-            return "The following symlinks were found: ".join(';',@{$d->{symlinks}});
+            return "The following symlinks were found: ".$d->{symlinks_list};
         },
     },
     {
