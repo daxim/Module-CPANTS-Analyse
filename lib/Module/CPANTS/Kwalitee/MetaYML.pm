@@ -149,7 +149,7 @@ sub kwalitee_indicators{
             details=>sub {
                 my $d = shift;
                 return "No META.yml." unless $d->{meta_yml};
-                return join "; ", @{$d->{error}{metayml_conforms_to_spec_current}};
+                return join "; ", @{$d->{error}{metayml_conforms_spec_current}};
             },
         },
         {
