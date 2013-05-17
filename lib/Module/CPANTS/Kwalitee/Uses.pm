@@ -190,7 +190,7 @@ sub kwalitee_indicators {
                         ->is_empty;
                 }
                 if (@no_warnings) {
-                    $d->{error}{no_warnings} = \@no_warnings;
+                    $d->{error}{use_warnings} = \@no_warnings;
                     return 0;
                 }
                 return 1;
