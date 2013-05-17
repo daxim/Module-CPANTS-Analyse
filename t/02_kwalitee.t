@@ -6,9 +6,9 @@ use Test::NoWarnings;
 
 use Module::CPANTS::Kwalitee;
 
-my $CORE = 26;
-my $EXTRA = 8; #is_extra set
-my $EXPERIMENTAL = 10; #experimental?
+my $CORE = 24;
+my $EXTRA = 6; #is_extra set
+my $EXPERIMENTAL = 9; #experimental?
 my $METRICS = $CORE + $EXTRA + $EXPERIMENTAL;
 
 plan tests => 8 + 2 * $METRICS;
