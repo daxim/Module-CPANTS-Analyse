@@ -33,7 +33,7 @@ sub kwalitee_indicators{
             code=>\&_aggregator,
             details=>sub {
                 my $d = shift;
-                return "Fix the following metrics: ".@{$d->{easily_repackageable_by_debian}};
+                return "Fix the following metrics: ".$d->{easily_repackageable_by_debian};
             },
          },
          {
@@ -45,7 +45,7 @@ sub kwalitee_indicators{
             code=>\&_aggregator,
             details=>sub {
                 my $d = shift;
-                return "Fix the following metrics: ".@{$d->{easily_repackageable_by_fedora}};
+                return "Fix the following metrics: ".$d->{easily_repackageable_by_fedora};
             },
         },
          {
@@ -57,7 +57,7 @@ sub kwalitee_indicators{
             code=>\&_aggregator,
             details=>sub {
                 my $d = shift;
-                return "Fix the following metrics: ".@{$d->{easily_repackageable}};
+                return "Fix the following metrics: ".$d->{easily_repackageable};
             },
         },
     ];
