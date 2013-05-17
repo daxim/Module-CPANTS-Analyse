@@ -27,7 +27,6 @@ my $expected = {
            'metayml_is_parsable' => 1,
            'proper_libs' => 1,
            'has_changelog' => 1,
-           'no_pod_errors' => 1,
            'use_strict' => 1,
            'kwalitee' => 27,
            'no_stdin_for_prompting' => 1,

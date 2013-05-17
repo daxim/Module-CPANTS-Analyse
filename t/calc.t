@@ -44,7 +44,6 @@ my $expected_kwalitee =  {
            'easily_repackageable' => 0,
            'proper_libs' => 1,
            'has_changelog' => 1,
-           'no_pod_errors' => 1,
            'use_strict' => 1,
            'kwalitee' => 29,
            'has_tests' => 1,
