@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 17;
+use Test::More tests => 16;
 use Test::NoWarnings;
 
 use Module::CPANTS::Analyse;
@@ -25,7 +25,6 @@ ok($d->{files} == 382 || $d->{files} == 381,'files');
 is($d->{size_packed},184395,'size_packed');
 is(ref($d->{modules}),'ARRAY','modules is ARRAY');
 is($d->{modules}[0]->{module},'AFS','module');
-is(ref($d->{prereq}),'ARRAY','prereq is ARRAY');
 is(ref($d->{uses}),'HASH','uses is HASH');
 ok($d->{file_meta_yml},'has_yaml');
 ok($d->{metayml_is_parsable},'metayml_is_parsable');

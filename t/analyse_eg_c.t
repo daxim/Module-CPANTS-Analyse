@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 12;
+use Test::More tests => 11;
 
 use Module::CPANTS::Analyse;
 use File::Spec::Functions;
@@ -20,7 +20,6 @@ is($d->{files}, 8,'files');
 is($d->{size_packed},2223,'size_packed');
 is(ref($d->{modules}),'ARRAY','modules is ARRAY');
 is($d->{modules}[0]->{module},'Eg::C','module');
-is(ref($d->{prereq}),'ARRAY','prereq is ARRAY');
 is(ref($d->{uses}),'HASH','uses is HASH');
 ok($d->{file_meta_yml},'has_yaml');
 ok($d->{metayml_is_parsable},'metayml_is_parsable');
