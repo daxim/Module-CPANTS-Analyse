@@ -19,9 +19,14 @@ sub new {
         ## no critic (ProhibitStringyEval)
         eval "require $gen";
         croak qq{cannot load $gen: $@} if $@;
-        $generators{$gen}=$gen->order;        
+        $generators{$gen}= [ $gen->order, $gen ];
     }
-    my @generators=sort { $generators{$a} <=> $generators{$b} } keys %generators;
+    # sort by 'order' first, then name
+    my @generators=sort {
+        $generators{$a}->[0] <=> $generators{$b}->[0]
+            ||
+        $generators{$a}->[1] cmp $generators{$b}->[1]
+    } keys %generators;
     $me->generators(\@generators);
     $me->_gencache({});
     return $me;
