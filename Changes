@@ -4,6 +4,14 @@
 
 Changes - Revision history for Module-CPANTS-Analyse
 
+=head2 0.89
+
+=over
+
+=item RT#86504 - fix sort order of Kwalitee generators (ether)
+
+=back
+
 =head2 0.88 (QA Hackathon 2013)
 
 =over
