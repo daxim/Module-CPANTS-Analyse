@@ -184,12 +184,14 @@ sub kwalitee_indicators {
         name=>'extractable',
         error=>q{This package uses an unknown packaging format. CPANTS can handle tar.gz, tgz and zip archives. No kwalitee metrics have been calculated.},
         remedy=>q{Pack the distribution with tar & gzip or zip.},
+        needs_tarball=>1,
         code=>sub { shift->{extractable} ? 1 : -100 },
     },
     {
         name=>'extracts_nicely',
         error=>q{This package doesn't create a directory and extracts its content into this directory. Instead, it spews its content into the current directory, making it really hard/annoying to remove the unpacked package.},
         remedy=>q{Issue the command to pack the distribution in the directory above it. Or use a buildtool ('make dist' or 'Build dist')},
+        needs_tarball=>1,
         code=>sub { shift->{extracts_nicely} ? 1 : 0},
     },
     {

@@ -72,6 +72,7 @@ sub kwalitee_indicators {
             name=>'manifest_matches_dist',
             error=>q{MANIFEST does not match the contents of this distribution. See 'error_manifest_matches_dist' in the dist view for more info.},
             remedy=>q{Use a buildtool to generate the MANIFEST. Or update MANIFEST manually.},
+            needs_tarball=>1,
             code=>sub { shift->{manifest_matches_dist} ? 1 : 0 },
         }
     ];
