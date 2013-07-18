@@ -277,6 +277,7 @@ sub kwalitee_indicators {
         name=>'no_generated_files',
         error=>q{This distribution has a file that should be generated at build time, not distributed by the author.},
         remedy=>q{Remove the offending file!},
+        no_build=>1,
         code=>sub {
             my $d=shift;
             #die Dumper \%generated_db_files;
