@@ -215,7 +215,7 @@ sub kwalitee_indicators {
     {
         name=>'has_buildtool',
         error=>q{Makefile.PL and/or Build.PL are missing. This makes installing this distribution hard for humans and impossible for automated tools like CPAN/CPANPLUS},
-        remedy=>q{Use a buildtool like Module::Build (recomended) or ExtUtils::MakeMaker to manage your distribution},
+        remedy=>q{Use a buildtool like Module::Build (recommended) or ExtUtils::MakeMaker to manage your distribution},
         code=>sub {
             my $d=shift;
             return 1 if $d->{file_makefile_pl} || $d->{file_build_pl};
