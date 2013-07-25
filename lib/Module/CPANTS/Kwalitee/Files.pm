@@ -184,12 +184,14 @@ sub kwalitee_indicators {
         name=>'extractable',
         error=>q{This package uses an unknown packaging format. CPANTS can handle tar.gz, tgz and zip archives. No kwalitee metrics have been calculated.},
         remedy=>q{Pack the distribution with tar & gzip or zip.},
+        needs_tarball=>1,
         code=>sub { shift->{extractable} ? 1 : -100 },
     },
     {
         name=>'extracts_nicely',
         error=>q{This package doesn't create a directory and extracts its content into this directory. Instead, it spews its content into the current directory, making it really hard/annoying to remove the unpacked package.},
         remedy=>q{Issue the command to pack the distribution in the directory above it. Or use a buildtool ('make dist' or 'Build dist')},
+        needs_tarball=>1,
         code=>sub { shift->{extracts_nicely} ? 1 : 0},
     },
     {
@@ -213,7 +215,7 @@ sub kwalitee_indicators {
     {
         name=>'has_buildtool',
         error=>q{Makefile.PL and/or Build.PL are missing. This makes installing this distribution hard for humans and impossible for automated tools like CPAN/CPANPLUS},
-        remedy=>q{Use a buildtool like Module::Build (recomended) or ExtUtils::MakeMaker to manage your distribution},
+        remedy=>q{Use a buildtool like Module::Build (recommended) or ExtUtils::MakeMaker to manage your distribution},
         code=>sub {
             my $d=shift;
             return 1 if $d->{file_makefile_pl} || $d->{file_build_pl};
@@ -275,6 +277,7 @@ sub kwalitee_indicators {
         name=>'no_generated_files',
         error=>q{This distribution has a file that should be generated at build time, not distributed by the author.},
         remedy=>q{Remove the offending file!},
+        no_build=>1,
         code=>sub {
             my $d=shift;
             #die Dumper \%generated_db_files;
