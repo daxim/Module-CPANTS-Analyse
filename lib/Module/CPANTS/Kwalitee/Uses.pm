@@ -136,14 +136,14 @@ sub kwalitee_indicators {
                         ->is_empty;
                 }
                 if (@no_strict) {
-                    $d->{error}{use_strict} = \@no_strict;
+                    $d->{error}{use_strict} = join ", ", @no_strict;
                     return 0;
                 }
                 return 1;
             },
             details=>sub {
                 my $d = shift;
-                return "The following modules don't use strict (or equivalents): " . (join ", ", @{$d->{error}{use_strict}});
+                return "The following modules don't use strict (or equivalents): " . $d->{error}{use_strict};
             },
         },
         {
@@ -190,14 +190,14 @@ sub kwalitee_indicators {
                         ->is_empty;
                 }
                 if (@no_warnings) {
-                    $d->{error}{use_warnings} = \@no_warnings;
+                    $d->{error}{use_warnings} = join ", ", @no_warnings;
                     return 0;
                 }
                 return 1;
             },
             details=>sub {
                 my $d = shift;
-                return "The following modules don't use warnings (or equivalents): " . (join ", ", @{$d->{error}{use_warnings}});
+                return "The following modules don't use warnings (or equivalents): " . $d->{error}{use_warnings};
             },
         },
     ];
