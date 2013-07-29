@@ -100,7 +100,7 @@ sub analyse {
     foreach my $f (@dirs, @files) {
         my $p = catfile($distdir,$f);
         if (-l $p) {
-            push(@symlinks,$f);# if $manifest and exists $manifest->{$f};
+            push(@symlinks,$f);
         }
     }
 
