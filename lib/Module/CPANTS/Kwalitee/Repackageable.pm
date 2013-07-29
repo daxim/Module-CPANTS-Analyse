@@ -14,7 +14,13 @@ sub analyse {
     my $class=shift;
     my $me=shift;
 
-   
+    # NOTE: The analysis/metric in this module has moved to
+    # Module::CPANTS::SiteKwalitee.
+
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Signature module, and the old
+    # metrics will not be loaded while loading plugins.
+
     return;
 }
 
@@ -23,56 +29,7 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators{
-    return [
-         {
-            name=>'easily_repackageable_by_debian',
-            error=>qq{It is easy to repackage this module by Debian.},
-            remedy=>q{Fix each one of the metrics this depends on.},
-            aggregating => [qw(no_generated_files has_tests_in_t_dir no_stdin_for_prompting)],
-            is_experimental=>1,
-            code=>\&_aggregator,
-            details=>sub {
-                my $d = shift;
-                return "Fix the following metrics: ".$d->{easily_repackageable_by_debian};
-            },
-         },
-         {
-            name=>'easily_repackageable_by_fedora',
-            error=>qq{It is easy to repackage this module by Fedora.},
-            remedy=>q{Fix each one of the metrics this depends on.},
-            aggregating=> [qw(no_generated_files fits_fedora_license)],
-            is_experimental=>1,
-            code=>\&_aggregator,
-            details=>sub {
-                my $d = shift;
-                return "Fix the following metrics: ".$d->{easily_repackageable_by_fedora};
-            },
-        },
-         {
-            name=>'easily_repackageable',
-            error=>qq{It is easy to repackage this module. See http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging},
-            remedy=>q{Fix each one of the metrics this depends on.},
-            aggregating=>[qw(easily_repackageable_by_debian easily_repackageable_by_fedora)],
-            is_experimental=>1,
-            code=>\&_aggregator,
-            details=>sub {
-                my $d = shift;
-                return "Fix the following metrics: ".$d->{easily_repackageable};
-            },
-        },
-    ];
-}
-
-sub _aggregator { 
-    my $d=shift;
-    my $metric=shift;
-
-    my @errors = grep { !$d->{kwalitee}{$_} } @{ $metric->{aggregating} };
-    if (@errors) {
-        $d->{ $metric->{name} } = join ", ", @errors;
-        return 0;
-    }
-    return 1;
+    return [];
 }
 
 q{Favourite record of the moment:
