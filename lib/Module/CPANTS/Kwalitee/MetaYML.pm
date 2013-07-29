@@ -7,7 +7,7 @@ use Test::CPAN::Meta::YAML::Version;
 
 our $VERSION = '0.87';
 
-sub order { 20 }
+sub order { 10 }
 
 my $CURRENT_SPEC = '1.4';
 
@@ -231,7 +231,8 @@ Checks various pieces of information in META.yml
 
 Defines the order in which Kwalitee tests should be run.
 
-Returns C<11>.
+Returns C<10>. MetaYML should be checked earlier than Files to
+handle no_index correctly.
 
 =head3 analyse
 
