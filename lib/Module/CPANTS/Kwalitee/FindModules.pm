@@ -112,18 +112,24 @@ sub kwalitee_indicators {
             is_extra => 1,
             code=>sub { 
                 my $d=shift;
-                my $modules=$d->{modules};
-                return 0 unless $modules;
+                my @modules = @{$d->{modules}};
+                return 0 unless @modules;
 
-                my @in_basedir=grep { $_->{in_basedir} } @$modules;
-                return 1 if $d->{dir_lib} && @in_basedir == 0;
+                my @not_in_lib = grep { !$_->{in_lib} } @modules;
+                return 1 unless @not_in_lib;
+
+                my @in_basedir=grep { $_->{in_basedir} } @not_in_lib;
                 return 1 if @in_basedir == 1;
+
+                $d->{error}{proper_libs} = join ', ', map {$_->{file}} @not_in_lib;
+
                 return 0;
             },
             details=>sub {
                 my $d = shift;
-                my @in_basedir=grep { $_->{in_basedir} } @{$d->{modules}};
-                return "The following files were found: ".(join ', ', @in_basedir);
+                my @modules = @{$d->{modules}};
+                return "No modules were found" unless @modules;
+                return "The following files were found: ".$d->{error}{proper_libs};
             },
         },
     ];
