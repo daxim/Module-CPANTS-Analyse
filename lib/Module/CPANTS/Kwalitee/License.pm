@@ -133,13 +133,7 @@ sub kwalitee_indicators{
             remedy=>q{Add =head1 LICENSE and the text of the license to the main module in your code.},
             code=>sub {
                 my $d = shift;
-                # data collected in File.pm
-                
-                return 0 if not $d->{licenses};
-                return 1 if $d->{license_type};
-                $d->{error}{has_license_in_source_file} = "Seemingly conflicting licenses in files: "
-                    . join ", ", map {"$_ : $d->{licenses}{$_}"} keys %{ $d->{licenses} };
-                return 0;
+                return $d->{license_in_pod} ? 1 : 0;
             },
             details=>sub {
                 my $d = shift;
