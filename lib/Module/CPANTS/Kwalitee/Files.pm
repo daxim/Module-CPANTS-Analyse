@@ -38,6 +38,9 @@ sub analyse {
     my @dirs  = $dir_find_rule->in($distdir);
     #my $unixy=join('/',splitdir($File::Find::name));
 
+    # Respect no_index if possible
+    my $no_index_re = $class->_make_no_index_regex($me);
+
     my $size = 0;
     my %files;
     my %licenses;
@@ -99,6 +102,21 @@ sub analyse {
         if (-l $p) {
             push(@symlinks,$f);# if $manifest and exists $manifest->{$f};
         }
+    }
+
+    # above checks should be done even with files to be ignored
+    if ($no_index_re) {
+        my %ignored_files;
+        for my $name (@files) {
+            (my $name_to_test = $name) =~ s|\\|/|g;
+            $name_to_test =~ s|/$||;
+            if ($name_to_test =~ qr/$no_index_re/) {
+                $ignored_files{$name} = 1;
+                next;
+            }
+        }
+        @files = grep { !$ignored_files{$_} } @files;
+        $me->d->{ignored_files_array} = [sort keys %ignored_files];
     }
 
     # store stuff
@@ -186,6 +204,34 @@ sub map_filenames {
         $ret{$db_file}=$file;
     }
     return %ret;
+}
+
+sub _make_no_index_regex {
+    my ($class, $me) = @_;
+
+    my $meta = $me->d->{meta_yml};
+    return unless $meta && ref $meta eq ref {};
+
+    my $no_index = $meta->{no_index} || $meta->{private};
+    return unless $no_index && ref $no_index eq ref {};
+
+    my %map = (
+        file => '\z',
+        directory => '/',
+    );
+    my @ignore;
+    for my $type (qw/file directory/) {
+        next unless $no_index->{$type};
+        my $rest = $map{$type};
+        my @entries = ref $no_index->{$type} eq ref []
+            ? @{ $no_index->{$type} }
+            : ( $no_index->{$type} );
+        push @ignore, map {"^$_$rest"} @entries;
+    }
+    return unless @ignore;
+
+    $me->d->{no_index} = join ';', sort @ignore;
+    return '(?:' . (join '|', @ignore) . ')';
 }
 
 ##################################################################
