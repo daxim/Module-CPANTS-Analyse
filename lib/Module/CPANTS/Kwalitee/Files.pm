@@ -211,7 +211,12 @@ sub kwalitee_indicators {
         name=>'has_meta_yml',
         error=>q{The file "META.yml" is missing from this distribution. META.yml is needed by people maintaining module collections (like CPAN), for people writing installation tools, or just people who want to know some stuff about a distribution before downloading it.},
         remedy=>q{Add a META.yml to the distribution. Your buildtool should be able to autogenerate it.},
-        code=>sub { shift->{file_meta_yml} ? 1 : 0 },
+        code=>sub {
+            my $d = shift;
+            return 1 if $d->{file_meta_yml};
+            return 1 if $d->{is_local_distribution} && $d->{file_mymeta_yml};
+            return 0;
+        },
         details=>sub {
             my $d = shift;
             return "META.yml was not found.";
