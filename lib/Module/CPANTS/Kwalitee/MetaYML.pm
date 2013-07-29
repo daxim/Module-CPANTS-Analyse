@@ -255,9 +255,7 @@ Returns the Kwalitee Indicators datastructure.
 
 =item * metayml_has_license
 
-=item * metayml_conforms_spec_1_0
-
-=item * metayml_conforms_known_spec
+=item * metayml_conforms_to_known_spec
 
 =item * metayml_conforms_spec_current
 
