@@ -107,6 +107,7 @@ sub kwalitee_indicators{
             name=>'metayml_has_license',
             error=>q{This distribution does not have a license defined in META.yml.},
             remedy=>q{Define the license if you are using in Build.PL. If you are using MakeMaker (Makefile.PL) you should upgrade to ExtUtils::MakeMaker version 6.31.},
+            is_extra=>1,
             code=>sub { 
                 my $d=shift;
                 my $yaml=$d->{meta_yml};
