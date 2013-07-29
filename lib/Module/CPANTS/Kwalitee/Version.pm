@@ -28,36 +28,7 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators {
-  return [
-    {
-        name=>'has_version_in_each_file',
-        error=>qq{This distribution has a .pm file without a version number. (Using $match_version to match them)},
-        remedy=>q{Add a version number to each .pm file.},
-        is_experimental=>1,
-        code=>sub {
-            my $d=shift;
-            #use Data::Dumper;
-            #die Dumper $d->{versions};
-            my $number_modules = scalar @{$d->{modules} || []};
-            my $number_pm_with_version = scalar grep { defined $d->{versions}{$_} } keys %{ $d->{versions} };
-            
-            if ($number_modules == $number_pm_with_version) {
-                return 1;
-            }
-            else {
-                my @errors = map { $_ }
-                    grep { ! defined $d->{versions}{$_} }
-                    keys %{ $d->{versions} };
-                $d->{error}{has_version_in_each_file} = \@errors if @errors;
-                return 0;
-            }
-        },
-        details=>sub {
-            my $d = shift;
-            return "The following files don't have a version: " . (join ", ", @{$d->{error}{has_version_in_each_file}});
-        },
-    },
-];
+  return [];
 }
 
 
