@@ -1,7 +1,6 @@
 package Module::CPANTS::Kwalitee::Distname;
 use warnings;
 use strict;
-use CPAN::DistnameInfo;
 
 our $VERSION = '0.87';
 
@@ -14,34 +13,13 @@ sub order { 15 }
 sub analyse {
     my $class=shift;
     my $me=shift;
-    
-    my $di=CPAN::DistnameInfo->new($me->dist);
-    my ($major,$minor);
-    if ($di->version) {
-        ($major,$minor)=$di->version=~/^(\d+)\.(.*)/;
-    }
-    $major=0 unless defined($major);
-    my $ext=$di->extension || 'unknown';
-    
-    $me->d->{package}=$di->filename;
-    $me->d->{vname}=$di->distvname;
-    $me->d->{extension}=$ext;
-    $me->d->{version}=$di->version;
-    $me->d->{version_major}=$major;
-    $me->d->{version_minor}=$minor;
-    $me->d->{dist}=$di->dist;
-    $me->d->{author}=$di->cpanid;
 
-    unless($me->d->{package}) {
-        $me->d->{package}=$me->tarball;
-    }
-    
-    # TODO
-    # some authors have dirs on CPAN containing their dist:
-    # id/R/RM/RMCFARLA/AI-LibNeural/AI-LibNeural-0.02.tar.gz
-    # hack around this...
-    #$to=~s|^[\w-]+/||;
+    # NOTE: The analysis code has moved to ::Analyse to avoid
+    # duplication.
 
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Signature module, and the old
+    # metrics will not be loaded while loading plugins.
     return;
 }
 
