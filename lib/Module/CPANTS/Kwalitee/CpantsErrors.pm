@@ -40,6 +40,19 @@ sub kwalitee_indicators {
     # is found in the log, add some metrics (if it's worth),
     # or just fix our problems.
 
+    # Older Test::Kwalitee (prior to 1.08) has hardcoded metrics
+    # names in it, and if those metrics are gone from
+    # Module::CPANTS::Kwalitee, it fails because the number of tests
+    # is not as expected. This is not beautiful, but better than
+    # to break others' distributions needlessly.
+    if ($INC{"Test/Kwalitee.pm"}) {
+        return [
+            map {+{name => $_, code => sub {1}}}
+            qw/extractable no_pod_errors
+               has_test_pod has_test_pod_coverage/
+        ] if $Test::Kwalitee::VERSION < 1.08;
+    }
+
     return [];
 }
 
