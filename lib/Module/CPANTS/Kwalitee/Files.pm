@@ -6,9 +6,6 @@ use File::Spec::Functions qw(catdir catfile abs2rel splitdir);
 use File::stat;
 use File::Basename;
 use Data::Dumper;
-use Readonly;
-use Software::LicenseUtils;
-use ExtUtils::Manifest;
 
 our $VERSION = '0.87';
 
@@ -43,7 +40,6 @@ sub analyse {
 
     my $size = 0;
     my %files;
-    my %licenses;
     my @dot_underscore_files;
     foreach my $name (@files) {
         my $path = catfile($distdir, $name);
@@ -68,34 +64,12 @@ sub analyse {
         if ($name =~ m!(^|/)\._!) {
             push @dot_underscore_files, $name;
         }
-
-        if ($name =~ /\.(pl|pm|pod)$/) {
-            next unless -r $path; # skip if not readable
-            my $text = do { open my $fh, '<', $path; local $/; <$fh> };
-            my (@possible_licenses) = Software::LicenseUtils->guess_license_from_pod($text);
-            foreach my $license (@possible_licenses) {
-                $licenses{$license} = $name;
-                $files{$name}{license} = $license;
-            }
-        }
-    }
-
-    if (%licenses) {
-        $me->d->{licenses} = \%licenses;
-        if (keys %licenses == 1) {
-            my ($type) = keys %licenses;
-            $me->d->{license_type} = $type;
-            $me->d->{license_file} = $licenses{$type};
-        }
     }
 
     #die Dumper \%files;
     $me->d->{size_unpacked}=$size;
 
     # find symlinks
-    my $manifest = -f catfile($distdir, 'MANIFEST')
-                   ? ExtUtils::Manifest::maniread(catfile($distdir, 'MANIFEST'))
-		   : {};
     my @symlinks;
     foreach my $f (@dirs, @files) {
         my $p = catfile($distdir,$f);
