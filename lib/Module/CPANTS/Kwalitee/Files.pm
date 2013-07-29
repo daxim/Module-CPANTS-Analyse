@@ -1,7 +1,7 @@
 package Module::CPANTS::Kwalitee::Files;
 use warnings;
 use strict;
-use File::Find::Rule;
+use File::Find::Rule::VCS;
 use File::Spec::Functions qw(catdir catfile abs2rel splitdir);
 use File::stat;
 use File::Basename;
@@ -26,9 +26,16 @@ sub analyse {
     my $class=shift;
     my $me=shift;
     my $distdir=$me->distdir;
-    
-    my @files = File::Find::Rule->file()->relative()->in($distdir);
-    my @dirs  = File::Find::Rule->directory()->relative()->in($distdir);
+
+    my $file_find_rule = File::Find::Rule::VCS->file()->relative();
+    my $dir_find_rule = File::Find::Rule::VCS->directory()->relative();
+    if ($me->d->{is_local_distribution}) {
+        $file_find_rule->ignore_vcs();
+        $dir_find_rule->ignore_vcs();
+    }
+
+    my @files = $file_find_rule->in($distdir);
+    my @dirs  = $dir_find_rule->in($distdir);
     #my $unixy=join('/',splitdir($File::Find::name));
 
     my $size = 0;
