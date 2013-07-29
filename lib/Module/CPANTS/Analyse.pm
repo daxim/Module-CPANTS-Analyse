@@ -39,6 +39,9 @@ sub new {
     main::logger("distro: $opts->{dist}");
 
     $me->mck(Module::CPANTS::Kwalitee->new);
+
+    # For Test::Kwalitee and friends
+    $me->d->{is_local_distribution} = 1 if -d $opts->{dist};
     
     unless ($me->opts->{no_capture} or $INC{'Test/More.pm'}) {
         my $cserr=IO::Capture::Stderr->new;
