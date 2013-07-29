@@ -1,10 +1,6 @@
 package Module::CPANTS::Kwalitee::Version;
 use warnings;
 use strict;
-use File::Find;
-use File::Spec::Functions qw(catdir catfile abs2rel splitdir);
-use File::stat;
-use File::Basename;
 
 our $VERSION = '0.87';
 
@@ -14,31 +10,15 @@ sub order { 100 }
 # Analyse
 ##################################################################
 
-my $match_version = qr/\$VERSION/;
-
 sub analyse {
-    my $class=shift;
-    my $me=shift;
-    my $distdir=$me->distdir;
-    
+    # NOTE: The analysis/metrics in this module have moved to
+    # Module::CPANTS::SiteKwalitee because these requires
+    # a finalized META file to detect (or ignore) versions
+    # correctly.
 
-    my %version_of;
-    foreach my $module (@{$me->d->{modules}}) {
-        my $version;
-        if (open my $fh, '<', catfile($distdir, $module->{file})) {
-            while (my $line = <$fh>) {
-                if ($line =~ $match_version) {
-                    $version = $line;  
-                    last;
-                }
-            }
-        }
-        $version_of{$module->{file}} = $version if $module->{file};
-    }
-
-    $me->d->{versions} = \%version_of;
-
-    return;
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Prereq module, and the old
+    # metrics will not be loaded while loading plugins.
 }
 
 
