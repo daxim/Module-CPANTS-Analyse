@@ -55,6 +55,27 @@ sub unpack {
     my $me=shift;
     return 'cant find dist' unless $me->dist;
 
+    my $di=CPAN::DistnameInfo->new($me->dist);
+    my ($major,$minor);
+    if ($di->version) {
+        ($major,$minor)=$di->version=~/^(\d+)\.(.*)/;
+    }
+    $major=0 unless defined($major);
+    my $ext=$di->extension || 'unknown';
+    
+    $me->d->{package}=$di->filename;
+    $me->d->{vname}=$di->distvname;
+    $me->d->{extension}=$ext;
+    $me->d->{version}=$di->version;
+    $me->d->{version_major}=$major;
+    $me->d->{version_minor}=$minor;
+    $me->d->{dist}=$di->dist;
+    $me->d->{author}=$di->cpanid;
+
+    unless($me->d->{package}) {
+        $me->d->{package}=$me->tarball;
+    }
+
     copy($me->dist,$me->testfile);
     $me->d->{size_packed}=-s $me->testfile;
     
@@ -84,7 +105,6 @@ sub unpack {
    
     opendir(my $fh_testdir,$me->testdir) || die "Cannot open ".$me->testdir.": $!";
     my @stuff=grep {/\w/} readdir($fh_testdir);
-    my $di=CPAN::DistnameInfo->new($me->dist);
 
     if (@stuff == 1) {
         $me->distdir(catdir($me->testdir,$stuff[0]));
