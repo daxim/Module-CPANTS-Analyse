@@ -58,10 +58,6 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators{
-    my @fedora_licenses = qw(perl apache artistic_2 gpl lgpl mit mozilla);
-    # based on: http://fedoraproject.org/wiki/Licensing
-    my $fedora_licenses = "Acceptable licenses: (" . join(", ", @fedora_licenses) . ")";
-
     return [
          {
             name=>'has_human_readable_license',
@@ -118,24 +114,6 @@ sub kwalitee_indicators{
                 return "LICENSE section was not found in the pod.";
             },
         },
-        {
-            name=>'fits_fedora_license',
-            error=>qq{Fits the licensing requirements of Fedora ($fedora_licenses).},
-            remedy=>q{Replace the license or convince Fedora to accept this license as well.},
-            is_experimental=>1,
-            code=>sub { 
-                my $d=shift;
-                my $license = $d->{meta_yml}{license};
-                return ((defined $license and grep {$license eq $_} @fedora_licenses) ? 1 : 0);
-
-            },
-            details=>sub {
-                my $d = shift;
-                my $license = $d->{meta_yml}{license} || 'unknown';
-                return "The license ($license) does not fit the licensing requirements of Fedora ($fedora_licenses).";
-            },
-        },
- 
     ];
 }
 
