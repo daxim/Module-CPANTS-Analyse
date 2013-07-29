@@ -188,28 +188,6 @@ sub map_filenames {
 sub kwalitee_indicators {
   return [
     {
-        name=>'extractable',
-        error=>q{This distribution doesn't extract well due to several reasons such as unsupported archive type (CPANTS only supports tar.gz, tgz and zip archives), file permissions, invalid filenames, and so on. Most of other kwalitee metrics should be ignored.},
-        remedy=>q{Pack the distribution with a proper command such as "make dist" and "./Build dist", or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla. You might also need to set some options or environmental variables to ensure your archiver work portably.},
-        code=>sub { shift->{extractable} ? 1 : -100 },
-        details=>sub {
-            my $d = shift;
-            my $error = $d->{error}{extractable} || $d->{error}{cpants};
-            return $error unless ref $error;
-            return Dumper($error);
-        }
-    },
-    {
-        name=>'extracts_nicely',
-        error=>q{This distribution doesn't create a directory and extracts its content into this directory. Instead, it spews its content into the current directory, making it really hard/annoying to remove the unpacked package.},
-        remedy=>q{Pack the distribution with a proper command such as "make dist" and "./Build dist", or use a distribution builder such as Dist::Zilla, Dist::Milla, Minilla.},
-        code=>sub { shift->{extracts_nicely} ? 1 : 0},
-        details=>sub {
-            my $d = shift;
-            return "More than one files and/or directories were extracted into the current directory, or the directory where distribution is extracted into did not match the distribution name.";
-        },
-    },
-    {
         name=>'has_readme',
         error=>q{The file "README" is missing from this distribution. The README provides some basic information to users prior to downloading and unpacking the distribution.},
         remedy=>q{Add a README to the distribution. It should contain a quick description of your module and how to install it.},
