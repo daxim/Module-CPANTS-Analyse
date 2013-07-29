@@ -131,7 +131,6 @@ sub kwalitee_indicators{
             name=>'has_license_in_source_file',
             error=>q{Does not have license information in any of its source files},
             remedy=>q{Add =head1 LICENSE and the text of the license to the main module in your code.},
-            is_experimental=>1,
             code=>sub {
                 my $d = shift;
                 # data collected in File.pm
