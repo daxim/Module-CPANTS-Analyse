@@ -29,37 +29,12 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators {
-    return [
-        {
-            name=>'has_version',
-            error=>"The distribution filename (eg. Foo-Bar-1.42.tar.gz) does not include a version number (or something that looks like a reasonable version number to CPAN::DistnameInfo)",
-            remedy=>q{Add a version number to the packed distribution. Or use a buildtool ('make dist' or 'Build dist')},
-            code=>sub { shift->{version} ? 1 : 0 },
-            details=>sub {
-                my $d = shift;
-                my $vname = $d->{vname};
-                return "This seems not a valid distribution. (Haven't you run a Kwalitee test from a local directory?)" unless defined $vname;
-                return "This distribution ($vname) doesn't have a version number.";
-            },
-        },
-        {
-            name=>'has_proper_version',
-            error=>"The version number isn't a number. It probably contains letter besides a leading 'v', which it shouldn't",
-            remedy=>q{Remove all letters from the version number. If you want to mark a release as a developer release, use the scheme 'Module-1.00_01'},
-            code=>sub { my $v=shift->{version};
-                 return 0 unless $v;
-                 return 1 if ($v=~ /\A v? \d+ (?:\.\d+)* (?:_\d+)? (\-TRIAL)?\z/xi );
-                 return 0;
-            },
-            details=>sub {
-                my $d = shift;
-                my $version = $d->{version};
-                return "This distribution doesn't have a version number." unless defined $version;
-                $version =~ s/\-TRIAL$//;
-                return "The version ($version) doesn't look like a number.";
-            },
-        },
-    ];
+    # NOTE: The metrics in this module have moved to
+    # Module::CPANTS::SiteKwalitee because these require an archived
+    # distribution which you don't have while testing local Kwalitee
+    # with Test::Kwalitee.
+
+    return [];
 }
 
 
