@@ -109,6 +109,7 @@ sub kwalitee_indicators {
             name=>'proper_libs',
             error=>q{There is more than one .pm file in the base dir, or the .pm files are not in lib/ directory.},
             remedy=>q{Move your *.pm files in a directory named 'lib'. The directory structure should look like 'lib/Your/Module.pm' for a module named 'Your::Module'.},
+            is_extra => 1,
             code=>sub { 
                 my $d=shift;
                 my $modules=$d->{modules};
