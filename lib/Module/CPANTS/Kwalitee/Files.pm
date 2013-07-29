@@ -62,7 +62,7 @@ sub analyse {
         # Filenames that are not allowed under *nix can't be trapped
         # here now as they are not extracted at all.
         if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
-            push @{$me->d->{error}{non_portable_filenames} ||= []}, $name;
+            push @{$me->d->{error}{portable_filenames} ||= []}, $name;
         }
 
         if ($name =~ m!(^|/)\._!) {
