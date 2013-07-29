@@ -69,6 +69,22 @@ sub analyse {
         }
     }
 
+    # If we still don't have meta data, try MYMETA.yml as we may be
+    # testing a local distribution.
+    if (!$me->d->{meta_yml}) {
+        my $mymeta_yml = catfile($distdir, 'MYMETA.yml');
+        if (-f $mymeta_yml) {
+            eval {
+                open my $fh, '<:utf8', $mymeta_yml or die $!;
+                my $yaml = do { local $/; <$fh> };
+                my $meta = CPAN::Meta::YAML->read_string($yaml) or die CPAN::Meta::YAML->errstr;
+                $me->d->{meta_yml}=first { ref $_ eq ref {} } @$meta;
+                $me->d->{metayml_is_parsable} = 1;
+            };
+        }
+    }
+
+    # Should we still try MYMETA.json?
 }
 
 ##################################################################
