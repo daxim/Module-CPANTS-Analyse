@@ -133,11 +133,11 @@ sub analyse {
         my $to_stat=catfile($distdir,$_);
         next unless -e $to_stat; # TODO hmm, warum ist das kein File?
         my $stat=stat($to_stat);
-        my $thismtime=$stat->mtime;
+        $files{$_}{mtime} = my $thismtime=$stat->mtime;
         $mtime=$thismtime if $mtime<$thismtime;
     }
-    #$me->d->{released_epoch}=$mtime;
-    $me->d->{released}=scalar localtime($mtime);
+    $me->d->{newest_file_epoch}=$mtime;
+    # $me->d->{released}=scalar localtime($mtime);
    
     # Check permissions of Build.PL/Makefile.PL
     {
