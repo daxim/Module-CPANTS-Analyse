@@ -12,6 +12,7 @@ use Module::CPANTS::Kwalitee;
 use IO::Capture::Stdout;
 use IO::Capture::Stderr;
 use YAML::Any qw(LoadFile);
+use CPAN::DistnameInfo;
 
 our $VERSION = '0.87';
 
