@@ -45,7 +45,7 @@ sub analyse {
     my %files;
     my %licenses;
     my @dot_underscore_files;
-    foreach my $name (@files) { 
+    foreach my $name (@files) {
         my $path = catfile($distdir, $name);
         $files{$name}{size} += -s $path || 0;
         $size += $files{$name}{size};
