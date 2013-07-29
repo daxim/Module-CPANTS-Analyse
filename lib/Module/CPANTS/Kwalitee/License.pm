@@ -16,7 +16,6 @@ sub analyse {
     my $class=shift;
     my $me=shift;
 
-    main::logger(__PACKAGE__ . "::analyse called");
     # check META.yml
     my $yaml=$me->d->{meta_yml};
     $me->d->{license} = '';
