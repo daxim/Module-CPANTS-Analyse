@@ -362,17 +362,17 @@ sub kwalitee_indicators {
         },
     },
     {
-        name=>'non_portable_filenames',
+        name=>'portable_filenames',
         error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environments.},
         remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
         code=>sub {
             my $d=shift;
-            return 0 if $d->{error}{non_portable_filenames};
+            return 0 if $d->{error}{portable_filenames};
             return 1;
         },
         details=>sub {
             my $d = shift;
-            return "The following files were found: " . (join ', ', @{$d->{error}{non_portable_filenames}});
+            return "The following files were found: " . (join ', ', @{$d->{error}{portable_filenames}});
         },
     },
     {
@@ -469,7 +469,7 @@ Returns the Kwalitee Indicators datastructure.
 
 =item * no_large_files
 
-=item * non_portable_filenames
+=item * portable_filenames
 
 =item * no_dot_underscore_files
 
