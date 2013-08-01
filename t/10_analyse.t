@@ -26,9 +26,7 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 1,
-           'no_generated_files' => 1,
            'has_meta_yml' => 1,
            'metayml_conforms_spec_current' => 1,
            'use_warnings' => 1,
@@ -57,9 +55,7 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 0,
-           'no_generated_files' => 1,
            'has_meta_yml' => 0,
            'metayml_conforms_spec_current' => 0,
            'use_warnings' => 1,
@@ -100,9 +96,7 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 1,
-           'no_generated_files' => 1,
            'has_meta_yml' => 1,
            'metayml_conforms_spec_current' => 0,
            'use_warnings' => 0,
@@ -139,9 +133,7 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 1,
-           'no_generated_files' => 1,
            'has_meta_yml' => 1,
            'metayml_conforms_spec_current' => 1,
            'use_warnings' => 1,
@@ -173,10 +165,8 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 1,
            'metayml_has_provides' => 1,
-           'no_generated_files' => 1,
            'has_meta_yml' => 1,
            'metayml_conforms_spec_current' => 1,
            'use_warnings' => 1,
@@ -205,10 +195,8 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 1,
            'metayml_has_provides' => 1,
-           'no_generated_files' => 1,
            'has_meta_yml' => 1,
            'metayml_conforms_spec_current' => 1,
            'use_warnings' => 1,
@@ -237,10 +225,8 @@ my @tests = (
            'has_tests' => 1,
            'has_manifest' => 1,
            'no_symlinks' => 1,
-           'buildtool_not_executable' => 1,
            'metayml_has_license' => 1,
            'metayml_has_provides' => 1,
-           'no_generated_files' => 1,
            'has_meta_yml' => 1,
            'metayml_conforms_spec_current' => 1,
            'use_warnings' => 1,
@@ -273,7 +259,7 @@ foreach my $t (@tests) {
     $t->{kwalitee}{kwalitee} = ignore; # another Test::Deep import
     cmp_deeply($kw, superhashof($t->{kwalitee}), "kwalitee of $t->{dist}")
         or diag(Dumper $kw);
-    cmp_deeply($d->{error}, superhashof($t->{error}), "error of $t->{dist}")
+    cmp_deeply($d->{error} || {}, superhashof($t->{error}), "error of $t->{dist}")
         or diag(Dumper $d->{error});
     #diag(Dumper $d);
 }
