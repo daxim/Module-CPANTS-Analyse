@@ -17,8 +17,6 @@ sub order { 15 }
 
 my $large_file = 200_000;
 
-my %generated_db_files;
-
 sub analyse {
     my $class=shift;
     my $me=shift;
@@ -40,30 +38,10 @@ sub analyse {
 
     my $size = 0;
     my %files;
-    my @dot_underscore_files;
     foreach my $name (@files) {
         my $path = catfile($distdir, $name);
         $files{$name}{size} += -s $path || 0;
         $size += $files{$name}{size};
-
-        # chmod if not readable
-        if (-e $path && !-r _) {
-            $files{$name}{unreadable} = 1;
-            my $perm = ((stat($path))[2] || 0) & 07777;
-            chmod($perm | 0600, $path);
-        }
-
-        # Some characters are not allowed or have special meanings
-        # under some environment thus should be avoided.
-        # Filenames that are not allowed under *nix can't be trapped
-        # here now as they are not extracted at all.
-        if ($name =~ /[\*\?"<>\|:[:^ascii:]]/) {
-            push @{$me->d->{error}{portable_filenames} ||= []}, $name;
-        }
-
-        if ($name =~ m!(^|/)\._!) {
-            push @dot_underscore_files, $name;
-        }
     }
 
     #die Dumper \%files;
@@ -101,14 +79,11 @@ sub analyse {
     $me->d->{dirs_array}=\@dirs;
     $me->d->{symlinks}=scalar @symlinks;
     $me->d->{symlinks_list}=join(';',@symlinks);
-    $me->d->{error}{no_dot_underscore_files} = \@dot_underscore_files if @dot_underscore_files;
 
     # find special files
     my %reqfiles;
     my @special_files=(qw(Makefile.PL Build.PL META.yml META.json MYMETA.yml MYMETA.json dist.ini cpanfile SIGNATURE MANIFEST test.pl LICENSE LICENCE));
     map_filenames($me, \@special_files, \@files);
-    my @generated_files=qw(Build Makefile _build blib pm_to_blib); # files that should not...
-    %generated_db_files=map_filenames($me, \@generated_files, \@files);
 
     # find more complex files
     my %regexs=(
@@ -138,16 +113,6 @@ sub analyse {
     }
     $me->d->{newest_file_epoch}=$mtime;
     # $me->d->{released}=scalar localtime($mtime);
-   
-    # Check permissions of Build.PL/Makefile.PL
-    {
-        my $build_exe=0;
-
-        $build_exe=1 if ($me->d->{file_makefile_pl} && -x catfile($me->distdir,'Makefile.PL'));
-        $build_exe=2 if ($me->d->{file_build_pl} && -x catfile($me->distdir,'Build.PL'));
-        $build_exe=-1 unless ($me->d->{file_makefile_pl} || $me->d->{file_build_pl});
-        $me->d->{buildfile_executable}=$build_exe;
-    }
 
     # check STDIN in Makefile.PL and Build.PL 
     # objective: convince people to use prompt();
@@ -316,40 +281,6 @@ sub kwalitee_indicators {
         },
     },
     {
-        name=>'buildtool_not_executable',
-        error=>q{The build tool (Build.PL/Makefile.PL) is executable. This is bad because you should specify which perl you want to use while installing.},
-        remedy=>q{Change the permissions of Build.PL/Makefile.PL to not-executable.},
-        code=>sub {(shift->{buildfile_executable} || 0) > 0 ? 0 : 1},
-        details=>sub {
-            my $d = shift;
-            my %filetypes = (1 => 'Makefile.PL', 2 => 'Build.PL');
-            return ($filetypes{$d->{buildfile_executable}} || '') . " is executable.";
-        },
-    },
-    {
-        name=>'no_generated_files',
-        error=>q{This distribution has files/directories that should be generated at build time, not distributed by the author.},
-        remedy=>q{Remove the offending files/directories!},
-        code=>sub {
-            my $d=shift;
-            #die Dumper \%generated_db_files;
-            my @errors = map { $generated_db_files{$_} }
-                         grep { $d->{$_} }
-                         keys %generated_db_files;
-            #die $d->{build};
-            if (@errors) {
-                $d->{error}{no_generated_files} = join ", ", @errors;
-                
-                return 0;
-            }
-            return 1;
-        },
-        details=>sub {
-            my $d = shift;
-            return "The following files were found: " . $d->{error}{no_generated_files};
-        },
-    },
-    {
         name=>'no_stdin_for_prompting',
         error=>q{This distribution is using direct call from STDIN instead of prompt(). Make sure STDIN is not used in Makefile.PL or Build.PL. See http://www.perlfoundation.org/perl5/index.cgi?cpan_packaging},
         is_extra=>1,
@@ -386,34 +317,6 @@ sub kwalitee_indicators {
         details=>sub {
             my $d = shift;
             return "The following files were found: " . $d->{error}{no_large_files};
-        },
-    },
-    {
-        name=>'portable_filenames',
-        error=>qq{This distribution has at least one file with non-portable characters in its filename, which may cause problems under some environments.},
-        remedy=>q{Rename those files with alphanumerical characters, or maybe remove them because in many cases they are automatically generated for local installation.},
-        code=>sub {
-            my $d=shift;
-            return 0 if $d->{error}{portable_filenames};
-            return 1;
-        },
-        details=>sub {
-            my $d = shift;
-            return "The following files were found: " . (join ', ', @{$d->{error}{portable_filenames}});
-        },
-    },
-    {
-        name=>'no_dot_underscore_files',
-        error=>qq{This distribution has dot underscore files which may cause various problems.},
-        remedy=>q{If you use Mac OS X, set COPYFILE_DISABLE (for OS 10.5 and better) or COPY_EXTENDED_ATTRIBUTES_DISABLE (for OS 10.4) environmental variable to true to exclude dot underscore files from a distribution.},
-        code=>sub {
-            my $d=shift;
-            return 0 if $d->{error}{no_dot_underscore_files};
-            return 1;
-        },
-        details=>sub {
-            my $d = shift;
-            return "The following files were found: " . (join ', ', @{$d->{error}{no_dot_underscore_files}});
         },
     },
 ];
