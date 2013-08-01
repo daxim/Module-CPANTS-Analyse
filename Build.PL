@@ -37,8 +37,8 @@ my $build = Module::Build->new(
     },
     meta_merge => {
         resources => {
-            homepage => 'http://cpants.perl.org',
-            repository => 'https://github.com/daxim/Module-CPANTS-Analyse',
+            homepage => 'http://cpants.cpanauthors.org',
+            repository => 'https://github.com/cpants/Module-CPANTS-Analyse',
             bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Module-CPANTS-Analyse',
             },
         keywords => [
