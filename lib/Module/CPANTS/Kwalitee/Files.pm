@@ -7,7 +7,7 @@ use File::stat;
 use File::Basename;
 use Data::Dumper;
 
-our $VERSION = '0.87';
+our $VERSION = '0.88';
 
 sub order { 15 }
 

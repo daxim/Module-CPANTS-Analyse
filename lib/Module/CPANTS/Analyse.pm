@@ -13,7 +13,7 @@ use IO::Capture::Stdout;
 use IO::Capture::Stderr;
 use CPAN::DistnameInfo;
 
-our $VERSION = '0.87';
+our $VERSION = '0.88';
 
 # setup logger
 if (! main->can('logger')) {
