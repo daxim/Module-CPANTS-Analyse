@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-use Data::Dump qw/dump/;
 
 my $td = {
     dist  => 't/eg/PPI-HTML-1.07.tar.gz',
