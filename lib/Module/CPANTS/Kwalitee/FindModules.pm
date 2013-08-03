@@ -4,7 +4,7 @@ use strict;
 use Data::Dumper;
 use File::Spec::Functions;
 
-our $VERSION = '0.90_02'; $VERSION = eval $VERSION;
+our $VERSION = '0.90_02';
 
 sub order { 30 }
 

@@ -2,7 +2,7 @@ package Module::CPANTS::Kwalitee::Distname;
 use warnings;
 use strict;
 
-our $VERSION = '0.90_02'; $VERSION = eval $VERSION;
+our $VERSION = '0.90_02';
 
 sub order { 20 }
 

@@ -6,7 +6,7 @@ use CPAN::Meta::YAML;
 use CPAN::Meta::Validator;
 use List::Util qw/first/;
 
-our $VERSION = '0.90_02'; $VERSION = eval $VERSION;
+our $VERSION = '0.90_02';
 
 sub order { 10 }
 

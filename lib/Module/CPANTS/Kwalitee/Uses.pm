@@ -6,7 +6,7 @@ use Module::ExtractUse;
 use Set::Scalar qw();
 use Data::Dumper;
 
-our $VERSION = '0.90_02'; $VERSION = eval $VERSION;
+our $VERSION = '0.90_02';
 
 sub order { 100 }
 
