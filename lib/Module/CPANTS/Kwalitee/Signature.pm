@@ -2,7 +2,7 @@ package Module::CPANTS::Kwalitee::Signature;
 use strict;
 use warnings;
 
-our $VERSION = '0.90_01'; $VERSION = eval $VERSION;
+our $VERSION = '0.90_02'; $VERSION = eval $VERSION;
 
 sub order { 100 }
 

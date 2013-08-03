@@ -6,7 +6,7 @@ use base qw(Class::Accessor);
 use Module::Pluggable search_path=>['Module::CPANTS::Kwalitee'];
 use Carp;
 
-our $VERSION = '0.90_01'; $VERSION = eval $VERSION;
+our $VERSION = '0.90_02'; $VERSION = eval $VERSION;
 
 __PACKAGE__->mk_accessors(qw(generators _gencache _genhashcache _available _total));
 

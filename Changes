@@ -4,6 +4,18 @@
 
 Changes - Revision history for Module-CPANTS-Analyse
 
+=head2 0.90_02 2013-08-03
+
+=over
+
+=item Fixed L<rt#87535|https://rt.cpan.org/Ticket/Display.html?id=87535> - incorrect version specification in 0.90_01 (L<ether|https://metacpan.org/author/ether>)
+
+=item Fixed L<rt#87534|https://rt.cpan.org/Ticket/Display.html?id=87534> - Test failure in 0.90_01 (L<ether|https://metacpan.org/author/ether>)
+
+=item Fixed L<rt#87561|https://rt.cpan.org/Ticket/Display.html?id=87561> - t/11_hash_random.t fails due to undeclared test dependency (L<wyant|https://metacpan.org/author/wyant>)
+
+=back
+
 =head2 0.90_01 2013-08-01
 
 =over
