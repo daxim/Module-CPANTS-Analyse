@@ -50,7 +50,7 @@ sub kwalitee_indicators {
             map {+{name => $_, code => sub {1}}}
             qw/extractable no_pod_errors
                has_test_pod has_test_pod_coverage/
-        ] if $Test::Kwalitee::VERSION < 1.08;
+        ] if version->parse(Test::Kwalitee->VERSION) < version->parse(1.08);
     }
 
     return [];
