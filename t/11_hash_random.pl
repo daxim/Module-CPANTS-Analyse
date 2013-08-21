@@ -7,7 +7,8 @@ my $td = {
         'metayml_conforms_spec_current' => [
             '1.4',
             sort
-            'Missing mandatory field, \'meta-spec\' (meta-spec) [Validation: 1.4]',
+            'Missing mandatory field, \'url\' (meta-spec -> url) [Validation: 1.4]',
+            'Missing mandatory field, \'version\' (meta-spec -> version) [Validation: 1.4]',
             'Expected a list structure (author) [Validation: 1.4]'
         ],
     },

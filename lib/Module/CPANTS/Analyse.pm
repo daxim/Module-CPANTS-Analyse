@@ -11,9 +11,9 @@ use Carp;
 use Module::CPANTS::Kwalitee;
 use IO::Capture::Stdout;
 use IO::Capture::Stderr;
-use YAML::Any qw(LoadFile);
+use CPAN::DistnameInfo;
 
-our $VERSION = '0.87';
+our $VERSION = '0.90_02';
 
 # setup logger
 if (! main->can('logger')) {
@@ -39,6 +39,9 @@ sub new {
     main::logger("distro: $opts->{dist}");
 
     $me->mck(Module::CPANTS::Kwalitee->new);
+
+    # For Test::Kwalitee and friends
+    $me->d->{is_local_distribution} = 1 if -d $opts->{dist};
     
     unless ($me->opts->{no_capture} or $INC{'Test/More.pm'}) {
         my $cserr=IO::Capture::Stderr->new;
@@ -54,6 +57,27 @@ sub new {
 sub unpack {
     my $me=shift;
     return 'cant find dist' unless $me->dist;
+
+    my $di=CPAN::DistnameInfo->new($me->dist);
+    my ($major,$minor);
+    if ($di->version) {
+        ($major,$minor)=$di->version=~/^(\d+)\.(.*)/;
+    }
+    $major=0 unless defined($major);
+    my $ext=$di->extension || 'unknown';
+    
+    $me->d->{package}=$di->filename;
+    $me->d->{vname}=$di->distvname;
+    $me->d->{extension}=$ext;
+    $me->d->{version}=$di->version;
+    $me->d->{version_major}=$major;
+    $me->d->{version_minor}=$minor;
+    $me->d->{dist}=$di->dist;
+    $me->d->{author}=$di->cpanid;
+
+    unless($me->d->{package}) {
+        $me->d->{package}=$me->tarball;
+    }
 
     copy($me->dist,$me->testfile);
     $me->d->{size_packed}=-s $me->testfile;
@@ -84,7 +108,6 @@ sub unpack {
    
     opendir(my $fh_testdir,$me->testdir) || die "Cannot open ".$me->testdir.": $!";
     my @stuff=grep {/\w/} readdir($fh_testdir);
-    my $di=CPAN::DistnameInfo->new($me->dist);
 
     if (@stuff == 1) {
         $me->distdir(catdir($me->testdir,$stuff[0]));

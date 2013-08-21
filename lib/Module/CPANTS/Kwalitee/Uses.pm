@@ -6,7 +6,7 @@ use Module::ExtractUse;
 use Set::Scalar qw();
 use Data::Dumper;
 
-our $VERSION = '0.87';
+our $VERSION = '0.90_02';
 
 sub order { 100 }
 
@@ -27,6 +27,8 @@ sub analyse {
     # often are not) listed in meta files.
     my @tests=grep {m|^t\b.*\.t|} @$files;
     $me->d->{test_files} = \@tests;
+
+    my @test_modules = map { my $m = $_; $m =~ s|/|::|g; $m =~ s|\.pm$||; $m } grep {m|^t\b.*\.pm$|} @$files;
 
     my %skip=map {$_->{module}=>1 } @$modules;
     my %uses;
@@ -52,6 +54,7 @@ sub analyse {
             module=>$mod,
             in_code=>$cnt,
             in_tests=>0,
+            evals_in_code=>($p->used_in_eval($mod) || 0),
         };
     }
     
@@ -63,13 +66,18 @@ sub analyse {
     }
     while (my ($mod,$cnt)=each%{$pt->used}) {
         next if $skip{$mod};
+        if (@test_modules) {
+            next if grep {/(?:^|::)$mod$/} @test_modules;
+        }
         if ($uses{$mod}) {
             $uses{$mod}{'in_tests'}=$cnt;
+            $uses{$mod}{'evals_in_tests'}=($pt->used_in_eval($mod) || 0);
         } else {
             $uses{$mod}={
                 module=>$mod,
                 in_code=>0,
                 in_tests=>$cnt,
+                evals_in_tests=>($pt->used_in_eval($mod) || 0),
             }
         }
     }
@@ -106,6 +114,7 @@ sub kwalitee_indicators {
                     Modern::Perl
                     Mojo::Base
                     Moo
+                    Moo::Role
                     Moose
                     Moose::Role
                     MooseX::Declare
@@ -120,12 +129,21 @@ sub kwalitee_indicators {
                     strictures
                 ));
 
+                my @no_strict;
                 for my $module (@{ $modules }) {
-                    return 0 if $strict_equivalents
+                    push @no_strict, $module->{module} if $strict_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
+                if (@no_strict) {
+                    $d->{error}{use_strict} = join ", ", @no_strict;
+                    return 0;
+                }
                 return 1;
+            },
+            details=>sub {
+                my $d = shift;
+                return "The following modules don't use strict (or equivalents): " . $d->{error}{use_strict};
             },
         },
         {
@@ -150,6 +168,7 @@ sub kwalitee_indicators {
                     Modern::Perl
                     Mojo::Base
                     Moo
+                    Moo::Role
                     Moose
                     Moose::Role
                     MooseX::Declare
@@ -164,12 +183,21 @@ sub kwalitee_indicators {
                     strictures
                 ));
 
+                my @no_warnings;
                 for my $module (@{ $modules }) {
-                    return 0 if $warnings_equivalents
+                    push @no_warnings, $module->{module} if $warnings_equivalents
                         ->intersection(Set::Scalar->new(keys %{ $module->{uses} }))
                         ->is_empty;
                 }
+                if (@no_warnings) {
+                    $d->{error}{use_warnings} = join ", ", @no_warnings;
+                    return 0;
+                }
                 return 1;
+            },
+            details=>sub {
+                my $d = shift;
+                return "The following modules don't use warnings (or equivalents): " . $d->{error}{use_warnings};
             },
         },
     ];

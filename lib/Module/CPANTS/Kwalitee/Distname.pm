@@ -1,11 +1,10 @@
 package Module::CPANTS::Kwalitee::Distname;
 use warnings;
 use strict;
-use CPAN::DistnameInfo;
 
-our $VERSION = '0.87';
+our $VERSION = '0.90_02';
 
-sub order { 15 }
+sub order { 20 }
 
 ##################################################################
 # Analyse
@@ -14,34 +13,13 @@ sub order { 15 }
 sub analyse {
     my $class=shift;
     my $me=shift;
-    
-    my $di=CPAN::DistnameInfo->new($me->dist);
-    my ($major,$minor);
-    if ($di->version) {
-        ($major,$minor)=$di->version=~/^(\d+)\.(.*)/;
-    }
-    $major=0 unless defined($major);
-    my $ext=$di->extension || 'unknown';
-    
-    $me->d->{package}=$di->filename;
-    $me->d->{vname}=$di->distvname;
-    $me->d->{extension}=$ext;
-    $me->d->{version}=$di->version;
-    $me->d->{version_major}=$major;
-    $me->d->{version_minor}=$minor;
-    $me->d->{dist}=$di->dist;
-    $me->d->{author}=$di->cpanid;
 
-    unless($me->d->{package}) {
-        $me->d->{package}=$me->tarball;
-    }
-    
-    # TODO
-    # some authors have dirs on CPAN containing their dist:
-    # id/R/RM/RMCFARLA/AI-LibNeural/AI-LibNeural-0.02.tar.gz
-    # hack around this...
-    #$to=~s|^[\w-]+/||;
+    # NOTE: The analysis code has moved to ::Analyse to avoid
+    # duplication.
 
+    # Note also that this stub should not be removed so that
+    # this can replace the old ::Signature module, and the old
+    # metrics will not be loaded while loading plugins.
     return;
 }
 
@@ -51,24 +29,12 @@ sub analyse {
 ##################################################################
 
 sub kwalitee_indicators {
-    return [
-        {
-            name=>'has_version',
-            error=>"The package filename (eg. Foo-Bar-1.42.tar.gz) does not include a version number (or something that looks like a reasonable version number to CPAN::DistnameInfo)",
-            remedy=>q{Add a version number to the packed distribution. Or use a buildtool ('make dist' or 'Build dist')},
-            code=>sub { shift->{version} ? 1 : 0 }
-        },
-        {
-            name=>'has_proper_version',
-            error=>"The version number isn't a number. It probably contains letter besides a leading 'v', which it shouldn't",
-            remedy=>q{Remove all letters from the version number. If you want to mark a release as a developer release, use the scheme 'Module-1.00_01'},
-            code=>sub { my $v=shift->{version};
-                 return 0 unless $v;
-                 return 1 if ($v=~ /\A v? \d+ (?:\.\d+)* (?:_\d+)? (\-TRIAL)?\z/xi );
-                 return 0;
-            }
-        },
-    ];
+    # NOTE: The metrics in this module have moved to
+    # Module::CPANTS::SiteKwalitee because these require an archived
+    # distribution which you don't have while testing local Kwalitee
+    # with Test::Kwalitee.
+
+    return [];
 }
 
 

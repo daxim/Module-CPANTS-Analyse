@@ -11,22 +11,19 @@ my $build = Module::Build->new(
         'Archive::Any::Lite'        => '0.06',
         'Archive::Tar'              => '1.48', #depends on IO::Compress without memory leak
         'CPAN::DistnameInfo'        => '0.06',
-        'Pod::Simple::Checker'      => '2.02',
+        'CPAN::Meta::YAML'          => '0.008',
+        'CPAN::Meta::Validator'     => '2.131490',
         'YAML::Any'                 => 0,
-        'Module::ExtractUse'        => '0.24', #works with new Parse::RecDescent
+        'Module::ExtractUse'        => '0.30', # for used_in_eval
         'Module::Pluggable'         => '2.96',
         'IO::Capture'               => '0.05',
         'Array::Diff'               => '0.04',
         'version'                   => '0.73',
-        'File::Find::Rule'          => '0',
-        'Readonly'                  => '0',
+        'File::Find::Rule::VCS'     => '0',
         'Software::License'         => '0.003',
         'perl'                      => 5.006,
-        'Test::CPAN::Meta::YAML::Version' => '0.21',	# Interface change
-        'ExtUtils::Manifest'        => 0,
         'Set::Scalar'               => 0,
-        'File::chdir'               => 0,
-        'Module::Signature'         => 0,
+        'Text::Balanced'            => 0,
     },
     build_requires => {
         'Test::More'                => '0',
@@ -40,8 +37,8 @@ my $build = Module::Build->new(
     },
     meta_merge => {
         resources => {
-            homepage => 'http://cpants.perl.org',
-            repository => 'https://github.com/daxim/Module-CPANTS-Analyse',
+            homepage => 'http://cpants.cpanauthors.org',
+            repository => 'https://github.com/cpants/Module-CPANTS-Analyse',
             bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Module-CPANTS-Analyse',
             },
         keywords => [

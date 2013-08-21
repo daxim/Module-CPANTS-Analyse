@@ -4,7 +4,7 @@ use strict;
 use Data::Dumper;
 use File::Spec::Functions;
 
-our $VERSION = '0.87';
+our $VERSION = '0.90_02';
 
 sub order { 30 }
 
@@ -107,17 +107,29 @@ sub kwalitee_indicators {
     return [
         {
             name=>'proper_libs',
-            error=>q{There is more than one .pm file in the base dir, or the .pm files are not in directory lib.},
+            error=>q{There is more than one .pm file in the base dir, or the .pm files are not in lib/ directory.},
             remedy=>q{Move your *.pm files in a directory named 'lib'. The directory structure should look like 'lib/Your/Module.pm' for a module named 'Your::Module'.},
+            is_extra => 1,
             code=>sub { 
                 my $d=shift;
-                my $modules=$d->{modules};
-                return 0 unless $modules;
+                my @modules = @{$d->{modules}};
+                return 0 unless @modules;
 
-                my @in_basedir=grep { $_->{in_basedir} } @$modules;
-                return 1 if $d->{dir_lib} && @in_basedir == 0;
+                my @not_in_lib = grep { !$_->{in_lib} } @modules;
+                return 1 unless @not_in_lib;
+
+                my @in_basedir=grep { $_->{in_basedir} } @not_in_lib;
                 return 1 if @in_basedir == 1;
+
+                $d->{error}{proper_libs} = join ', ', map {$_->{file}} @not_in_lib;
+
                 return 0;
+            },
+            details=>sub {
+                my $d = shift;
+                my @modules = @{$d->{modules}};
+                return "No modules were found" unless @modules;
+                return "The following files were found: ".$d->{error}{proper_libs};
             },
         },
     ];
