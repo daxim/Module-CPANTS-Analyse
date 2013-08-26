@@ -27,6 +27,7 @@ my $build = Module::Build->new(
         'Set::Scalar'               => 0,
         'File::chdir'               => 0,
         'Module::Signature'         => 0,
+        'LWP::Simple'               => 0,
     },
     build_requires => {
         'Test::More'                => '0',
