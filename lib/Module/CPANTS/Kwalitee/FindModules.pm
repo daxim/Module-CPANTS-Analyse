@@ -108,7 +108,7 @@ sub kwalitee_indicators {
         {
             name=>'proper_libs',
             error=>q{There is more than one .pm file in the base dir, or the .pm files are not in directory lib.},
-            remedy=>q{Move your *.pm files in a directory named 'lib'. The directory structure should look like 'lib/Your/Module.pm' for a module named 'Your::Module'.},
+            remedy=>q{Move your *.pm files in a directory named 'lib'. The directory structure should look like 'lib/Your/Module.pm' for a module named 'Your::Module'. If you need to provide additional files, e.g. for testing, that should not be considered for Kwalitee, then you should look at the 'provides' map in META.yml to limit the files scanned; or use the 'no_index' map to exclude parts of the distribution.},
             code=>sub { 
                 my $d=shift;
                 my $modules=$d->{modules};
