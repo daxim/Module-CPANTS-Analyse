@@ -26,7 +26,7 @@ sub analyse {
     if (-e $manifest_file) {
         # read manifest
         open(my $fh, '<', $manifest_file) || die "cannot read MANIFEST $manifest_file: $!";
-        my @manifest;
+        my %manifest;
         while (<$fh>) {
             chomp;
             next if /^\s*#/; # discard pure comments
@@ -36,11 +36,11 @@ sub analyse {
                 s/\s.*$//;
             } # strip quotes and comments
             next unless $_; # discard blank lines
-            push(@manifest,$_);
+            $manifest{$_}++;
         }
         close $fh;
 
-        @manifest=sort @manifest;
+        my @manifest=sort keys %manifest;
         my @files=sort @files;
 
         my $diff=Array::Diff->diff(\@manifest,\@files);
