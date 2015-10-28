@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 9;
+use Test::More tests => 10;
 use Test::Deep;
 use Test::NoWarnings;
 
@@ -15,7 +15,7 @@ my $a=Module::CPANTS::Analyse->new({dist => 'dummy'});
 
 {
 	my @plugins=$a->plugins;
-	is(@plugins,16,'number of plugins');
+	is(@plugins,17,'number of plugins');
 }
 
 
@@ -24,7 +24,8 @@ my $plugins=$a->mck->generators;
 is(shift(@$plugins),'Module::CPANTS::Kwalitee::Files','plugin order 1 Files');
 is(shift(@$plugins),'Module::CPANTS::Kwalitee::Distname','plugin order 2 Distname');
 is(shift(@$plugins),'Module::CPANTS::Kwalitee::MetaYML','plugin order 3 MetaYML');
-is(shift(@$plugins),'Module::CPANTS::Kwalitee::FindModules','plugin order 4 FindModules');
+is(shift(@$plugins),'Module::CPANTS::Kwalitee::MetaJSON','plugin order 4 MetaJSON');
+is(shift(@$plugins),'Module::CPANTS::Kwalitee::FindModules','plugin order 5 FindModules');
 is(pop(@$plugins),'Module::CPANTS::Kwalitee::CpantsErrors','plugin order last CpantsErrors');
 
 cmp_deeply($plugins,bag(

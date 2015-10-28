@@ -211,6 +211,13 @@ sub kwalitee_indicators {
         code=>sub { shift->{file_meta_yml} ? 1 : 0 },
     },
     {
+        is_experimental=>1,
+        name=>'has_meta_json',
+        error=>q{The file 'META.json' is missing from this distribution. META.json is needed by people maintaining module collections (like CPAN), for people writing installation tools, or just people who want to know some stuff about a distribution before downloading it.},
+        remedy=>q{Add a META.json to the distribution. Your buildtool should be able to autogenerate it.},
+        code=>sub { shift->{file_meta_json} ? 1 : 0 },
+    },
+    {
         name=>'has_buildtool',
         error=>q{Makefile.PL and/or Build.PL are missing. This makes installing this distribution hard for humans and impossible for automated tools like CPAN/CPANPLUS},
         remedy=>q{Use a buildtool like Module::Build (recomended) or ExtUtils::MakeMaker to manage your distribution},
