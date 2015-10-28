@@ -8,7 +8,7 @@ use Module::CPANTS::Kwalitee;
 
 my $CORE = 26;
 my $EXTRA = 8; #is_extra set
-my $EXPERIMENTAL = 10; #experimental?
+my $EXPERIMENTAL = 12; #experimental?
 my $METRICS = $CORE + $EXTRA + $EXPERIMENTAL;
 
 plan tests => 8 + 2 * $METRICS;

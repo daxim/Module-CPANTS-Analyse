@@ -11,7 +11,6 @@ use Carp;
 use Module::CPANTS::Kwalitee;
 use IO::Capture::Stdout;
 use IO::Capture::Stderr;
-use YAML::Any qw(LoadFile);
 
 our $VERSION = '0.87';
 
@@ -212,10 +211,6 @@ Returns the location of the unextracted tarball.
 =head3 tarball
 
 Returns the filename of the tarball.
-
-=head3 read_meta_yml
-
-Reads the META.yml file and returns its content.
 
 =head1 WEBSITE
 

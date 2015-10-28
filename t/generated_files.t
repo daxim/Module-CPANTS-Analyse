@@ -45,6 +45,7 @@ my $expected = {
            'has_humanreadable_license' => 0,
            'no_generated_files' => 0,
            'has_meta_yml' => 1,
+           'has_meta_json' => 0,           
            'metayml_conforms_spec_current' => 0,
            'use_warnings' => 0,
            'no_large_files' => 1,

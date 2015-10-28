@@ -80,6 +80,7 @@ my @tests = (
            'has_changelog' => 1,
            'no_pod_errors' => 1,
            'use_strict' => 1,
+           'metajson_is_parsable' => 0,
            'kwalitee' => 29,
            'no_stdin_for_prompting' => 1,
            'easily_repackageable' => 0,
@@ -149,6 +150,7 @@ my @tests = (
            'metayml_declares_perl_version' => 1,
            'has_example' => 1,
            'metayml_is_parsable' => 1,
+           'metajson_is_parsable' => 0,
            'proper_libs' => 1,
            'has_changelog' => 1,
            'no_pod_errors' => 1,
@@ -201,6 +203,7 @@ my @tests = (
            'metayml_declares_perl_version' => 0,
            'has_example' => 1,
            'metayml_is_parsable' => 1,
+           'metajson_is_parsable' => 0,
            'proper_libs' => 1,
            'has_changelog' => 1,
            'no_pod_errors' => 1,
@@ -248,6 +251,7 @@ my @tests = (
            'metayml_declares_perl_version' => 1,
            'has_example' => 0,
            'metayml_is_parsable' => 1,
+           'metajson_is_parsable' => 0,
            'proper_libs' => 1,
            'has_changelog' => 1,
            'no_pod_errors' => 1,
@@ -298,6 +302,7 @@ my @tests = (
            'has_changelog' => 1,
            'no_pod_errors' => 1,
            'use_strict' => 1,
+           'metajson_is_parsable' => 0,
            'kwalitee' => 38,
            'no_stdin_for_prompting' => 1,
            'has_license_in_source_file' => 1,
@@ -340,6 +345,7 @@ my @tests = (
            'metayml_declares_perl_version' => 1,
            'has_example' => 1,
            'metayml_is_parsable' => 1,
+           'metajson_is_parsable' => 0,
            'proper_libs' => 1,
            'has_changelog' => 1,
            'no_pod_errors' => 1,
@@ -396,7 +402,7 @@ foreach my $t (@tests) {
         });
 
     my $rv=$a->unpack;
-    is($rv,undef,'unpack ok');
+    is($rv,undef,"unpack $t->{dist}");
 
     $a->analyse;
     $a->calc_kwalitee;
